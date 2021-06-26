@@ -1,0 +1,134 @@
+/* Prevent scrollbars on html page*/
+html {
+	overflow: hidden;
+}
+
+body {
+	height: 100vh;
+	margin: 0;
+}
+
+.root {
+  display: flex;
+  flex-flow: column;
+}
+
+.fullheight {
+  height: 100%;
+}
+
+.containerheader {
+  flex: 0 1 auto;
+}
+
+.containercontent {
+  flex: 1 1 auto;
+}
+
+.containerfooter {
+  flex: 0 1 1.5em;
+}
+
+/* Use full width of parent container */
+.full-width {
+	width: 100%;
+}
+
+/* Add vertical scroll bar */
+.overflow {
+	overflow-y: scroll; 
+	overflow-x: hidden;	
+}
+
+.overflowv {
+	overflow-y: hidden; 
+	overflow-x: scroll;	
+}
+
+.no-overflow {
+	overflow-y: hidden; 
+	overflow-x: hidden;		
+}
+
+/* END Use 100% of browser viewport */
+/************************************/
+
+/**********************************/
+/* Tables with scrollbar in tbody */
+/*
+USAGE
+This must be used in a div with full-container class
+
+<div class="full-container">
+	<table class="table fillparent">
+		<thead>
+			...
+			<th class="dummyscroll"></th>
+		</thead>
+		<tbody>
+			...
+		</tbody>
+	</table>
+</div>
+
+*/
+.container-relative {
+	position: relative; 	
+}
+.table-container {
+	position: absolute; 
+	top: 0;
+	bottom: 0;
+}
+table.fillparent {
+	display: -moz-groupbox;
+	display: flex; 
+	flex-direction: column; 
+	flex-flow: column;
+	height: 100%; 
+	position: relative;
+}
+
+table.fillparent thead th.dummyscroll {
+	width: 14px;
+	min-width: 14px;
+	max-width: 14px;
+	padding: 0;
+}
+
+table.fillparent thead tr, table.fillparent tbody tr, table.fillparent tfoot tr {
+	width: 100%;
+	display: inline-table;
+	table-layout: fixed;  
+}
+
+table.fillparent tbody {
+  overflow-y: scroll;
+  width: 100%;
+}
+
+/* hive overflow */	
+div.cell {
+  white-space: nowrap; 
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+/* END Tables with scrollbar in tbody */
+/**********************************/
+/**********************************/
+/* Table CSS */
+.cell-center {
+	text-align: center !important;
+}
+.cell-right {
+	text-align: right !important;
+}
+/* END Table CSS */
+/**********************************/
+.spinner-border {
+  display: block;
+  position: fixed;
+  z-index: 1031; /* High z-index so it is on top of the page */
+  top: calc( 50% - ( 1em / 2) );
+  right: calc( 50% - ( 1em / 2) );
+}
