@@ -3,7 +3,7 @@
 //extend classes in system.ts for table class definitions
 /* 
     Created on : Nov 16, 2018, 17:04:01 PM
-    Generated on 23.5.2021 16:2
+    Generated on 4.6.2021 14:41
     Author     : Franky Laseure
 */
 
@@ -70,6 +70,8 @@ export class Systemsearcher extends Tablesearch {
         this.addKeysearcher(this.systemjumpsSystemstartsearcher);
         this.addKeysearcher(this.routesearcher);
         this.addKeysearcher(this.routetypesearcher);
+        this.addKeysearcher(this.systemtradeSellsystemsearcher);
+        this.addKeysearcher(this.systemtradeBuysystemsearcher);
 	}
 
     filtermodel: null;
@@ -87,6 +89,8 @@ export class Systemsearcher extends Tablesearch {
     systemjumpsSystemstartsearcher: Primarykeysearcher = new Primarykeysearcher();
     routesearcher: Primarykeysearcher = new Primarykeysearcher();
     routetypesearcher: Relationalkeysearcher = new Relationalkeysearcher();
+    systemtradeSellsystemsearcher: Primarykeysearcher = new Primarykeysearcher();
+    systemtradeBuysystemsearcher: Primarykeysearcher = new Primarykeysearcher();
 
     addids = (values, operators) => {
 		  let numvalues = [values.length];
@@ -148,6 +152,12 @@ export class Systemsearcher extends Tablesearch {
     setroutetype = (routetypesearch) => {
         this.routetypesearcher.setTablesearch(routetypesearch);
     }
+    setsystemtradeSellsystem = (systemtradesearch) => {
+        this.systemtradeSellsystemsearcher.setTablesearch(systemtradesearch);
+    }
+    setsystemtradeBuysystem = (systemtradesearch) => {
+        this.systemtradeBuysystemsearcher.setTablesearch(systemtradesearch);
+    }
 
     toJSON = () => {
         let jsonobj = {
@@ -175,6 +185,8 @@ export class Systemsearcher extends Tablesearch {
                 "systemjumpsSystemstartsearcher": null,
                 "routesearcher": null,
                 "routetypesearcher": null,
+                "systemtradeSellsystemsearcher": null,
+                "systemtradeBuysystemsearcher": null,
             }; 
             if(this.securityislandsearcher!=null && this.securityislandsearcher.used()) {
                 kss.securityislandsearcher = this.securityislandsearcher.toJSON();
@@ -193,6 +205,12 @@ export class Systemsearcher extends Tablesearch {
             }
             if(this.routetypesearcher!=null && this.routetypesearcher.used()) {
                 kss.routetypesearcher = this.routetypesearcher.toJSON();
+            }
+            if(this.systemtradeSellsystemsearcher!=null && this.systemtradeSellsystemsearcher.used()) {
+                kss.systemtradeSellsystemsearcher = this.systemtradeSellsystemsearcher.toJSON();
+            }
+            if(this.systemtradeBuysystemsearcher!=null && this.systemtradeBuysystemsearcher.used()) {
+                kss.systemtradeBuysystemsearcher = this.systemtradeBuysystemsearcher.toJSON();
             }
             jsonobj.keysearch = kss;
         }

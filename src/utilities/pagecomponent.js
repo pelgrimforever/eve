@@ -37,9 +37,9 @@ function Pagecomponent(props) {
     let rows = [];
     for (let i = pagestart; i <= pageend; i++) {
       if(i===props.config.currentPage) {
-        rows.push(<Pagination.Item active>{i}</Pagination.Item>);
+        rows.push(<Pagination.Item active key={i}>{i}</Pagination.Item>);
       } else {
-        rows.push(<Pagination.Item onClick={() => props.showpage(i)} >{i}</Pagination.Item>);        
+        rows.push(<Pagination.Item key={i} onClick={() => props.showpage(i)} >{i}</Pagination.Item>);        
       }
     }
     return <>{rows}</>;

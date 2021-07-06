@@ -24,6 +24,7 @@ import Popupmessage from './popups/popupmessage.js';
 import Eveservice from './services/eveservice.js';
 import Home from './home/home.js';
 import Tradelist from './tradelist/tradelist.js';
+import Systemtradelist from './systemtradelist/systemtradelist.js';
 
 //configured in .env and .env.production
 const {REACT_APP_TEST} = process.env;
@@ -38,6 +39,7 @@ class Page extends React.Component {
       navitems: [ 
         { name:'Home', link: '/home' }, 
         { name:'Trade', link: '/tradelist' }, 
+        { name:'Systemtrade', link: '/systemtradelist' }, 
       ],
       navitem: null,
     };
@@ -82,6 +84,7 @@ class Page extends React.Component {
     </Route>
     <Route exact path="/home" component={Home}/>
     <Route exact path="/tradelist" component={Tradelist}/>
+    <Route exact path="/systemtradelist" component={Systemtradelist}/>
   </div>
 
   <div className="containerfooter bg-dark d-flex justify-content-end">

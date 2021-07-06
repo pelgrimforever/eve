@@ -3,7 +3,7 @@
 //extend classes in viewtrade.js for table class definitions
 /* 
     Created on : Dec 16, 2018, 18:10:00
-    Generated on 23.5.2021 16:2
+    Generated on 4.6.2021 14:41
     Author     : Franky Laseure
 */
 

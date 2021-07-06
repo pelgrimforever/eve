@@ -3,7 +3,7 @@
 //redefine classes in Rsviewsecurityislandsystemcountservice.js
 /* 
     Created on : Dec 16, 2018, 18:24:01
-    Generated on 23.5.2021 16:2
+    Generated on 4.6.2021 14:41
     Author     : Franky Laseure
 */
 

@@ -9,6 +9,7 @@ import Store from '../services/store.js';
 import './tradelist.scss';
 
 //components
+import Sortmode from './sortmode.js';
 import Tradeline from '../popups/tradeline.js';
 import Pagecomponent from '../utilities/pagecomponent.js';
 //services
@@ -20,6 +21,20 @@ import { Orderspk } from '../data/eve/table/super/orderssuper.js';
 import { Tradepk } from '../data/eve/table/super/tradesuper.js';
 import { Viewtrade } from '../data/eve/view/viewtrade.js';
 
+const maxpagecontrols = 20;
+
+const sort_jumps = 'jumps';
+const sort_m3 = 'volume';
+const sort_profit = 'profit';
+const sort_profitperjump = 'profitperjump';
+const sortmodes = [ 
+    { name:sort_jumps, text: 'jumps' }, 
+    { name:sort_m3, text: 'cargo vol.' }, 
+    { name:sort_profit, text: 'profit' }, 
+    { name:sort_profitperjump, text: 'profit/jump' }, 
+  ];
+const sortmode_default = 3;
+
 export default function Tradelist(props) {
   const getsystemoptions = () => {
     let systemlist = [];
@@ -29,18 +44,17 @@ export default function Tradelist(props) {
     return systemlist;
   }
 
-  const maxpagecontrols = 20;
-
   const [loggedin, setLoggedin] = useState(Store.user.loggedin);
   const [loading, setLoading] = useState(false);
   const [list, setList] = useState([]);
   const [systems, setSystems] = useState(getsystemoptions());
   const [systemid, setSystemid] = useState(null);
   const [systemname, setSystemname] = useState(null);
+  const [unfilteredtradelist, setUnfilteredtradelist] = useState([]);
   const [tradelist, setTradelist] = useState([]);
   const [viewtrade, setViewtrade] = useState(new Viewtrade());
   const [showtradeline, setShowtradeline] = useState(false);
-  const [pagelength, setPagelength] = useState(20);
+  const [pagelength, setPagelength] = useState(maxpagecontrols);
   const [paginationconfig, setPaginationconfig] = useState(
     {
       pageLength: pagelength,
@@ -53,6 +67,10 @@ export default function Tradelist(props) {
       prevNext: true,
     }
   );
+  const [sortfield, setSortfield] = useState(sortmodes[sortmode_default]);
+  const [filterstartsystem, setFilterstartsystem] = useState(null);
+  const [filterendsystem, setFilterendsystem] = useState(null);
+  const [filtercargo, setFiltercargo] = useState(0);
 
   const updatePageconfig = (pagenr) => {
     setPaginationconfig(
@@ -83,6 +101,30 @@ export default function Tradelist(props) {
     setSystemid(selection.value); 
   };
 
+  const changeStartsystem = (selection) => { 
+    setFilterstartsystem(selection); 
+  };
+
+  const resetStartsystem = () => {
+    setFilterstartsystem(null); 
+  }
+
+  const changeEndsystem = (selection) => { 
+    setFilterendsystem(selection); 
+  };
+
+  const resetEndsystem = () => {
+    setFilterendsystem(null); 
+  }
+
+  const resetCargo = () => {
+    setFiltercargo(0); 
+  }
+
+  const exitCargo = (selection) => { 
+    setFiltercargo(selection.target.value); 
+  };
+
   //update loggedin at login event
   useEffect(() => {
     setLoggedin(Store.user.loggedin);
@@ -101,6 +143,13 @@ export default function Tradelist(props) {
     }
   }, [systemid]);
 
+  //filter list
+  useEffect(() => {
+      let result = filtertradelist(unfilteredtradelist);
+      sorttradelist(result);
+      setTradelist(result);
+  }, [unfilteredtradelist, filterstartsystem, filterendsystem, filtercargo]);
+
   //update page properties after updating the tradelist
   useEffect(() => {
     showpage_(1, true);
@@ -111,6 +160,12 @@ export default function Tradelist(props) {
     showpage_(1, true);
   }, [pagelength]);
 
+  //update page properties and list content after updating pagelength
+  useEffect(() => {
+    sorttradelist(tradelist);
+    showpage_(1, true);
+  }, [sortfield]);
+
   //construct trade list data
   const loadlist = async () => {
     try {
@@ -119,8 +174,7 @@ export default function Tradelist(props) {
           let systempk = new Systempk();
           systempk.id = systemid;
           const result = await Rsviewtrade.getall_startsystem(Store.user, systempk);
-          result.sort((a, b) => (a.trade_profit_per_jump<b.trade_profit_per_jump) ? 1 : -1);
-          setTradelist(result);
+          setUnfilteredtradelist(result);
           setLoading(false);
         }
     } catch (e) {
@@ -128,6 +182,33 @@ export default function Tradelist(props) {
       setLoading(false);
     }
   };
+
+  const filtertradelist = (list) => {
+    let result = list.filter(obj => {
+      let systemstartok = filterstartsystem===null || obj.sell_systemid===filterstartsystem.value;
+      let systemendok = filterendsystem===null || obj.buy_systemid===filterendsystem.value;
+      let cargook = filtercargo===0 || obj.total_volume * obj.packaged_volume<=filtercargo;
+      return systemstartok && systemendok && cargook;
+    });
+    return result;
+  }
+
+  const sorttradelist = (listref) => {
+    switch(sortfield.name) {
+      case sort_jumps:
+        listref.sort((a, b) => (a.start_system_jumps<b.start_system_jumps) ? -1 : 1);
+        break;
+      case sort_m3:
+        listref.sort((a, b) => (a.total_volume * a.packaged_volume<b.total_volume * b.packaged_volume) ? 1 : -1);
+        break;
+      case sort_profit:
+        listref.sort((a, b) => (a.trade_profit<b.trade_profit) ? 1 : -1);
+        break;
+      case sort_profitperjump:
+        listref.sort((a, b) => (a.trade_profit_per_jump<b.trade_profit_per_jump) ? 1 : -1);
+        break;
+    }
+  }
 
   const format_price = (p) => {
     const rounded = Math.round(p);
@@ -166,6 +247,10 @@ export default function Tradelist(props) {
     const dummy = await loadlist();
   }
 
+  const onSortfieldselected = (sortfield) => {
+    setSortfield(sortfield);
+  }
+
   const colstart_system_jumps = {width: '1rem'};
   const colsell_regionname = {width: '4rem' };
   const colsell_systemname = {width: '4rem'};
@@ -194,13 +279,31 @@ export default function Tradelist(props) {
         <div className="containerheader">
           <div className="mx-auto bg-light p-1">
               <div className="row m-0">
-                <div className="col col-sm-4">
+                <div className="col col-sm-1">
                   <Select options={systems} onChange={changeSystem}/>
                 </div>
-                <div className="col col-sm-4">
+                <div className="col col-sm-1">
                   <button type="button" className="btn btn-sm btn-primary m-1" onClick={loadlist}>refresh</button>
                 </div>
-                <div className="col col-sm-4">
+                <div className="col col-sm-3">
+                  <Sortmode title="sort" modes={sortmodes} sortmode_default={sortmode_default} onModeselected={onSortfieldselected} />
+                </div>
+                <div className="col col-sm-4 d-flex">
+                  <span className="mx-2">start</span>
+                  <div style={{width:'200px'}}>
+                    <Select options={systems} value={filterstartsystem} onChange={changeStartsystem}/>
+                  </div>
+                  <button type="button" className="btn btn-sm btn-secondary" onClick={resetStartsystem}>X</button>
+                  <span className="mx-2">end</span>
+                  <div style={{width:'200px'}}>
+                    <Select options={systems} value={filterendsystem} onChange={changeEndsystem}/>
+                  </div>
+                  <button type="button" className="btn btn-sm btn-secondary" onClick={resetEndsystem}>X</button>
+                  <span className="mx-2">cargo</span>
+                  <div style={{width:'200px'}}>
+                    <Form.Control type="number" id="maxcargo" name="maxcargo" defaultValue={filtercargo} onBlur={exitCargo} />
+                  </div>
+                  <button type="button" className="btn btn-sm btn-secondary" onClick={resetCargo}>X</button>
                 </div>
               </div>
         </div>
