@@ -13,13 +13,24 @@ import ViewtradeJson from './conversion/viewtradejson.js';
 
 class Rsviewtrade extends Rsviewtradesuper {
 
-  static SELECT_ALL_STARTSYSTEM= 2;
+  static SELECT_ALL_STARTSYSTEM = 2;
+  static SELECT_STARTENDSYSTEM = 3;
 
   static getall_startsystem = async (user, systempk: Systempk) => {
     const postdata = {
       auth: user!=null ? user.auth : null,
       operation: { type: super.OPERATIONTYPE_SELECT, operation: this.SELECT_ALL_STARTSYSTEM },
       systempk: SystemJson.PKtoJSON(systempk)
+    }
+    return this.extractDataArray_startsystem(await super.post(this.restservice, postdata));
+  }
+
+  static getall_startendsystem = async (user, startsystempk: Systempk, endsystempk: Systempk) => {
+    const postdata = {
+      auth: user!=null ? user.auth : null,
+      operation: { type: super.OPERATIONTYPE_SELECT, operation: this.SELECT_STARTENDSYSTEM },
+      startsystempk: SystemJson.PKtoJSON(startsystempk),
+      endsystempk: SystemJson.PKtoJSON(endsystempk)
     }
     return this.extractDataArray_startsystem(await super.post(this.restservice, postdata));
   }

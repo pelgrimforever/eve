@@ -11,15 +11,18 @@ import './tradelist.scss';
 //components
 import Sortmode from './sortmode.js';
 import Tradeline from '../popups/tradeline.js';
+import Combinedtradeorders from '../popups/combinedtradeorders.js';
 import Pagecomponent from '../utilities/pagecomponent.js';
 //services
 import Rstrade from '../services/eve/rest/table/rstrade.js';
 import Rsviewtrade from '../services/eve/rest/view/rsviewtrade.js';
+import Rsviewcombinedtrade from '../services/eve/rest/view/rsviewcombinedtrade.js';
 //data models
 import { Systempk } from '../data/eve/table/super/systemsuper.js';
 import { Orderspk } from '../data/eve/table/super/orderssuper.js';
 import { Tradepk } from '../data/eve/table/super/tradesuper.js';
 import { Viewtrade } from '../data/eve/view/viewtrade.js';
+import { Viewcombinedtrade } from '../data/eve/view/viewcombinedtrade.js';
 
 const maxpagecontrols = 20;
 
@@ -54,6 +57,8 @@ export default function Tradelist(props) {
   const [tradelist, setTradelist] = useState([]);
   const [viewtrade, setViewtrade] = useState(new Viewtrade());
   const [showtradeline, setShowtradeline] = useState(false);
+  const [viewcombinedtrade, setViewcombinedtrade] = useState(new Viewcombinedtrade());
+  const [showcombinedtradeline, setShowcombinedtradeline] = useState(false);
   const [pagelength, setPagelength] = useState(maxpagecontrols);
   const [paginationconfig, setPaginationconfig] = useState(
     {
@@ -232,8 +237,24 @@ export default function Tradelist(props) {
     setShowtradeline(true);
   }
 
+  const showCombinedtrade = async (trade) => {
+    let systempk = new Systempk();
+    systempk.id = systemid;
+    let startsystempk = new Systempk();
+    startsystempk.id = trade.sell_systemid;
+    let endsystempk = new Systempk();
+    endsystempk.id = trade.buy_systemid;
+    const result = await Rsviewcombinedtrade.get4_startendsystem(Store.user, systempk, startsystempk, endsystempk);
+    setViewcombinedtrade(result);
+    setShowcombinedtradeline(true);
+  }
+
   const onTradelineCancel = () => {
     setShowtradeline(false);
+  }
+
+  const onCombinedtradelineCancel = () => {
+    setShowcombinedtradeline(false);
   }
 
   const onUpdatetrade = async (volume) => {
@@ -374,7 +395,10 @@ export default function Tradelist(props) {
                     <td style={coltrade_total_jumps}><span className='float-right'>{trade.trade_total_jumps}</span></td>
                     <td style={coltrade_singlerunprofit}><span className='float-right'>{format_price(trade.trade_singlerunprofit)}</span></td>
                     <td style={coltrade_maxunits_per_run}><span className='float-right'>{format_price(trade.trade_maxunits_per_run)}</span></td>
-                    <td><button type="button" className="btn btn-sm small btn-primary" onClick={() => showTradeline(trade)}>show</button></td>
+                    <td>
+                      <button type="button" className="btn btn-sm small btn-primary" onClick={() => showTradeline(trade)}>show</button>
+                      <button type="button" className="btn btn-sm small btn-primary" onClick={() => showCombinedtrade(trade)}>show combined</button>
+                    </td>
                   </tr>  
     ))}
 
@@ -401,6 +425,16 @@ export default function Tradelist(props) {
         onUpdatetrade={onUpdatetrade}
         onCancel={onTradelineCancel} 
         />
+
+      <Combinedtradeorders 
+        trade={viewcombinedtrade}
+        startsystemid={systemid}
+        startsystemname={systemname}
+        show={showcombinedtradeline} 
+        onUpdatetrade={onUpdatetrade}
+        onCancel={onCombinedtradelineCancel} 
+        />
+
     </div>
 
     );

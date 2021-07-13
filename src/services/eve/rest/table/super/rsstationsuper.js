@@ -3,7 +3,7 @@
 //redefine classes in station.service.ts
 /* 
     Created on : Nov 20, 2018, 10:39:01 AM
-    Generated on 4.6.2021 14:41
+    Generated on 12.6.2021 13:57
     Author     : Franky Laseure
 */
 
