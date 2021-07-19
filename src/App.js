@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import {
   Route,
   BrowserRouter as Router,
@@ -26,58 +26,49 @@ import Home from './home/home.js';
 import Tradelist from './tradelist/tradelist.js';
 import Combinedtradelist from './combinedtradelist/combinedtradelist.js';
 //import Systemtradelist from './systemtradelist/systemtradelist.js';
+import Tradetracking from './tradetracking/tradetracking.js';
 
 //configured in .env and .env.production
 const {REACT_APP_TEST} = process.env;
 const {REACT_APP_CORS} = process.env;
 const {REACT_APP_SERVERURL} = process.env;
 
-class Page extends React.Component {
+export default function Page() {
 
-  constructor(props) {
-    super(props);
-    this.state = {
-      navitems: [ 
+  const [navitems, setNavitems] = useState(
+      [ 
         { name:'Home', link: '/home' }, 
         { name:'Trade', link: '/tradelist' }, 
         { name:'Combined trade', link: '/combinedtradelist' }, 
 //        { name:'Systemtrade', link: '/systemtradelist' }, 
-      ],
-      navitem: null,
-    };
-    this.navigateEvent.bind(this);
+        { name:'Trade tracking', link: '/tradetracking' }, 
+      ]);
+  const [navitem, setNavitem] = useState(null);
 
-    //set REST service paramaters
-    Eveservice.test = REACT_APP_TEST;
-    Eveservice.cors = REACT_APP_CORS;
-    Eveservice.serverurl = REACT_APP_SERVERURL;
-    Sitesecurityservice.test = REACT_APP_TEST;
-    Sitesecurityservice.cors = REACT_APP_CORS;
-    Sitesecurityservice.serverurl = REACT_APP_SERVERURL;
-  }
+  //set REST service paramaters
+  Eveservice.test = REACT_APP_TEST;
+  Eveservice.cors = REACT_APP_CORS;
+  Eveservice.serverurl = REACT_APP_SERVERURL;
+  Sitesecurityservice.test = REACT_APP_TEST;
+  Sitesecurityservice.cors = REACT_APP_CORS;
+  Sitesecurityservice.serverurl = REACT_APP_SERVERURL;
 
-  async componentWillMount(){
-    //can only download data after server settings are initialized
+  useMemo(async () => {
     await Store.load();
-  }
-
-  async componentDidMount(){
     //document.getElementById('body').className='body';
     document.getElementById('root').className='root fullheight';
-  }
+  }, []);
 
-  navigateEvent = (item) => {
-    this.setState( { navitem: item } );
-  }
+  const navigateEvent = (item) => {
+    setNavitem(item);
+  };
 
-  render() {
-
-    return (
+  return (
 <HashRouter>      
 <div className="root fullheight">
 
   <div className="containerheader">
-    <Menubar navitems={this.state.navitems} navigateEvent={this.navigateEvent}/>
+    <Menubar navitems={navitems} navigateEvent={navigateEvent}/>
   </div>
 
   <div className="content containercontent">
@@ -88,6 +79,7 @@ class Page extends React.Component {
     <Route exact path="/tradelist" component={Tradelist}/>
     <Route exact path="/combinedtradelist" component={Combinedtradelist}/>
 {/*    <Route exact path="/systemtradelist" component={Systemtradelist}/> */}
+    <Route exact path="/tradetracking" component={Tradetracking}/>
   </div>
 
   <div className="containerfooter bg-dark d-flex justify-content-end">
@@ -99,8 +91,5 @@ class Page extends React.Component {
 </div>
 </HashRouter>
     );
-  }
 
 }
-
-export default Page;

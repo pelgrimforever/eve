@@ -1,55 +1,48 @@
-import React from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import Store from '../services/store.js';
 import Popupmessage from '../popups/popupmessage.js';
 
-class Login extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      loggedin: Store.user.loggedin,
-      showpopup: false,
-      popuptitle: 'Authentication response',
-      popupmessage: '',
-    };
-  }
+export default function Login() {
+  const [loggedin, setLoggedin] = useState(false);
+  const [username, setUsername] = useState('');
+  const [showpopup, setShowpopup] = useState(false);
+  const [popuptitle, setPopuptitle] = useState('Authentication response');
+  const [popupmessage, setPopupmessage] = useState('');
 
-  componentDidMount = async () => {
-    this.setState( { loggedin : await Store.user.authenticate("pelgrim", "fralas") } );    
-  }
+  useEffect(async () => {
+    const loggedinresult = await Store.user.authenticate("pelgrim", "fralas");
+    setLoggedin(loggedinresult);
+    setUsername(Store.user.username);
+  }, []);
 
-  hidePopup = () => {
+  const hidePopup = () => {
     this.setState( { showpopup: false });
-  }
+  };
 
-  authenticate = async (event) => {
+  const authenticate = async (event) => {
     event.preventDefault();
     const formdata = new FormData(event.target);
     const user = formdata.get('user');
     const password = formdata.get('password');
-    this.setState( { loggedin : await Store.user.authenticate(user, password) } );
-    if(!this.state.loggedin) {
-      this.setState({
-        showpopup: true,
-        popupmessage: 'Wrong user/password combination.'
-      });
+    const loggedinresult = await Store.user.authenticate(user, password);
+    setLoggedin(loggedinresult);
+    if(!loggedinresult) {
+      setShowpopup(true);
+      setPopupmessage('Wrong user/password combination.');
     }
-  }
+  };
 
-  logout = async (event) => {
+  const logout = async (event) => {
     event.preventDefault();
     Store.user.reset();
     alert("logout");
-    this.setState( { loggedin : Store.user.loggedin } );
+    setLoggedin(false);
   }
 
-  render() {
-      const showlogin = !this.state.loggedin;
-      const username = Store.user.username;
-
-    return (
+  return (
       <div>
-      { showlogin ? (
-    <form onSubmit={this.authenticate} className="form-inline row">
+      { !loggedin ? (
+    <form onSubmit={authenticate} className="form-inline row">
       <div className="form-group input-group input-group-sm input-group-autowidth p-0">
         <div className="input-group-prepend">
           <span className="input-group-text">user</span>
@@ -71,7 +64,7 @@ class Login extends React.Component {
 
         ) : (
 
-    <form onSubmit={this.logout} className="form-inline row">
+    <form onSubmit={logout} className="form-inline row">
       <div className="form-group input-group input-group-sm input-group-autowidth p-0">
         <div className="input-group-prepend">
           <span className="input-group-text">user</span>
@@ -86,10 +79,7 @@ class Login extends React.Component {
         )
       }
 
-      <Popupmessage show={this.state.showpopup} title={this.state.popuptitle} message={this.state.popupmessage} onHide={this.hidePopup} />
+      <Popupmessage show={showpopup} title={popuptitle} message={popupmessage} onHide={hidePopup} />
       </div>
-    )
-  }
+  )
 }
-
-export default Login;

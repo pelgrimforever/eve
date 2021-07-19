@@ -3,7 +3,7 @@
 //redefine classes in Rsviewtradeordersservice.js
 /* 
     Created on : Dec 16, 2018, 18:24:01
-    Generated on 12.6.2021 13:57
+    Generated on 18.6.2021 14:35
     Author     : Franky Laseure
 */
 

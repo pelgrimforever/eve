@@ -3,7 +3,7 @@
 //extend classes in systemtrade.ts for table class definitions
 /* 
     Created on : Nov 16, 2018, 17:04:01 PM
-    Generated on 12.6.2021 13:57
+    Generated on 18.6.2021 14:35
     Author     : Franky Laseure
 */
 

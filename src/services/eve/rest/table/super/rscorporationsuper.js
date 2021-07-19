@@ -3,7 +3,7 @@
 //redefine classes in corporation.service.ts
 /* 
     Created on : Nov 20, 2018, 10:39:01 AM
-    Generated on 12.6.2021 13:57
+    Generated on 18.6.2021 14:35
     Author     : Franky Laseure
 */
 

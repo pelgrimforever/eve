@@ -47,7 +47,6 @@ export default function Tradelist(props) {
     return systemlist;
   }
 
-  const [loggedin, setLoggedin] = useState(Store.user.loggedin);
   const [loading, setLoading] = useState(false);
   const [list, setList] = useState([]);
   const [systems, setSystems] = useState(getsystemoptions());
@@ -129,11 +128,6 @@ export default function Tradelist(props) {
   const exitCargo = (selection) => { 
     setFiltercargo(selection.target.value); 
   };
-
-  //update loggedin at login event
-  useEffect(() => {
-    setLoggedin(Store.user.loggedin);
-  }, [Store.user.loggedin]);
 
   //update system select data if systemlist is updated
   useEffect(() => {
@@ -257,6 +251,11 @@ export default function Tradelist(props) {
     setShowcombinedtradeline(false);
   }
 
+  const onTradeclick = (viewtradeline) => {
+    setViewtrade(viewtradeline);
+    Store.tradetrackingdata.setOrders(viewtradeline, viewtradeline.sell_id, viewtradeline.buy_id);
+  }
+
   const onUpdatetrade = async (volume) => {
     let tradepk = new Tradepk();
     tradepk.ordersSellorderidPK = new Orderspk();
@@ -372,7 +371,7 @@ export default function Tradelist(props) {
                 <tbody className="overflow text-body">
 
     {list.map((trade, index) => (
-                  <tr className={trade.sell_id===viewtrade.sell_id && trade.buy_id===viewtrade.buy_id ? "table-active" : "table-info"} key={index} onClick={() => setViewtrade(trade)}>
+                  <tr className={trade.sell_id===viewtrade.sell_id && trade.buy_id===viewtrade.buy_id ? "table-active" : "table-info"} key={index} onClick={() => { onTradeclick(trade); } }>
                     <td style={colstart_system_jumps}>{trade.start_system_jumps}</td>
                     <td style={colsell_regionname}>{trade.sell_regionname}</td>
                     <td style={colsell_systemname}>{trade.sell_systemname}</td>
