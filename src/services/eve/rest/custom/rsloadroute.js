@@ -8,15 +8,21 @@ class Rsloadroute extends Eveservice {
 
   //OPERATIONS
 
-  static getroute = async (origin, destination, viasystems) => {
+  static getroute = async (origin, destination, viasystems, avoidsystems, secure) => {
     const viasystemlist = [];
     viasystems.map(s => {
       viasystemlist.push(s.value);
     });
+    const avoidsystemlist = [];
+    avoidsystems.map(s => {
+      avoidsystemlist.push(s.value);
+    });
     const postdata = {
       "origin": origin,
       "destination": destination,
-      "viasystems": viasystemlist
+      "viasystems": viasystemlist,
+      "avoidsystems": avoidsystemlist,
+      "secure": secure
     }
     const result = await super.post(this.restservice, postdata);
     return Rssystem.extractDataArray(result);

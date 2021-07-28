@@ -40,7 +40,9 @@ export default function Tradetracking(props) {
   const [loading, setLoading] = useState(false);
   const [systems, setSystems] = useState(getsystemoptions());
   const [allsystems, setAllsystems] = useState(getallsystemoptions());
+  const [secure, setSecure] = useState(true);
   const [viasystems, setViasystems] = useState([]);
+  const [avoidsystems, setAvoidsystems] = useState([]);
   const [list, setList] = useState([]);
   const [sellvieworder, setSellvieworder] = useState(new Orders());
   const [buyvieworder, setBuyvieworder] = useState(new Orders());
@@ -62,7 +64,7 @@ export default function Tradetracking(props) {
           let result = await Rsvieworder.getone(Store.tradetrackingdata.buyorderid);
           setBuyvieworder(result);
         }
-        let result = await Rsloadroute.getroute(Store.tradetrackingdata.viewtrade.sell_systemid, Store.tradetrackingdata.viewtrade.buy_systemid, viasystems);
+        let result = await Rsloadroute.getroute(Store.tradetrackingdata.viewtrade.sell_systemid, Store.tradetrackingdata.viewtrade.buy_systemid, viasystems, avoidsystems, secure);
         setList(result);
     } catch (e) {
       console.log("loadlist failed");
@@ -80,12 +82,22 @@ export default function Tradetracking(props) {
     setViasystems(viasystems.filter(item => item.value !== viasystem.value));
   }
 
+  const addAvoidsystem = (selection) => { 
+    if(avoidsystems.findIndex(v => v.value === selection.value)===-1) {
+      setAvoidsystems(avoidsystems.concat(selection));
+    }
+  };
+
+  const removeAvoidsystem = (avoidsystem) => {
+    setAvoidsystems(avoidsystems.filter(item => item.value !== avoidsystem.value));
+  }
+
   const loadupdate = async (event) => {
     if(sellvieworder!=null && buyvieworder!=null) {
       const result = await Rsloadorderupdate.getorderupdate(sellvieworder.id, buyvieworder.id);
       setSellremain(result.sellamount);
       setBuyremain(result.buyamount);
-      const resultroute = await Rsloadroute.getroute(Store.tradetrackingdata.viewtrade.sell_systemid, Store.tradetrackingdata.viewtrade.buy_systemid, viasystems);
+      const resultroute = await Rsloadroute.getroute(Store.tradetrackingdata.viewtrade.sell_systemid, Store.tradetrackingdata.viewtrade.buy_systemid, viasystems, avoidsystems, secure);
       setList(resultroute);
     }
   }
@@ -329,10 +341,10 @@ export default function Tradetracking(props) {
                 </div>
               </div>
               <div className="row m-0">
-                  <label className="input-group-text">- {buyvieworder.stationname}</label>
+                <label className="input-group-text">- {buyvieworder.stationname}</label>
               </div>
               <div className="row m-0">
-                  <label className="input-group-text">- {buyvieworder.locationname}</label>
+                <label className="input-group-text">- {buyvieworder.locationname}</label>
               </div>
             </div>
 
@@ -345,6 +357,11 @@ export default function Tradetracking(props) {
         <div className="mx-auto bg-light p-1">
           <div className="row m-0">
             <div className="col col-sm-10 d-flex">
+              <label className="input-group-text bg-light">secure</label>
+              <div className="custom-control custom-checkbox cell-center mr-2">
+                <input type="checkbox" checked={secure} className="form-check-input" onClick={() => setSecure(!secure)}/>
+              </div>
+              <label className="input-group-text bg-light mr-2">via</label>
     {viasystems.map((viasystem, index) => (
               <>
               <label className="input-group-text">{viasystem.label}</label>
@@ -357,54 +374,75 @@ export default function Tradetracking(props) {
               </div>
             </div>
           </div>
+          <div className="row m-0">
+            <div className="col col-sm-10 d-flex">
+              <label className="input-group-text bg-light mr-2">avoid</label>
+    {avoidsystems.map((avoidsystem, index) => (
+              <>
+              <label className="input-group-text">{avoidsystem.label}</label>
+              <button type="button" className="btn btn-sm btn-secondary mr-2" onClick={() => removeAvoidsystem(avoidsystem)}>X</button>
+              </>
+    ))}
+              <label className="input-group-text bg-light">add</label>
+              <div style={{width:'200px'}}>
+                <Select options={allsystems} onChange={addAvoidsystem}/>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
 
       <div className="containercontent container-relative">
-        <div className="root fullheight">
-          <div className="containercontent container-relative">
-            <div className="table-container container-fluid p-0">
+        <div className="row h-100">
+          <div className="col-4">
+            <div className="root fullheight">
+              <div className="containercontent container-relative">
+                <div className="table-container container-fluid p-0">
 
 { loading && 
-              <div className="d-flex justify-content-center">
-                <Spinner animation="border" role="status" />
-              </div>
+                  <div className="d-flex justify-content-center">
+                    <Spinner animation="border" role="status" />
+                  </div>
 }
-              <table className="table small table-dark table-bordered table-hover fillparent">
-                <thead>
-                  <tr>
-                    <th style={col_system}>system</th>
-                    <th style={col_systemsec}>sec</th>
-                    <th style={col_npc_kills}>npc</th>
-                    <th style={col_pod_kills}>pods</th>
-                    <th style={col_ship_kills}>ships</th>
-                    <th style={col_killmails}>mails</th>
-                    <th style={col_killmailgates}>@gates</th>
-                    <th></th>
-                    <th className="dummyscroll"></th>
-                  </tr>
-                </thead>
-                <tbody className="overflow text-body">
+                  <table className="table small table-dark table-bordered table-hover fillparent">
+                    <thead>
+                      <tr>
+                        <th style={col_system}>system</th>
+                        <th style={col_systemsec}>sec</th>
+                        <th style={col_npc_kills}>npc</th>
+                        <th style={col_pod_kills}>pods</th>
+                        <th style={col_ship_kills}>ships</th>
+                        <th style={col_killmails}>mails</th>
+                        <th style={col_killmailgates}>@gates</th>
+                        <th></th>
+                        <th className="dummyscroll"></th>
+                      </tr>
+                    </thead>
+                    <tbody className="overflow text-body">
 
     {list.map((item, index) => (
-                  <tr className={item.ship_kills>0 ? "table-danger" : "table-info"} key={index}>
-                    <td style={col_system}>{item.name}</td>
-                    <td className={item.security_status<0.5 ? "bg-danger" : ""} style={col_systemsec}>{format_2digits(item.security_status)}</td>
-                    <td style={col_npc_kills}>{item.npc_kills}</td>
-                    <td style={col_pod_kills}>{item.pod_kills}</td>
-                    <td className={item.ship_kills>0 ? "bg-danger" : ""} style={col_ship_kills}>{item.ship_kills}</td>
-                    <td className={item.killmailcount>0 ? "bg-danger" : ""} style={col_killmails}>{item.killmailcount}</td>
-                    <td className={item.killmailgatecount>0 ? "bg-danger" : ""} style={col_killmailgates}>{item.killmailgatecount}</td>
-                    <td>
-                      {rendergatekills(item)}
-                    </td>
-                  </tr>  
+                      <tr className={item.ship_kills>0 ? "table-danger" : "table-info"} key={index}>
+                        <td style={col_system}>{item.name}</td>
+                        <td className={item.security_status<0.5 ? "bg-danger" : ""} style={col_systemsec}>{format_2digits(item.security_status)}</td>
+                        <td style={col_npc_kills}>{item.npc_kills}</td>
+                        <td style={col_pod_kills}>{item.pod_kills}</td>
+                        <td className={item.ship_kills>0 ? "bg-danger" : ""} style={col_ship_kills}>{item.ship_kills}</td>
+                        <td className={item.killmailcount>0 ? "bg-danger" : ""} style={col_killmails}>{item.killmailcount}</td>
+                        <td className={item.killmailgatecount>0 ? "bg-danger" : ""} style={col_killmailgates}>{item.killmailgatecount}</td>
+                        <td>
+                          {rendergatekills(item)}
+                        </td>
+                      </tr>  
     ))}
 
-                </tbody>
-              </table>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
             </div>
           </div>
+        </div>
+        <div className="col-8">
         </div>
       </div>
     </div>
