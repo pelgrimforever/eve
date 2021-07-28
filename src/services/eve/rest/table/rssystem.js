@@ -7,8 +7,22 @@
 */
 
 import Rssystemsuper from './super/rssystemsuper.js';
+import SystemJson from './conversion/systemjson.js';
 
 class Rssystem extends Rssystemsuper {
+
+    static extractDataArray = (jsonarray): System[] => {
+        let systems: [] = [];
+        for(let i = 0; i < jsonarray.length; i++) {
+            systems.push(SystemJson.fromJSON(jsonarray[i]));
+        }
+        return systems;
+    }
+
+    static extractDataObject = (jsonobject): System => {
+        return SystemJson.fromJSON(jsonobject);
+    }
+
 }
 
 export default Rssystem;

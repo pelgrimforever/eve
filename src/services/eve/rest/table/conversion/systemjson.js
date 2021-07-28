@@ -9,6 +9,17 @@
 import SystemJsonsuper from './super/systemjsonsuper';
 
 class SystemJson extends SystemJsonsuper {
+
+    static fromJSON = (jsonobj): System => {
+        let model = super.fromJSON(jsonobj);
+        model.npc_kills = jsonobj.npc_kills;
+        model.pod_kills = jsonobj.pod_kills;
+        model.ship_kills = jsonobj.ship_kills;
+        model.killmailcount = jsonobj.killmailcount;
+        model.killmailgatecount = jsonobj.killmailgatecount;
+        model.killmaildata = jsonobj.killmaildata;
+        return model;
+    }
 }
 
 export default SystemJson;

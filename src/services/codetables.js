@@ -6,10 +6,12 @@ import Rsevetype from './eve/rest/table/rsevetype.js';
 class Codetables {
 
 	systemlist = [];
+	allsystemlist = [];
 	typelist = [];
 
   loadAll = async () => {
     await this.loadSystemlist();
+    await this.loadAllsystemlist();
     await this.loadTypelist();
   }
   
@@ -20,6 +22,14 @@ class Codetables {
 	    this.systemlist = await Rssystem.loadSystems4securityisland(securityislandpk);
 	  } catch (e) {
 	    console.log("loadSystems4securityisland failed");
+	  }
+	};
+
+  loadAllsystemlist = async () => {
+	  try {
+	    this.allsystemlist = await Rssystem.getall();
+	  } catch (e) {
+	    console.log("loadAllsystemlist failed");
 	  }
 	};
 

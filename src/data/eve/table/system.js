@@ -9,6 +9,13 @@
 import Systemsuper, {Systempk} from './super/systemsuper'
 
 class System extends Systemsuper {
+    npc_kills: number = 0;
+    pod_kills: number = 0;
+    ship_kills: number = 0;
+    killmailcount: number = 0;
+    killmailgatecount: number = 0;
+    killmaildata: null;
+
 	constructor() { 
 		super();
 	}

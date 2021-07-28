@@ -1,6 +1,6 @@
 import Eveservice from '../../../eveservice.js';
 import SystemJson from '../table/conversion/systemjson.js';
-import Rssystemsuper from '../table/super/rssystemsuper.js';
+import Rssystem from '../table/rssystem.js';
 
 class Rsloadroute extends Eveservice { 
 
@@ -8,13 +8,18 @@ class Rsloadroute extends Eveservice {
 
   //OPERATIONS
 
-  static getroute = async (origin, destination) => {
+  static getroute = async (origin, destination, viasystems) => {
+    const viasystemlist = [];
+    viasystems.map(s => {
+      viasystemlist.push(s.value);
+    });
     const postdata = {
       "origin": origin,
-      "destination": destination
+      "destination": destination,
+      "viasystems": viasystemlist
     }
     const result = await super.post(this.restservice, postdata);
-    return Rssystemsuper.extractDataArray(result);
+    return Rssystem.extractDataArray(result);
   }
 
 }
