@@ -8,8 +8,10 @@ import Select from 'react-select';
 import Store from '../services/store.js';
 import './combinedtradelist.scss';
 
+//context
+import { AppContext } from "../App.js";
 //components
-import Sortmode from './sortmode.js';
+import Sortmode from '../utilities/sortmode.js';
 import Combinedtradeorders from '../popups/combinedtradeorders.js';
 import Pagecomponent from '../utilities/pagecomponent.js';
 //services
@@ -35,6 +37,8 @@ const sortmodes = [
 const sortmode_default = 2;
 
 export default function Combinedtradelist(props) {
+  const { appstate, dispatch } = React.useContext(AppContext);
+
   const getsystemoptions = () => {
     let systemlist = [];
     Store.codetables.systemlist.map(s => {
@@ -47,8 +51,8 @@ export default function Combinedtradelist(props) {
   const [loading, setLoading] = useState(false);
   const [list, setList] = useState([]);
   const [systems, setSystems] = useState(getsystemoptions());
-  const [systemid, setSystemid] = useState(null);
-  const [systemname, setSystemname] = useState(null);
+  const [startsystemid, setStartsystemid] = useState(appstate.startsystemid);
+  const [startsystemname, setStartsystemname] = useState(appstate.systemname);
   const [unfilteredtradelist, setUnfilteredtradelist] = useState([]);
   const [tradelist, setTradelist] = useState([]);
   const [viewcombinedtrade, setViewcombinedtrade] = useState(new Viewcombinedtrade());
@@ -66,10 +70,10 @@ export default function Combinedtradelist(props) {
       prevNext: true,
     }
   );
-  const [sortfield, setSortfield] = useState(sortmodes[sortmode_default]);
-  const [filterstartsystem, setFilterstartsystem] = useState(null);
-  const [filterendsystem, setFilterendsystem] = useState(null);
-  const [filtercargo, setFiltercargo] = useState(0);
+  const [sortfield, setSortfield] = useState(appstate.combinedtradelist_filtersortfield);
+  const [filterstartsystemid, setFilterstartsystemid] = useState(appstate.filterstartsystemid);
+  const [filterendsystemid, setFilterendsystemid] = useState(appstate.filterendsystemid);
+  const [filtercargo, setFiltercargo] = useState(appstate.filtercargo);
 
   const updatePageconfig = (pagenr) => {
     setPaginationconfig(
@@ -97,31 +101,71 @@ export default function Combinedtradelist(props) {
   }
 
   const changeSystem = (selection) => { 
-    setSystemid(selection.value); 
+    const selectedsystemid = selection.value;
+    const name = Store.codetables.findSystem(selectedsystemid).name;
+    setStartsystemid(selectedsystemid); 
+    setStartsystemname(name);
+    dispatch({
+      type: "setStartsystem",
+      startsystemid: selectedsystemid,
+      startsystemname: name
+    });
   };
 
   const changeStartsystem = (selection) => { 
-    setFilterstartsystem(selection); 
+    setFilterstartsystemid(selection.value); 
+    dispatch({
+      type: "setFilterstartsystemid",
+      filterstartsystemid: selection.value
+    });
   };
 
   const resetStartsystem = () => {
-    setFilterstartsystem(null); 
+    setFilterstartsystemid(null); 
+    dispatch({
+      type: "setFilterstartsystemid",
+      filterstartsystemid: null
+    });
   }
 
   const changeEndsystem = (selection) => { 
-    setFilterendsystem(selection); 
+    setFilterendsystemid(selection.value); 
+    dispatch({
+      type: "setFilterendsystemid",
+      filterendsystemid: selection.value
+    });
   };
 
   const resetEndsystem = () => {
-    setFilterendsystem(null); 
+    setFilterendsystemid(null); 
+    dispatch({
+      type: "setFilterendsystemid",
+      filterendsystemid: null
+    });
+  }
+
+  const changeCargo = (cargoevent) => {
+    setFiltercargo(Number(cargoevent.target.value)); 
+    dispatch({
+      type: "setFiltercargo",
+      filtercargo: Number(cargoevent.target.value)
+    });
   }
 
   const resetCargo = () => {
     setFiltercargo(0); 
+    dispatch({
+      type: "setFiltercargo",
+      filtercargo: 0
+    });
   }
 
   const exitCargo = (selection) => { 
-    setFiltercargo(selection.target.value); 
+    setFiltercargo(Number(selection.target.value)); 
+    dispatch({
+      type: "setFiltercargo",
+      filtercargo: Number(selection.target.value)
+    });
   };
 
   //update loggedin at login event
@@ -134,20 +178,19 @@ export default function Combinedtradelist(props) {
     setSystems(getsystemoptions());
   }, [Store.codetables.systemlist]);
 
-  //update trade list when systemid is updated
+  //update trade list when startsystemid is updated
   useEffect(() => {
-    if(systemid !== null) {
-      setSystemname(Store.codetables.findSystem(systemid).name)
+    if(startsystemid !== null) {
       loadlist();
     }
-  }, [systemid]);
+  }, [startsystemid]);
 
   //filter list
   useEffect(() => {
       let result = filtertradelist(unfilteredtradelist);
       sorttradelist(result);
       setTradelist(result);
-  }, [unfilteredtradelist, filterstartsystem, filterendsystem, filtercargo]);
+  }, [unfilteredtradelist, filterstartsystemid, filterendsystemid, filtercargo]);
 
   //update page properties after updating the tradelist
   useEffect(() => {
@@ -168,10 +211,10 @@ export default function Combinedtradelist(props) {
   //construct trade list data
   const loadlist = async () => {
     try {
-        if(systemid!=null) {
+        if(startsystemid!=null) {
           setLoading(true);
           let systempk = new Systempk();
-          systempk.id = systemid;
+          systempk.id = startsystemid;
           const result = await Rsviewcombinedtrade.getall_startsystem(Store.user, systempk);
           setUnfilteredtradelist(result);
           setLoading(false);
@@ -184,9 +227,9 @@ export default function Combinedtradelist(props) {
 
   const filtertradelist = (list) => {
     let result = list.filter(obj => {
-      let systemstartok = filterstartsystem===null || obj.sell_systemid===filterstartsystem.value;
-      let systemendok = filterendsystem===null || obj.buy_systemid===filterendsystem.value;
-      let cargook = filtercargo===0 || obj.total_volume<=filtercargo;
+      const systemstartok = filterstartsystemid==null || obj.sell_systemid===filterstartsystemid;
+      const systemendok = filterendsystemid==null || obj.buy_systemid===filterendsystemid;
+      const cargook = filtercargo===0 || obj.total_volume<=filtercargo;
       return systemstartok && systemendok && cargook;
     });
     return result;
@@ -241,6 +284,10 @@ export default function Combinedtradelist(props) {
 
   const onSortfieldselected = (sortfield) => {
     setSortfield(sortfield);
+    dispatch({
+      type: "setCombinedtradelist_Filtersortfield",
+      combinedtradelist_filtersortfield: sortfield
+    });
   }
 
   const colstart_system_jumps = {width: '1rem'};
@@ -261,28 +308,28 @@ export default function Combinedtradelist(props) {
           <div className="mx-auto bg-light p-1">
               <div className="row m-0">
                 <div className="col col-sm-1">
-                  <Select options={systems} onChange={changeSystem}/>
+                  <Select options={systems} value={systems.find(option => option.value === startsystemid)} onChange={changeSystem}/>
                 </div>
                 <div className="col col-sm-1">
                   <button type="button" className="btn btn-sm btn-primary m-1" onClick={loadlist}>refresh</button>
                 </div>
                 <div className="col col-sm-3">
-                  <Sortmode title="sort" modes={sortmodes} sortmode_default={sortmode_default} onModeselected={onSortfieldselected} />
+                  <Sortmode title="sort" modes={sortmodes} sortmode={sortfield} onModeselected={onSortfieldselected} />
                 </div>
                 <div className="col col-sm-4 d-flex">
                   <span className="mx-2">start</span>
                   <div style={{width:'200px'}}>
-                    <Select options={systems} value={filterstartsystem} onChange={changeStartsystem}/>
+                    <Select options={systems} value={systems.find(option => option.value === filterstartsystemid)} onChange={changeStartsystem}/>
                   </div>
                   <button type="button" className="btn btn-sm btn-secondary" onClick={resetStartsystem}>X</button>
                   <span className="mx-2">end</span>
                   <div style={{width:'200px'}}>
-                    <Select options={systems} value={filterendsystem} onChange={changeEndsystem}/>
+                    <Select options={systems} value={systems.find(option => option.value === filterendsystemid)} onChange={changeEndsystem}/>
                   </div>
                   <button type="button" className="btn btn-sm btn-secondary" onClick={resetEndsystem}>X</button>
                   <span className="mx-2">cargo</span>
                   <div style={{width:'200px'}}>
-                    <Form.Control type="number" id="maxcargo" name="maxcargo" defaultValue={filtercargo} onBlur={exitCargo} />
+                    <Form.Control type="number" id="maxcargo" name="maxcargo" value={filtercargo} onChange={changeCargo} onBlur={exitCargo} />
                   </div>
                   <button type="button" className="btn btn-sm btn-secondary" onClick={resetCargo}>X</button>
                 </div>
@@ -320,7 +367,7 @@ export default function Combinedtradelist(props) {
                 </thead>
                 <tbody className="overflow text-body">
 
-    {list.map((trade, index) => (
+    {tradelist.map((trade, index) => (
                   <tr className={trade.sell_systemid===viewcombinedtrade.sell_systemid && trade.buy_systemid===viewcombinedtrade.buy_systemid ? "table-active" : "table-info"} key={index} onClick={() => setViewcombinedtrade(trade)}>
                     <td style={colstart_system_jumps}>{trade.start_system_jumps}</td>
                     <td style={colordercount}><span className='float-right'>{trade.ordercount}</span></td>
@@ -354,8 +401,8 @@ export default function Combinedtradelist(props) {
 
       <Combinedtradeorders 
         trade={viewcombinedtrade}
-        startsystemid={systemid}
-        startsystemname={systemname}
+        startsystemid={startsystemid}
+        startsystemname={startsystemname}
         show={showtradeline} 
         onUpdatetrade={onUpdatetrade}
         onCancel={onTradelineCancel} 

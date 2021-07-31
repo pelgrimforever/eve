@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import Spinner from 'react-bootstrap/Spinner'
 import ProgressBar from 'react-bootstrap/ProgressBar'
 
@@ -10,113 +10,94 @@ import './home.scss';
 import Rsdownloadswagger from '../services/eve/rest/custom/rsdownloadswagger.js';
 //data models
 
-class Home extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      loggedin: Store.user.loggedin,
-      loading: false,
-      totalpages: 0,
-      totaldone: 0,
-      regions: [],
-      messages: [],
-      marketdone: true,
-      timerID: null
-    };
+export default function Home() {
+
+  const [loggedin, setLoggedin] = useState(Store.user.loggedin);
+  const [loading, setLoading] = useState(false);
+  const [totalpages, setTotalpages] = useState(0);
+  const [totaldone, setTotaldone] = useState(0);
+  const [regions, setRegions] = useState([]);
+  const [messages, setMessages] = useState([]);
+  const [marketdone, setMarketdone] = useState(true);
+  const [timeractive, setTimeractive] = useState(true);
+
+  const userchanged = () => {
+    setLoggedin(Store.user.loggedin);
   }
 
-  userchanged = () => {
-    this.setState( { loggedin : Store.user.loggedin } );
-  }
-
-  componentDidMount() {
-    Store.user.notifyme("home", this.userchanged);
-    this.autoupdate();
-  }
-
-  autoupdate = async () => {
-    if(this.state.timerID==null) {
-        this.timerID = setInterval(
-          () => {
-            const dummy = this.askUpdate();
-          }, 1000
-        );
-        this.setState( {
-            timerID: this.timerID,
-        } )
+  useEffect(() => {
+    if(timeractive) {
+      const timer = setTimeout(() => {
+        const dummy = askUpdate();
+      }, 1000);
+      return () => clearTimeout(timer);
     }
-  }
+  });
 
-  askStart = async () => {
+  const askStart = async () => {
     try {
         const result = await Rsdownloadswagger.startDownload(Store.user);
-        this.setState( { 
-            regions: result.regions,
-            marketdone: result.done
-        });
-        this.autoupdate();
+        setRegions(result.regions);
+        setMarketdone(result.done);
+        setTimeractive(true);
     } catch (e) {
       console.log("askStart failed");
     }
   }
 
-  askUpdate = async () => {
+  const askUpdate = async () => {
     try {
         const result = await Rsdownloadswagger.getUpdate();
-        let totalpages = 0;
-        let totaldone = 0;
-        this.state.regions.map(region => {
-            totalpages += region.totalpages;
-            totaldone += region.page;
+        let l_totalpages = 0;
+        let l_totaldone = 0;
+        regions.map(region => {
+            l_totalpages += region.totalpages;
+            l_totaldone += region.page;
         });
-        this.setState( { 
-            regions: result.regions,
-            totalpages: totalpages,
-            totaldone: totaldone,
-            messages: result.messages,
-            marketdone: result.done
-        });
+        setRegions(result.regions);
+        setTotalpages(l_totalpages);
+        setTotaldone(l_totaldone);
+        setMessages(result.messages);
+        setMarketdone(result.done);
         if(result.done) {
-            clearInterval(this.state.timerID);
-            this.setState({
-                timerID: null
-            });
+          setTimeractive(false);
         }
     } catch (e) {
       console.log("askUpdate failed");
     }
   }
 
-  askStop = async () => {
+  const askStop = async () => {
     try {
         const result = await Rsdownloadswagger.stopDownload(Store.user);
-        this.autoupdate();
+        setTimeractive(true);
     } catch (e) {
       console.log("askStart failed");
     }
   }
 
-  calc_percdone = () => {
-    if(this.state.totalpages===0) {
-        return 100;
+  const calc_percdone = () => {
+    if(totalpages===0) {
+      return 100;
     } else {
-        return this.state.totaldone * 100 / this.state.totalpages
+      return totaldone * 100 / totalpages
     }
   }
 
-  render() {
-    const colname = {width: '6rem' };
-    const colgraph = {width: '20rem'};
-    const coldone = {width: '3rem'};
+  Store.user.notifyme("home", userchanged);
 
-    return (
+  const colname = {width: '6rem' };
+  const colgraph = {width: '20rem'};
+  const coldone = {width: '3rem'};
+
+  return (
 <div className="row h-100">
   <div className="col-4 regiontable">
     <div className="root fullheight">
       <div className="containercontent container-relative">
         <div className="table-container container-fluid p-0">
 
-{ this.state.loading && 
+{ loading && 
           <div className="d-flex justify-content-center">
             <Spinner animation="border" role="status" />
           </div>
@@ -133,7 +114,7 @@ class Home extends React.Component {
             </thead>
             <tbody className="overflow text-body">
 
-{this.state.regions.map(region => (
+{regions.map(region => (
               <tr className="table-info" key={region.region}>
                 <td style={colname}>{region.name}</td>
                 <td style={colgraph}>
@@ -161,31 +142,31 @@ class Home extends React.Component {
           <div className="mx-auto bg-light p-1">
               <div className="row m-0">
                   <div className="custom-control custom-checkbox cell-center">
-                    Complete <input type="checkbox" checked={this.state.marketdone} className="form-check-input" disabled/>
+                    Complete <input type="checkbox" checked={marketdone} className="form-check-input" disabled/>
                   </div>
               </div>
               <div className="row m-0">
-                <ProgressBar variant="success" now={this.calc_percdone()} />
+                <ProgressBar variant="success" now={calc_percdone()} />
               </div>
           </div>
         </div>
         <div className="containerheader d-flex justify-content-center">
           <div className="mx-auto bg-light p-1">
-{ this.state.loggedin && 
+{ loggedin && 
   <>
               <div className="row m-0">
                 <div className="col col-sm-4 input-group-prepend">
-                    <button type="button" className="btn btn-sm btn-primary m-1" data-toggle="modal" onClick={() => this.askStart()}>Start download</button>
+                    <button type="button" className="btn btn-sm btn-primary m-1" data-toggle="modal" onClick={() => askStart()}>Start download</button>
                 </div>
                 <div className="col col-sm-4 input-group-prepend">
-{ !this.state.marketdone && 
+{ !marketdone && 
                   <div className="d-flex justify-content-center h-100 container-relative">
                     <Spinner className="spinner-local" animation="border" role="status" />
                   </div>
 }
                 </div>
                 <div className="col col-sm-4 input-group-prepend">
-                    <button type="button" className="btn btn-sm btn-warning m-1" data-toggle="modal" onClick={() => this.askStop()}>Stop download</button>
+                    <button type="button" className="btn btn-sm btn-warning m-1" data-toggle="modal" onClick={() => askStop()}>Stop download</button>
                 </div>
               </div>
   </>
@@ -207,7 +188,7 @@ class Home extends React.Component {
                 </thead>
                 <tbody className="overflow text-body">
 
-    {this.state.messages.map((message, index) => (
+    {messages.map((message, index) => (
                   <tr className="table-info" key={index}>
                     <td>{message}</td>
                   </tr>  
@@ -224,8 +205,5 @@ class Home extends React.Component {
   </div>
 </div>
 
-    );
-  }
+  );
 }
-
-export default Home;
