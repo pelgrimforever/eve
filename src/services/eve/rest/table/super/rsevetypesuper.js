@@ -3,7 +3,7 @@
 //redefine classes in evetype.service.ts
 /* 
     Created on : Nov 20, 2018, 10:39:01 AM
-    Generated on 18.6.2021 14:35
+    Generated on 18.8.2021 11:31
     Author     : Franky Laseure
 */
 
@@ -17,6 +17,8 @@ import { Typegrouppk } from '../../../../../data/eve/table/super/typegroupsuper.
 import TypegroupJson from '../conversion/typegroupjson.js';
 import { Graphicpk } from '../../../../../data/eve/table/super/graphicsuper.js';
 import GraphicJson from '../conversion/graphicjson.js';
+import { Stockpk } from '../../../../../data/eve/table/super/stocksuper.js';
+import StockJson from '../conversion/stockjson.js';
 import { Orderhistorypk } from '../../../../../data/eve/table/super/orderhistorysuper.js';
 import OrderhistoryJson from '../conversion/orderhistoryjson.js';
 
@@ -31,7 +33,8 @@ class Rsevetypesuper extends Eveservice {
 	static SELECT_Marketgroup = 100 + 0;
 	static SELECT_Typegroup = 100 + 1;
 	static SELECT_Graphic = 100 + 2;
-	static SELECT_Orderhistory = 100 + 3;
+	static SELECT_Stock = 100 + 3;
+	static SELECT_Orderhistory = 100 + 4;
 
 	//UPDATE OPERATIONS
 	static UPDATE_EVETYPE = 10;
@@ -40,9 +43,9 @@ class Rsevetypesuper extends Eveservice {
 	static INSERT_EVETYPE = 20;
 
 	//DELETE OPERATIONS
-	static DELETE_Marketgroup = 100 + 4;
-	static DELETE_Typegroup = 100 + 5;
-	static DELETE_Graphic = 100 + 6;
+	static DELETE_Marketgroup = 100 + 5;
+	static DELETE_Typegroup = 100 + 6;
+	static DELETE_Graphic = 100 + 7;
 	static DELETE_EVETYPE = 30;
 
 	static extractDataArray = (jsonarray): Evetype[] => {
@@ -99,6 +102,14 @@ class Rsevetypesuper extends Eveservice {
     const postdata = {
       operation: { type: super.OPERATIONTYPE_SELECT, operation: this.SELECT_Graphic },
      	"graphicpk": GraphicJson.PKtoJSON(graphicpk)
+    }
+    return this.extractDataArray(await super.post(this.restservice, postdata));
+	}
+
+	static loadEvetype4stock = async (stockpk: Stockpk): Evetype[] => {
+    const postdata = {
+      operation: { type: super.OPERATIONTYPE_SELECT, operation: this.SELECT_Stock },
+     	"stockpk": StockJson.PKtoJSON(stockpk)
     }
     return this.extractDataArray(await super.post(this.restservice, postdata));
 	}
@@ -201,6 +212,15 @@ class Rsevetypesuper extends Eveservice {
     	auth: user===null ? null : user.auth,
       operation: { type: super.OPERATIONTYPE_SECURESELECT, operation: this.SELECT_Graphic },
      	"graphicpk": GraphicJson.PKtoJSON(graphicpk)
+    }
+    return this.extractDataArray(await super.post(this.restservice, postdata));
+	}
+
+	static sec_loadEvetype4stock = async (user, stockpk: Stockpk): Evetype[] => {
+    const postdata = {
+    	auth: user===null ? null : user.auth,
+      operation: { type: super.OPERATIONTYPE_SECURESELECT, operation: this.SELECT_Stock },
+     	"stockpk": StockJson.PKtoJSON(stockpk)
     }
     return this.extractDataArray(await super.post(this.restservice, postdata));
 	}

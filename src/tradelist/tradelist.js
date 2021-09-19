@@ -8,38 +8,25 @@ import Select from 'react-select';
 import Store from '../services/store.js';
 import './tradelist.scss';
 
-//context
-import { AppContext } from "../App.js";
 //components
 import Sortmode from '../utilities/sortmode.js';
 import Tradeline from '../popups/tradeline.js';
 import Combinedtradeorders from '../popups/combinedtradeorders.js';
 import Pagecomponent from '../utilities/pagecomponent.js';
-//services
-import Rstrade from '../services/eve/rest/table/rstrade.js';
-import Rsviewtrade from '../services/eve/rest/view/rsviewtrade.js';
-import Rsviewcombinedtrade from '../services/eve/rest/view/rsviewcombinedtrade.js';
 //data models
 import { Systempk } from '../data/eve/table/super/systemsuper.js';
 import { Orderspk } from '../data/eve/table/super/orderssuper.js';
 import { Tradepk } from '../data/eve/table/super/tradesuper.js';
-import { Viewtrade } from '../data/eve/view/viewtrade.js';
 import { Viewcombinedtrade } from '../data/eve/view/viewcombinedtrade.js';
-
-const sort_jumps = 'jumps';
-const sort_m3 = 'volume';
-const sort_profit = 'profit';
-const sort_profitperjump = 'profitperjump';
-const sortmodes = [ 
-    { name:sort_jumps, text: 'jumps' }, 
-    { name:sort_m3, text: 'cargo vol.' }, 
-    { name:sort_profit, text: 'profit' }, 
-    { name:sort_profitperjump, text: 'profit/jump' }, 
-  ];
-const sortmode_default = 3;
+//component state
+import appstore from '../appstore.js';
+import storeTradelist, { sortmodes } from './store.js';
 
 export default function Tradelist(props) {
-  const { appstate, dispatch } = React.useContext(AppContext);
+  //variables with App scope
+  const [appState, appActions] = appstore();
+  //variables with component scope
+  const [compState, compActions] = storeTradelist();
 
   const getsystemoptions = () => {
     let systemlist = [];
@@ -52,20 +39,11 @@ export default function Tradelist(props) {
   const [loading, setLoading] = useState(false);
   const [list, setList] = useState([]);
   const [systems, setSystems] = useState(getsystemoptions());
-  const [startsystemid, setStartsystemid] = useState(appstate.startsystemid);
-  const [startsystemname, setStartsystemname] = useState(appstate.systemname);
-  const [unfilteredtradelist, setUnfilteredtradelist] = useState([]);
   const [tradelist, setTradelist] = useState([]);
-  const [viewtrade, setViewtrade] = useState(appstate.tradelist_activeviewtrade);
   const [showtradeline, setShowtradeline] = useState(false);
-  const [viewcombinedtrade, setViewcombinedtrade] = useState(new Viewcombinedtrade());
   const [showcombinedtradeline, setShowcombinedtradeline] = useState(false);
-  const [pagelength, setPagelength] = useState(appstate.tradelist_pagination.showMax);
-  const [paginationconfig, setPaginationconfig] = useState(appstate.tradelist_pagination);
-  const [sortfield, setSortfield] = useState(appstate.filtersortfield);
-  const [filterstartsystemid, setFilterstartsystemid] = useState(appstate.filterstartsystemid);
-  const [filterendsystemid, setFilterendsystemid] = useState(appstate.filterendsystemid);
-  const [filtercargo, setFiltercargo] = useState(appstate.filtercargo);
+  //need useEffect on pageLength
+  const [pagelength, setPagelength] = useState(compState.paginationconfig.pageLength);
 
   const updatePageconfig = (pagenr) => {
     let newpagenr = pagenr;
@@ -73,29 +51,19 @@ export default function Tradelist(props) {
       //pagenr can not be allowed greather then max pages
       newpagenr = Math.min(pagenr, Math.ceil(tradelist.length / pagelength));
     }
-    setPaginationconfig(
+    compActions.setPaginationconfig(
       {
-        ...paginationconfig,
-        pageLength: pagelength,
+        ...compState.paginationconfig,
         totalPages: Math.ceil(tradelist.length / pagelength),
         currentPage: newpagenr,
       }
     );    
-    dispatch({
-      type: "setTradelist_pagination",
-      tradelist_pagination: {
-        ...paginationconfig,
-        pageLength: pagelength,
-        totalPages: Math.ceil(tradelist.length / pagelength),
-        currentPage: pagenr,
-      }
-    });
   }
 
   const showpage_ = (pagenr, override) => {
-    if(pagenr!==paginationconfig.currentPage && pagenr>0 && pagenr<=Math.ceil(tradelist.length / pagelength) || override) {
+    if(pagenr!==compState.paginationconfig.currentPage && pagenr>0 && pagenr<=Math.ceil(tradelist.length / pagelength) || override) {
       updatePageconfig(pagenr);
-      setList(tradelist.slice((pagenr-1) * pagelength + 1, pagenr * pagelength + 1));
+      setList(tradelist.slice((pagenr-1) * pagelength, pagenr * pagelength));
     }
   }
 
@@ -106,69 +74,35 @@ export default function Tradelist(props) {
   const changeSystem = (selection) => { 
     const selectedsystemid = selection.value;
     const name = Store.codetables.findSystem(selectedsystemid).name;
-    setStartsystemid(selectedsystemid); 
-    setStartsystemname(name);
-    dispatch({
-      type: "setStartsystem",
-      startsystemid: selectedsystemid,
-      startsystemname: name
-    });
+    compActions.setSystem(selectedsystemid, name);
   };
 
   const changeStartsystem = (selection) => { 
-    setFilterstartsystemid(selection.value); 
-    dispatch({
-      type: "setFilterstartsystemid",
-      filterstartsystemid: selection.value
-    });
+    compActions.setFilterstartsystemid(selection.value); 
   };
 
   const resetStartsystem = () => {
-    setFilterstartsystemid(null); 
-    dispatch({
-      type: "setFilterstartsystemid",
-      filterstartsystemid: null
-    });
+    compActions.setFilterstartsystemid(null); 
   }
 
   const changeEndsystem = (selection) => { 
-    setFilterendsystemid(selection.value); 
-    dispatch({
-      type: "setFilterendsystemid",
-      filterendsystemid: selection.value
-    });
+    compActions.setFilterendsystemid(selection.value); 
   };
 
   const resetEndsystem = () => {
-    setFilterendsystemid(null); 
-    dispatch({
-      type: "setFilterendsystemid",
-      filterendsystemid: null
-    });
+    compActions.setFilterendsystemid(null); 
   }
 
   const changeCargo = (cargoevent) => {
-    setFiltercargo(Number(cargoevent.target.value)); 
-    dispatch({
-      type: "setFiltercargo",
-      filtercargo: Number(cargoevent.target.value)
-    });
+    compActions.setFiltercargo(Number(cargoevent.target.value)); 
   }
 
   const resetCargo = () => {
-    setFiltercargo(0); 
-    dispatch({
-      type: "setFiltercargo",
-      filtercargo: 0
-    });
+    compActions.setFiltercargo(0); 
   }
 
   const exitCargo = (selection) => { 
-    setFiltercargo(Number(selection.target.value)); 
-    dispatch({
-      type: "setFiltercargo",
-      filtercargo: Number(selection.target.value)
-    });
+    compActions.setFiltercargo(Number(selection.target.value)); 
   };
 
   //update system select data if systemlist is updated
@@ -178,77 +112,40 @@ export default function Tradelist(props) {
 
   //update trade list when startsystemid is updated
   useEffect(() => {
-    if(startsystemid !== null) {
+    if(compState.startsystemid !== null) {
       loadlist();
     }
-  }, [startsystemid]);
+  }, [compState.startsystemid]);
 
   //filter list
   useEffect(() => {
-      let result = filtertradelist(unfilteredtradelist);
-      sorttradelist(result);
+      let result = compActions.filtertradelist(compState.unfilteredtradelist);
+      compActions.sorttradelist(result);
       setTradelist(result);
-  }, [unfilteredtradelist, filterstartsystemid, filterendsystemid, filtercargo]);
+  }, [compState.unfilteredtradelist, compState.filterstartsystemid, compState.filterendsystemid, compState.filtercargo]);
 
   //update page properties after updating the tradelist
   useEffect(() => {
-    showpage_(paginationconfig.currentPage, true);
+    showpage_(compState.paginationconfig.currentPage, true);
   }, [tradelist]);
 
   //update page properties and list content after updating pagelength
   useEffect(() => {
-    showpage_(paginationconfig.currentPage, true);
+    showpage_(compState.paginationconfig.currentPage, true);
   }, [pagelength]);
 
   //update page properties and list content after updating pagelength
   useEffect(() => {
-    sorttradelist(tradelist);
-    showpage_(paginationconfig.currentPage, true);
-  }, [sortfield]);
+    compActions.sorttradelist(tradelist);
+    showpage_(compState.paginationconfig.currentPage, true);
+  }, [compState.filtersortfield]);
 
   //construct trade list data
   const loadlist = async () => {
-    try {
-        if(startsystemid!=null) {
-          setLoading(true);
-          let systempk = new Systempk();
-          systempk.id = startsystemid;
-          const result = await Rsviewtrade.getall_startsystem(Store.user, systempk);
-          setUnfilteredtradelist(result);
-          setLoading(false);
-        }
-    } catch (e) {
-      console.log("loadlist failed");
-      setLoading(false);
-    }
+    setLoading(true);
+    const dummy = await compActions.loadTradelist();
+    setLoading(false);
   };
-
-  const filtertradelist = (list) => {
-    let result = list.filter(obj => {
-      const systemstartok = filterstartsystemid==null || obj.sell_systemid===filterstartsystemid;
-      const systemendok = filterendsystemid==null || obj.buy_systemid===filterendsystemid;
-      const cargook = filtercargo===0 || obj.total_volume * obj.packaged_volume<=filtercargo;
-      return systemstartok && systemendok && cargook;
-    });
-    return result;
-  }
-
-  const sorttradelist = (listref) => {
-    switch(sortfield.name) {
-      case sort_jumps:
-        listref.sort((a, b) => (a.start_system_jumps<b.start_system_jumps) ? -1 : 1);
-        break;
-      case sort_m3:
-        listref.sort((a, b) => (a.total_volume * a.packaged_volume<b.total_volume * b.packaged_volume) ? 1 : -1);
-        break;
-      case sort_profit:
-        listref.sort((a, b) => (a.trade_profit<b.trade_profit) ? 1 : -1);
-        break;
-      case sort_profitperjump:
-        listref.sort((a, b) => (a.trade_profit_per_jump<b.trade_profit_per_jump) ? 1 : -1);
-        break;
-    }
-  }
 
   const format_price = (p) => {
     const rounded = Math.round(p);
@@ -265,22 +162,21 @@ export default function Tradelist(props) {
 
   const changePagelength = (newpagelength) => {
     setPagelength(newpagelength);
+    compActions.setPaginationconfig(
+      {
+        ...compState.paginationconfig,
+        pageLength: newpagelength
+      }
+    );    
   }
 
   const showTradeline = (trade) => {
-    setViewtrade(trade);
+    appActions.setActivetrade(trade);
     setShowtradeline(true);
   }
 
   const showCombinedtrade = async (trade) => {
-    let systempk = new Systempk();
-    systempk.id = startsystemid;
-    let startsystempk = new Systempk();
-    startsystempk.id = trade.sell_systemid;
-    let endsystempk = new Systempk();
-    endsystempk.id = trade.buy_systemid;
-    const result = await Rsviewcombinedtrade.get4_startendsystem(Store.user, systempk, startsystempk, endsystempk);
-    setViewcombinedtrade(result);
+    const dummy = await compActions.loadCombinedtrade(trade);
     setShowcombinedtradeline(true);
   }
 
@@ -293,31 +189,17 @@ export default function Tradelist(props) {
   }
 
   const onTradeclick = (viewtradeline) => {
-    setViewtrade(viewtradeline);
-    dispatch({
-      type: "setTradelist_activeviewtrade",
-      tradelist_activeviewtrade: viewtradeline
-    });
-    Store.tradetrackingdata.setOrders(viewtradeline, viewtradeline.sell_id, viewtradeline.buy_id);
+    appActions.setActivetrade(viewtradeline, viewtradeline.sell_id, viewtradeline.buy_id);
   }
 
   const onUpdatetrade = async (volume) => {
-    let tradepk = new Tradepk();
-    tradepk.ordersSellorderidPK = new Orderspk();
-    tradepk.ordersSellorderidPK.id = viewtrade.sell_id;
-    tradepk.ordersBuyorderidPK = new Orderspk();
-    tradepk.ordersBuyorderidPK.id = viewtrade.buy_id;
-    const traderesult = await Rstrade.executetrade(tradepk, volume);
+    const dummy = await compActions.updateTrade(appState.viewtrade.sell_id, appState.viewtrade.buy_id, volume);
     setShowtradeline(false);
-    const dummy = await loadlist();
+    const dummy2 = await loadlist();
   }
 
   const onSortfieldselected = (sortfield) => {
-    setSortfield(sortfield);
-    dispatch({
-      type: "setFiltersortfield",
-      filtersortfield: sortfield
-    });
+    compActions.setFiltersortfield(sortfield);
   }
 
   const colstart_system_jumps = {width: '1rem'};
@@ -349,28 +231,28 @@ export default function Tradelist(props) {
           <div className="mx-auto bg-light p-1">
               <div className="row m-0">
                 <div className="col col-sm-1">
-                  <Select options={systems} value={systems.find(option => option.value === startsystemid)} onChange={changeSystem}/>
+                  <Select options={systems} value={systems.find(option => option.value === compState.startsystemid)} onChange={changeSystem}/>
                 </div>
                 <div className="col col-sm-1">
                   <button type="button" className="btn btn-sm btn-primary m-1" onClick={loadlist}>refresh</button>
                 </div>
                 <div className="col col-sm-3">
-                  <Sortmode title="sort" modes={sortmodes} sortmode={sortfield} onModeselected={onSortfieldselected} />
+                  <Sortmode title="sort" modes={sortmodes} sortmode={compState.filtersortfield} onModeselected={onSortfieldselected} />
                 </div>
                 <div className="col col-sm-4 d-flex">
                   <span className="mx-2">start</span>
                   <div style={{width:'200px'}}>
-                    <Select options={systems} value={systems.find(option => option.value === filterstartsystemid)} onChange={changeStartsystem}/>
+                    <Select options={systems} value={systems.find(option => option.value === compState.filterstartsystemid)} onChange={changeStartsystem}/>
                   </div>
                   <button type="button" className="btn btn-sm btn-secondary" onClick={resetStartsystem}>X</button>
                   <span className="mx-2">end</span>
                   <div style={{width:'200px'}}>
-                    <Select options={systems} value={systems.find(option => option.value === filterendsystemid)} onChange={changeEndsystem}/>
+                    <Select options={systems} value={systems.find(option => option.value === compState.filterendsystemid)} onChange={changeEndsystem}/>
                   </div>
                   <button type="button" className="btn btn-sm btn-secondary" onClick={resetEndsystem}>X</button>
                   <span className="mx-2">cargo</span>
                   <div style={{width:'200px'}}>
-                    <FormControl type="number" id="maxcargo" name="maxcargo" value={filtercargo} onChange={changeCargo} onBlur={exitCargo} />
+                    <FormControl type="number" id="maxcargo" name="maxcargo" value={compState.filtercargo} onChange={changeCargo} onBlur={exitCargo} />
                   </div>
                   <button type="button" className="btn btn-sm btn-secondary" onClick={resetCargo}>X</button>
                 </div>
@@ -420,7 +302,7 @@ export default function Tradelist(props) {
                 <tbody className="overflow text-body">
 
     {list.map((trade, index) => (
-                  <tr className={trade.sell_id===viewtrade.sell_id && trade.buy_id===viewtrade.buy_id ? "table-active" : "table-info"} key={index} onClick={() => { onTradeclick(trade); } }>
+                  <tr className={trade.sell_id===appState.viewtrade.sell_id && trade.buy_id===appState.viewtrade.buy_id ? "table-active" : "table-info"} key={index} onClick={() => { onTradeclick(trade); } }>
                     <td style={colstart_system_jumps}>{trade.start_system_jumps}</td>
                     <td style={colsell_regionname}>{trade.sell_regionname}</td>
                     <td style={colsell_systemname}>{trade.sell_systemname}</td>
@@ -459,25 +341,25 @@ export default function Tradelist(props) {
 
       <div className="containerfooter mx-auto bg-light p-1">
         <Pagecomponent 
-          config={paginationconfig} 
+          config={compState.paginationconfig} 
           showpage={showpage}
           changePagelength={changePagelength}
           />
       </div>
 
       <Tradeline 
-        trade={viewtrade}
-        startsystemid={startsystemid}
-        startsystemname={startsystemname}
+        trade={appState.viewtrade}
+        startsystemid={compState.startsystemid}
+        startsystemname={compState.startsystemname}
         show={showtradeline} 
         onUpdatetrade={onUpdatetrade}
         onCancel={onTradelineCancel} 
         />
 
       <Combinedtradeorders 
-        trade={viewcombinedtrade}
-        startsystemid={startsystemid}
-        startsystemname={startsystemname}
+        trade={compState.viewcombinedtrade}
+        startsystemid={compState.startsystemid}
+        startsystemname={compState.startsystemname}
         show={showcombinedtradeline} 
         onUpdatetrade={onUpdatetrade}
         onCancel={onCombinedtradelineCancel} 

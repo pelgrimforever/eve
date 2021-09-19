@@ -1,4 +1,4 @@
-https://javascript.plainenglish.io/state-management-with-react-hooks-no-redux-or-context-api-8b3035ceecf8
+//https://javascript.plainenglish.io/state-management-with-react-hooks-no-redux-or-context-api-8b3035ceecf8
 
 function setState(newState) {
   this.state = { ...this.state, ...newState };
@@ -31,11 +31,11 @@ function associateActions(store, actions) {
   return associatedActions;
 }
 
-const useGlobalHook = (React, initialState, actions) => {
+const globalHook = (React, initialState, actions) => {
   const store = { state: initialState, listeners: [] };
   store.setState = setState.bind(store);
   store.actions = associateActions(store, actions);
   return useCustom.bind(store, React);
 };
 
-export default useGlobalHook;
+export default globalHook;

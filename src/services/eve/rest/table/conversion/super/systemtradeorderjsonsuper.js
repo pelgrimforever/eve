@@ -3,7 +3,7 @@
 //change in systemtradeorder-json.js
 /* 
     Created on : Nov 19, 2018, 12:42:01 PM
-    Generated on 18.6.2021 14:35
+    Generated on 18.8.2021 11:31
     Author     : Franky Laseure
 */
 
@@ -23,8 +23,8 @@ class SystemtradeorderJsonsuper {
 
 			"sell_order": systemtradeorderPK.ordersSellorderPK==null ? null : "" + systemtradeorderPK.ordersSellorderPK.getId(),
 
-			"sell_system": systemtradeorderPK.systemtradePK==null ? null : "" + systemtradeorderPK.systemtradePK.getSell_system(),
 			"buy_system": systemtradeorderPK.systemtradePK==null ? null : "" + systemtradeorderPK.systemtradePK.getBuy_system(),
+			"sell_system": systemtradeorderPK.systemtradePK==null ? null : "" + systemtradeorderPK.systemtradePK.getSell_system(),
 
 		};
 		if(systemtradeorderPK!=null) {
@@ -62,8 +62,8 @@ class SystemtradeorderJsonsuper {
 			let ordersSellorderPK = OrdersJson.PKfromJSON(ordersSellorderproperties);
 			systemtradeorderPK.ordersSellorderPK = ordersSellorderPK;
 			let systemtradeproperties = {
-				"sell_system": "" + jsonobj.sell_system,
 				"buy_system": "" + jsonobj.buy_system,
+				"sell_system": "" + jsonobj.sell_system,
 			}
 			let systemtradePK = SystemtradeJson.PKfromJSON(systemtradeproperties);
 			systemtradeorderPK.systemtradePK = systemtradePK;

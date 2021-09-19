@@ -3,7 +3,7 @@
 //extend classes in evetype.ts for table class definitions
 /* 
     Created on : Nov 16, 2018, 17:04:01 PM
-    Generated on 18.6.2021 14:35
+    Generated on 18.8.2021 11:31
     Author     : Franky Laseure
 */
 
@@ -86,6 +86,7 @@ export class Evetypesearcher extends Tablesearch {
         this.addKeysearcher(this.marketgroupsearcher);
         this.addKeysearcher(this.typegroupsearcher);
         this.addKeysearcher(this.graphicsearcher);
+        this.addKeysearcher(this.stocksearcher);
         this.addKeysearcher(this.orderhistorysearcher);
         this.addKeysearcher(this.regionsearcher);
 	}
@@ -111,6 +112,7 @@ export class Evetypesearcher extends Tablesearch {
     marketgroupsearcher: Foreignkeysearcher = new Foreignkeysearcher();
     typegroupsearcher: Foreignkeysearcher = new Foreignkeysearcher();
     graphicsearcher: Foreignkeysearcher = new Foreignkeysearcher();
+    stocksearcher: Primarykeysearcher = new Primarykeysearcher();
     orderhistorysearcher: Primarykeysearcher = new Primarykeysearcher();
     regionsearcher: Relationalkeysearcher = new Relationalkeysearcher();
 
@@ -258,6 +260,9 @@ export class Evetypesearcher extends Tablesearch {
     setgraphic = (graphicsearch) => {
         this.graphicsearcher.setTablesearch(graphicsearch);
     }
+    setstock = (stocksearch) => {
+        this.stocksearcher.setTablesearch(stocksearch);
+    }
     setorderhistory = (orderhistorysearch) => {
         this.orderhistorysearcher.setTablesearch(orderhistorysearch);
     }
@@ -288,6 +293,7 @@ export class Evetypesearcher extends Tablesearch {
                 "marketgroupsearcher": null,
                 "typegroupsearcher": null,
                 "graphicsearcher": null,
+                "stocksearcher": null,
                 "orderhistorysearcher": null,
                 "regionsearcher": null,
             }; 
@@ -299,6 +305,9 @@ export class Evetypesearcher extends Tablesearch {
             }
             if(this.graphicsearcher!=null && this.graphicsearcher.used()) {
                 kss.graphicsearcher = this.graphicsearcher.toJSON();
+            }
+            if(this.stocksearcher!=null && this.stocksearcher.used()) {
+                kss.stocksearcher = this.stocksearcher.toJSON();
             }
             if(this.orderhistorysearcher!=null && this.orderhistorysearcher.used()) {
                 kss.orderhistorysearcher = this.orderhistorysearcher.toJSON();

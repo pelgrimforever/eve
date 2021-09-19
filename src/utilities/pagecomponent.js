@@ -57,7 +57,7 @@ function Pagecomponent(props) {
       <Pagination.Next onClick={() => props.showpage(props.config.currentPage+1)} />
       <Pagination.Last onClick={() => props.showpage(props.config.totalPages)} />
       <Form.Label className="input-group-text ml-2">lines</Form.Label>
-      <Form.Control type="number" id="pagelength" name="pagelength" style={{ width:'5rem' }} defaultValue={props.config.pageLength} onChange={(event) => props.changePagelength(event.target.value)} />
+      <Form.Control type="number" id="pagelength" name="pagelength" style={{ width:'5rem' }} value={props.config.pageLength} onChange={(event) => props.changePagelength(event.target.value)} />
     </Pagination>    
   )
 }

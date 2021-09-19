@@ -14,13 +14,22 @@ import Rsloadroute from '../services/eve/rest/custom/rsloadroute.js';
 import Rsviewtrade from '../services/eve/rest/view/rsviewtrade.js';
 import Rsloadorderupdate from '../services/eve/rest/custom/rsloadorderupdate.js';
 import Rsvieworder from '../services/eve/rest/view/rsvieworder.js';
-import Rsevetype from '../services/eve/rest/table/rsevetype.js';
 //data models
 import { Systempk } from '../data/eve/table/super/systemsuper.js';
 import Orders, { Orderspk } from '../data/eve/table/super/orderssuper.js';
 import { Tradepk } from '../data/eve/table/super/tradesuper.js';
+import { Evetypepk } from '../data/eve/table/super/evetypesuper.js';
+//component state
+import appstore from '../appstore.js';
+import storeTradetracking from './store.js';
 
 export default function Tradetracking(props) {
+
+  //variables with App scope
+  const [appState] = appstore();
+  //variables with component scope
+  const [compState, compActions] = storeTradetracking();
+
   const getsystemoptions = () => {
     let systemlist = [];
     Store.codetables.systemlist.map(s => {
@@ -40,14 +49,13 @@ export default function Tradetracking(props) {
   const [loading, setLoading] = useState(false);
   const [systems, setSystems] = useState(getsystemoptions());
   const [allsystems, setAllsystems] = useState(getallsystemoptions());
-  const [secure, setSecure] = useState(true);
-  const [viasystems, setViasystems] = useState([]);
-  const [avoidsystems, setAvoidsystems] = useState([]);
   const [list, setList] = useState([]);
   const [sellvieworder, setSellvieworder] = useState(new Orders());
   const [buyvieworder, setBuyvieworder] = useState(new Orders());
   const [sellremain, setSellremain] = useState('?');
   const [buyremain, setBuyremain] = useState('?');
+  const [sellorders, setSellorders] = useState([]);
+  const [buyorders, setBuyorders] = useState([]);
 
   useEffect(async () => {
     await loadlist();
@@ -56,16 +64,17 @@ export default function Tradetracking(props) {
   //construct trade list data
   const loadlist = async () => {
     try {
-        if(Store.tradetrackingdata.sellorderid!=null) {
-          let result = await Rsvieworder.getone(Store.tradetrackingdata.sellorderid);
+        if(appState.sellorderid!=null) {
+          let result = await Rsvieworder.getone(appState.sellorderid);
           setSellvieworder(result);
         }
-        if(Store.tradetrackingdata.buyorderid!==null) {
-          let result = await Rsvieworder.getone(Store.tradetrackingdata.buyorderid);
+        if(appState.buyorderid!==null) {
+          let result = await Rsvieworder.getone(appState.buyorderid);
           setBuyvieworder(result);
         }
-        let result = await Rsloadroute.getroute(Store.tradetrackingdata.viewtrade.sell_systemid, Store.tradetrackingdata.viewtrade.buy_systemid, viasystems, avoidsystems, secure);
-        setList(result);
+        const resultroute = await Rsloadroute.getroute(appState.viewtrade.sell_systemid, appState.viewtrade.buy_systemid, compState.viasystems, compState.avoidsystems, compState.secure);
+        setList(resultroute);
+        const dummy = await load4evetype();
     } catch (e) {
       console.log("loadlist failed");
       setLoading(false);
@@ -73,23 +82,23 @@ export default function Tradetracking(props) {
   };
 
   const addSystem = (selection) => { 
-    if(viasystems.findIndex(v => v.value === selection.value)===-1) {
-      setViasystems(viasystems.concat(selection));
+    if(compState.viasystems.findIndex(v => v.value === selection.value)===-1) {
+      compActions.setViasystems(compState.viasystems.concat(selection));
     }
   };
 
   const removeSystem = (viasystem) => {
-    setViasystems(viasystems.filter(item => item.value !== viasystem.value));
+    compActions.setViasystems(compState.viasystems.filter(item => item.value !== viasystem.value));
   }
 
   const addAvoidsystem = (selection) => { 
-    if(avoidsystems.findIndex(v => v.value === selection.value)===-1) {
-      setAvoidsystems(avoidsystems.concat(selection));
+    if(compState.avoidsystems.findIndex(v => v.value === selection.value)===-1) {
+      compActions.setAvoidsystems(compState.avoidsystems.concat(selection));
     }
   };
 
   const removeAvoidsystem = (avoidsystem) => {
-    setAvoidsystems(avoidsystems.filter(item => item.value !== avoidsystem.value));
+    compActions.setAvoidsystems(compState.avoidsystems.filter(item => item.value !== avoidsystem.value));
   }
 
   const loadupdate = async (event) => {
@@ -97,9 +106,19 @@ export default function Tradetracking(props) {
       const result = await Rsloadorderupdate.getorderupdate(sellvieworder.id, buyvieworder.id);
       setSellremain(result.sellamount);
       setBuyremain(result.buyamount);
-      const resultroute = await Rsloadroute.getroute(Store.tradetrackingdata.viewtrade.sell_systemid, Store.tradetrackingdata.viewtrade.buy_systemid, viasystems, avoidsystems, secure);
+      const resultroute = await Rsloadroute.getroute(appState.viewtrade.sell_systemid, appState.viewtrade.buy_systemid, compState.viasystems, compState.avoidsystems, compState.secure);
       setList(resultroute);
+      const dummy = await load4evetype();
     }
+  }
+
+  const load4evetype = async () => {
+    const evetypepk = new Evetypepk();
+    evetypepk.id = appState.viewtrade.evetype_id;
+    const result_sellorders = await Rsvieworder.getevetypesell(evetypepk);
+    const result_buyorders = await Rsvieworder.getevetypebuy(evetypepk);
+    setSellorders(result_sellorders);
+    setBuyorders(result_buyorders);
   }
 
   const format_price = (p) => {
@@ -125,13 +144,21 @@ export default function Tradetracking(props) {
     }
   }
 
-  const col_system = {width: '10rem'};
+  const col_systemnr = {width: '2rem'};
+  const col_system = {width: '7rem'};
   const col_systemsec = {width: '3rem'};
   const col_npc_kills = {width: '3rem'};
   const col_pod_kills = {width: '3rem'};
   const col_ship_kills = {width: '3rem'};
   const col_killmails = {width: '3rem'};
   const col_killmailgates = {width: '3rem'};
+  const col_killboard = {width: '5rem'};
+
+  const colorder_regionname = {width: '6rem' };
+  const colorder_systemname = {width: '6rem'};
+  const colorder_volume_remain = {width: '3rem'};
+  const colorder_volume_min = {width: '3rem'};
+  const colorder_price = {width: '5rem'};
 
   return (
     <div className="root fullheight">
@@ -225,7 +252,7 @@ export default function Tradetracking(props) {
                   <label className="input-group-text">total</label>
                 </div>
                 <div className="col col-sm-8 input-group-prepend">
-                  <label className="input-group-text">{format_price(Store.tradetrackingdata.viewtrade.buy_total)}</label>
+                  <label className="input-group-text">{format_price(appState.viewtrade.sell_total)}</label>
                 </div>
               </div>
               <div className="row m-0">
@@ -307,7 +334,7 @@ export default function Tradetracking(props) {
                   <label className="input-group-text">total (m3)</label>
                 </div>
                 <div className="col col-sm-8 input-group-prepend">
-                  <label className="input-group-text">{totalvolume(Store.tradetrackingdata.viewtrade)}</label>
+                  <label className="input-group-text">{totalvolume(appState.viewtrade)}</label>
                 </div>
               </div>
               <div className="row m-0">
@@ -322,14 +349,19 @@ export default function Tradetracking(props) {
                 </div>
               </div>
               <div className="row m-0">
-                  <label className="input-group-text">°</label>
+                <div className="col col-sm-4 input-group-prepend">
+                  <label className="input-group-text">to buy #</label>
+                </div>
+                <div className="col col-sm-8 input-group-prepend">
+                  <label className={buyvieworder.volume_remain<appState.viewtrade.total_volume ? "input-group-text bg-warning" : "input-group-text"}>{appState.viewtrade.total_volume}</label>
+                </div>
               </div>
               <div className="row m-0">
                 <div className="col col-sm-4 input-group-prepend">
-                  <label className="input-group-text">total</label>
+                  <label className="input-group-text">to buy ISK</label>
                 </div>
                 <div className="col col-sm-8 input-group-prepend">
-                  <label className="input-group-text">{format_price(Store.tradetrackingdata.viewtrade.buy_total)}</label>
+                  <label className="input-group-text">{format_price(appState.viewtrade.buy_total)}</label>
                 </div>
               </div>
               <div className="row m-0">
@@ -337,7 +369,7 @@ export default function Tradetracking(props) {
                   <label className="input-group-text">profit</label>
                 </div>
                 <div className="col col-sm-8 input-group-prepend">
-                  <label className="input-group-text">{format_price(Store.tradetrackingdata.viewtrade.trade_profit)}</label>
+                  <label className="input-group-text">{format_price(appState.viewtrade.trade_profit)}</label>
                 </div>
               </div>
               <div className="row m-0">
@@ -359,10 +391,10 @@ export default function Tradetracking(props) {
             <div className="col col-sm-10 d-flex">
               <label className="input-group-text bg-light">secure</label>
               <div className="custom-control custom-checkbox cell-center mr-2">
-                <input type="checkbox" checked={secure} className="form-check-input" onClick={() => setSecure(!secure)}/>
+                <input type="checkbox" checked={compState.secure} className="form-check-input" onClick={() => compActions.setSecure(!compState.secure)}/>
               </div>
               <label className="input-group-text bg-light mr-2">via</label>
-    {viasystems.map((viasystem, index) => (
+    {compState.viasystems.map((viasystem, index) => (
               <>
               <label className="input-group-text">{viasystem.label}</label>
               <button type="button" className="btn btn-sm btn-secondary mr-2" onClick={() => removeSystem(viasystem)}>X</button>
@@ -377,7 +409,7 @@ export default function Tradetracking(props) {
           <div className="row m-0">
             <div className="col col-sm-10 d-flex">
               <label className="input-group-text bg-light mr-2">avoid</label>
-    {avoidsystems.map((avoidsystem, index) => (
+    {compState.avoidsystems.map((avoidsystem, index) => (
               <>
               <label className="input-group-text">{avoidsystem.label}</label>
               <button type="button" className="btn btn-sm btn-secondary mr-2" onClick={() => removeAvoidsystem(avoidsystem)}>X</button>
@@ -407,13 +439,15 @@ export default function Tradetracking(props) {
                   <table className="table small table-dark table-bordered table-hover fillparent">
                     <thead>
                       <tr>
-                        <th style={col_system}>system</th>
+                        <th style={col_systemnr}>{list.length}</th>
+                        <th style={col_system}>systems</th>
                         <th style={col_systemsec}>sec</th>
                         <th style={col_npc_kills}>npc</th>
                         <th style={col_pod_kills}>pods</th>
                         <th style={col_ship_kills}>ships</th>
                         <th style={col_killmails}>mails</th>
                         <th style={col_killmailgates}>@gates</th>
+                        <th style={col_killboard}>killboard</th>
                         <th></th>
                         <th className="dummyscroll"></th>
                       </tr>
@@ -422,6 +456,7 @@ export default function Tradetracking(props) {
 
     {list.map((item, index) => (
                       <tr className={item.ship_kills>0 ? "table-danger" : "table-info"} key={index}>
+                        <td style={col_systemnr}>{index}</td>
                         <td style={col_system}>{item.name}</td>
                         <td className={item.security_status<0.5 ? "bg-danger" : ""} style={col_systemsec}>{format_2digits(item.security_status)}</td>
                         <td style={col_npc_kills}>{item.npc_kills}</td>
@@ -429,6 +464,9 @@ export default function Tradetracking(props) {
                         <td className={item.ship_kills>0 ? "bg-danger" : ""} style={col_ship_kills}>{item.ship_kills}</td>
                         <td className={item.killmailcount>0 ? "bg-danger" : ""} style={col_killmails}>{item.killmailcount}</td>
                         <td className={item.killmailgatecount>0 ? "bg-danger" : ""} style={col_killmailgates}>{item.killmailgatecount}</td>
+                        <td style={col_killboard}>
+                          <a href={"https://zkillboard.com/system/" + item.PK.id} target="zkillboard">zKill</a> - <a href={"https://evemaps.dotlan.net/system/" + item.name} target="zkillboard">Dotan</a>
+                        </td>
                         <td>
                           {rendergatekills(item)}
                         </td>
@@ -441,8 +479,93 @@ export default function Tradetracking(props) {
               </div>
             </div>
           </div>
-        </div>
-        <div className="col-8">
+
+          <div className="col-4">
+            <div className="root fullheight">
+              <div className="containercontent container-relative">
+                <div className="table-container container-fluid p-0">
+
+{ loading && 
+                  <div className="d-flex justify-content-center">
+                    <Spinner animation="border" role="status" />
+                  </div>
+}
+                  <table className="table small table-dark table-bordered table-hover fillparent">
+                    <thead>
+                      <tr>
+                        <th style={colorder_regionname}>region</th>
+                        <th style={colorder_systemname}>system</th>
+                        <th style={colorder_volume_remain}># rem</th>
+                        <th style={colorder_volume_min}># min</th>
+                        <th style={colorder_price}>sell</th>
+                        <th></th>
+                        <th className="dummyscroll"></th>
+                      </tr>
+                    </thead>
+                    <tbody className="overflow text-body">
+
+    {sellorders.map((item, index) => (
+                      <tr className={item.ship_kills>0 ? "table-danger" : "table-info"} key={index}>
+                        <td style={colorder_regionname}>{item.regionname}</td>
+                        <td style={colorder_systemname}>{item.systemname}</td>
+                        <td style={colorder_volume_remain}>{item.volume_remain}</td>
+                        <td className={item.min_volume>1 ? "bg-danger" : ""} style={colorder_volume_min}>{item.min_volume}</td>
+                        <td style={colorder_price}><span className='float-right'>{item.price}</span></td>
+                        <td>
+                        </td>
+                      </tr>  
+    ))}
+
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div className="col-4">
+            <div className="root fullheight">
+              <div className="containercontent container-relative">
+                <div className="table-container container-fluid p-0">
+
+{ loading && 
+                  <div className="d-flex justify-content-center">
+                    <Spinner animation="border" role="status" />
+                  </div>
+}
+                  <table className="table small table-dark table-bordered table-hover fillparent">
+                    <thead>
+                      <tr>
+                        <th style={colorder_regionname}>region</th>
+                        <th style={colorder_systemname}>system</th>
+                        <th style={colorder_volume_remain}># rem</th>
+                        <th style={colorder_volume_min}># min</th>
+                        <th style={colorder_price}>buy</th>
+                        <th></th>
+                        <th className="dummyscroll"></th>
+                      </tr>
+                    </thead>
+                    <tbody className="overflow text-body">
+
+    {buyorders.map((item, index) => (
+                      <tr className={item.ship_kills>0 ? "table-danger" : "table-info"} key={index}>
+                        <td style={colorder_regionname}>{item.regionname}</td>
+                        <td style={colorder_systemname}>{item.systemname}</td>
+                        <td style={colorder_volume_remain}>{item.volume_remain}</td>
+                        <td className={item.min_volume>1 ? "bg-danger" : ""} style={colorder_volume_min}>{item.min_volume}</td>
+                        <td style={colorder_price}><span className='float-right'>{item.price}</span></td>
+                        <td>
+                        </td>
+                      </tr>  
+    ))}
+
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+
         </div>
       </div>
     </div>

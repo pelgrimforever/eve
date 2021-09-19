@@ -21,23 +21,15 @@ import Rsviewcombinedtrade from '../services/eve/rest/view/rsviewcombinedtrade.j
 import { Systempk } from '../data/eve/table/super/systemsuper.js';
 import { Orderspk } from '../data/eve/table/super/orderssuper.js';
 import { Tradepk } from '../data/eve/table/super/tradesuper.js';
-import { Viewcombinedtrade } from '../data/eve/view/viewcombinedtrade.js';
-
-const maxpagecontrols = 20;
-
-const sort_jumps = 'jumps';
-const sort_m3 = 'volume';
-const sort_profit = 'profit';
-const sort_profitperjump = 'profitperjump';
-const sortmodes = [ 
-    { name:sort_jumps, text: 'jumps' }, 
-    { name:sort_m3, text: 'cargo vol.' }, 
-    { name:sort_profit, text: 'profit' }, 
-  ];
-const sortmode_default = 2;
+//component state
+import appstore from '../appstore.js';
+import storeCombinedtradelist, { sort_jumps, sort_m3, sort_profit, sortmodes} from './store.js';
 
 export default function Combinedtradelist(props) {
-  const { appstate, dispatch } = React.useContext(AppContext);
+  //variables with App scope
+  const [appState, appActions] = appstore();
+  //variables with component scope
+  const [compState, compActions] = storeCombinedtradelist();
 
   const getsystemoptions = () => {
     let systemlist = [];
@@ -47,52 +39,33 @@ export default function Combinedtradelist(props) {
     return systemlist;
   }
 
-  const [loggedin, setLoggedin] = useState(Store.user.loggedin);
   const [loading, setLoading] = useState(false);
   const [list, setList] = useState([]);
   const [systems, setSystems] = useState(getsystemoptions());
-  const [startsystemid, setStartsystemid] = useState(appstate.startsystemid);
-  const [startsystemname, setStartsystemname] = useState(appstate.systemname);
   const [unfilteredtradelist, setUnfilteredtradelist] = useState([]);
   const [tradelist, setTradelist] = useState([]);
-  const [viewcombinedtrade, setViewcombinedtrade] = useState(new Viewcombinedtrade());
   const [showtradeline, setShowtradeline] = useState(false);
-  const [pagelength, setPagelength] = useState(maxpagecontrols);
-  const [paginationconfig, setPaginationconfig] = useState(
-    {
-      pageLength: pagelength,
-      totalPages: 1,
-      currentPage: 0,
-      pageLength: pagelength,
-      showMax: maxpagecontrols,
-      size: "sm",
-      threeDots: true,
-      prevNext: true,
-    }
-  );
-  const [sortfield, setSortfield] = useState(appstate.combinedtradelist_filtersortfield);
-  const [filterstartsystemid, setFilterstartsystemid] = useState(appstate.filterstartsystemid);
-  const [filterendsystemid, setFilterendsystemid] = useState(appstate.filterendsystemid);
-  const [filtercargo, setFiltercargo] = useState(appstate.filtercargo);
+  const [pagelength, setPagelength] = useState(compState.paginationconfig.pageLength);
 
   const updatePageconfig = (pagenr) => {
-    setPaginationconfig(
+    let newpagenr = pagenr;
+    if(tradelist.length>0) {
+      //pagenr can not be allowed greather then max pages
+      newpagenr = Math.min(pagenr, Math.ceil(tradelist.length / pagelength));
+    }
+    compActions.setPaginationconfig(
       {
-        pageLength: pagelength,
+        ...compState.paginationconfig,
         totalPages: Math.ceil(tradelist.length / pagelength),
-        currentPage: pagenr,
-        showMax: maxpagecontrols,
-        size: "sm",
-        threeDots: true,
-        prevNext: true,
+        currentPage: newpagenr,
       }
     );    
   }
 
   const showpage_ = (pagenr, override) => {
-    if(pagenr!==paginationconfig.currentPage && pagenr>0 && pagenr<=Math.ceil(tradelist.length / pagelength) || override) {
+    if(pagenr!==compState.paginationconfig.currentPage && pagenr>0 && pagenr<=Math.ceil(tradelist.length / pagelength) || override) {
       updatePageconfig(pagenr);
-      setList(tradelist.slice((pagenr-1) * pagelength + 1, pagenr * pagelength + 1));
+      setList(tradelist.slice((pagenr-1) * pagelength, pagenr * pagelength));
     }
   }
 
@@ -103,75 +76,36 @@ export default function Combinedtradelist(props) {
   const changeSystem = (selection) => { 
     const selectedsystemid = selection.value;
     const name = Store.codetables.findSystem(selectedsystemid).name;
-    setStartsystemid(selectedsystemid); 
-    setStartsystemname(name);
-    dispatch({
-      type: "setStartsystem",
-      startsystemid: selectedsystemid,
-      startsystemname: name
-    });
+    compActions.setSystem(selectedsystemid, name);
   };
 
   const changeStartsystem = (selection) => { 
-    setFilterstartsystemid(selection.value); 
-    dispatch({
-      type: "setFilterstartsystemid",
-      filterstartsystemid: selection.value
-    });
+    compActions.setFilterstartsystemid(selection.value);
   };
 
   const resetStartsystem = () => {
-    setFilterstartsystemid(null); 
-    dispatch({
-      type: "setFilterstartsystemid",
-      filterstartsystemid: null
-    });
+    compActions.setFilterstartsystemid(null);
   }
 
   const changeEndsystem = (selection) => { 
-    setFilterendsystemid(selection.value); 
-    dispatch({
-      type: "setFilterendsystemid",
-      filterendsystemid: selection.value
-    });
+    compActions.setFilterendsystemid(selection.value); 
   };
 
   const resetEndsystem = () => {
-    setFilterendsystemid(null); 
-    dispatch({
-      type: "setFilterendsystemid",
-      filterendsystemid: null
-    });
+    compActions.setFilterendsystemid(null); 
   }
 
   const changeCargo = (cargoevent) => {
-    setFiltercargo(Number(cargoevent.target.value)); 
-    dispatch({
-      type: "setFiltercargo",
-      filtercargo: Number(cargoevent.target.value)
-    });
+    compActions.setFiltercargo(Number(cargoevent.target.value)); 
   }
 
   const resetCargo = () => {
-    setFiltercargo(0); 
-    dispatch({
-      type: "setFiltercargo",
-      filtercargo: 0
-    });
+    compActions.setFiltercargo(0); 
   }
 
   const exitCargo = (selection) => { 
-    setFiltercargo(Number(selection.target.value)); 
-    dispatch({
-      type: "setFiltercargo",
-      filtercargo: Number(selection.target.value)
-    });
+    compActions.setFiltercargo(Number(selection.target.value)); 
   };
-
-  //update loggedin at login event
-  useEffect(() => {
-    setLoggedin(Store.user.loggedin);
-  }, [Store.user.loggedin]);
 
   //update system select data if systemlist is updated
   useEffect(() => {
@@ -180,41 +114,41 @@ export default function Combinedtradelist(props) {
 
   //update trade list when startsystemid is updated
   useEffect(() => {
-    if(startsystemid !== null) {
+    if(compState.startsystemid !== null) {
       loadlist();
     }
-  }, [startsystemid]);
+  }, [compState.startsystemid]);
 
   //filter list
   useEffect(() => {
       let result = filtertradelist(unfilteredtradelist);
       sorttradelist(result);
       setTradelist(result);
-  }, [unfilteredtradelist, filterstartsystemid, filterendsystemid, filtercargo]);
+  }, [unfilteredtradelist, compState.filterstartsystemid, compState.filterendsystemid, compState.filtercargo]);
 
   //update page properties after updating the tradelist
   useEffect(() => {
-    showpage_(1, true);
+    showpage_(compState.paginationconfig.currentPage, true);
   }, [tradelist]);
 
   //update page properties and list content after updating pagelength
   useEffect(() => {
-    showpage_(1, true);
+    showpage_(compState.paginationconfig.currentPage, true);
   }, [pagelength]);
 
   //update page properties and list content after updating pagelength
   useEffect(() => {
     sorttradelist(tradelist);
-    showpage_(1, true);
-  }, [sortfield]);
+    showpage_(compState.paginationconfig.currentPage, true);
+  }, [compState.filtersortfield]);
 
   //construct trade list data
   const loadlist = async () => {
     try {
-        if(startsystemid!=null) {
+        if(compState.startsystemid!=null) {
           setLoading(true);
           let systempk = new Systempk();
-          systempk.id = startsystemid;
+          systempk.id = compState.startsystemid;
           const result = await Rsviewcombinedtrade.getall_startsystem(Store.user, systempk);
           setUnfilteredtradelist(result);
           setLoading(false);
@@ -227,16 +161,16 @@ export default function Combinedtradelist(props) {
 
   const filtertradelist = (list) => {
     let result = list.filter(obj => {
-      const systemstartok = filterstartsystemid==null || obj.sell_systemid===filterstartsystemid;
-      const systemendok = filterendsystemid==null || obj.buy_systemid===filterendsystemid;
-      const cargook = filtercargo===0 || obj.total_volume<=filtercargo;
+      const systemstartok = compState.filterstartsystemid==null || obj.sell_systemid===compState.filterstartsystemid;
+      const systemendok = compState.filterendsystemid==null || obj.buy_systemid===compState.filterendsystemid;
+      const cargook = compState.filtercargo===0 || obj.total_volume<=compState.filtercargo;
       return systemstartok && systemendok && cargook;
     });
     return result;
   }
 
   const sorttradelist = (listref) => {
-    switch(sortfield.name) {
+    switch(compState.filtersortfield.name) {
       case sort_jumps:
         listref.sort((a, b) => (a.start_system_jumps<b.start_system_jumps) ? -1 : 1);
         break;
@@ -260,10 +194,20 @@ export default function Combinedtradelist(props) {
 
   const changePagelength = (newpagelength) => {
     setPagelength(newpagelength);
+    compActions.setPaginationconfig(
+      {
+        ...compState.paginationconfig,
+        pageLength: newpagelength
+      }
+    );    
+  }
+
+  const setViewcombinedtrade = (trade) => {
+    compActions.setViewcombinedtrade(trade);
   }
 
   const showTradeline = (trade) => {
-    setViewcombinedtrade(trade);
+    compActions.setViewcombinedtrade(trade);
     setShowtradeline(true);
   }
 
@@ -274,20 +218,16 @@ export default function Combinedtradelist(props) {
   const onUpdatetrade = async (volume) => {
 /*    let tradepk = new Tradepk();
     tradepk.ordersSellorderidPK = new Orderspk();
-    tradepk.ordersSellorderidPK.id = viewcombinedtrade.sell_id;
+    tradepk.ordersSellorderidPK.id = compState.viewcombinedtrade.sell_id;
     tradepk.ordersBuyorderidPK = new Orderspk();
-    tradepk.ordersBuyorderidPK.id = viewcombinedtrade.buy_id;
+    tradepk.ordersBuyorderidPK.id = compState.viewcombinedtrade.buy_id;
     const traderesult = await Rstrade.executetrade(tradepk, volume);
     setShowtradeline(false);
     const dummy = await loadlist();*/
   }
 
   const onSortfieldselected = (sortfield) => {
-    setSortfield(sortfield);
-    dispatch({
-      type: "setCombinedtradelist_Filtersortfield",
-      combinedtradelist_filtersortfield: sortfield
-    });
+    compActions.setFiltersortfield(sortfield);
   }
 
   const colstart_system_jumps = {width: '1rem'};
@@ -308,28 +248,28 @@ export default function Combinedtradelist(props) {
           <div className="mx-auto bg-light p-1">
               <div className="row m-0">
                 <div className="col col-sm-1">
-                  <Select options={systems} value={systems.find(option => option.value === startsystemid)} onChange={changeSystem}/>
+                  <Select options={systems} value={systems.find(option => option.value === compState.startsystemid)} onChange={changeSystem}/>
                 </div>
                 <div className="col col-sm-1">
                   <button type="button" className="btn btn-sm btn-primary m-1" onClick={loadlist}>refresh</button>
                 </div>
                 <div className="col col-sm-3">
-                  <Sortmode title="sort" modes={sortmodes} sortmode={sortfield} onModeselected={onSortfieldselected} />
+                  <Sortmode title="sort" modes={sortmodes} sortmode={compState.filtersortfield} onModeselected={onSortfieldselected} />
                 </div>
                 <div className="col col-sm-4 d-flex">
                   <span className="mx-2">start</span>
                   <div style={{width:'200px'}}>
-                    <Select options={systems} value={systems.find(option => option.value === filterstartsystemid)} onChange={changeStartsystem}/>
+                    <Select options={systems} value={systems.find(option => option.value === compState.filterstartsystemid)} onChange={changeStartsystem}/>
                   </div>
                   <button type="button" className="btn btn-sm btn-secondary" onClick={resetStartsystem}>X</button>
                   <span className="mx-2">end</span>
                   <div style={{width:'200px'}}>
-                    <Select options={systems} value={systems.find(option => option.value === filterendsystemid)} onChange={changeEndsystem}/>
+                    <Select options={systems} value={systems.find(option => option.value === compState.filterendsystemid)} onChange={changeEndsystem}/>
                   </div>
                   <button type="button" className="btn btn-sm btn-secondary" onClick={resetEndsystem}>X</button>
                   <span className="mx-2">cargo</span>
                   <div style={{width:'200px'}}>
-                    <Form.Control type="number" id="maxcargo" name="maxcargo" value={filtercargo} onChange={changeCargo} onBlur={exitCargo} />
+                    <Form.Control type="number" id="maxcargo" name="maxcargo" value={compState.filtercargo} onChange={changeCargo} onBlur={exitCargo} />
                   </div>
                   <button type="button" className="btn btn-sm btn-secondary" onClick={resetCargo}>X</button>
                 </div>
@@ -367,8 +307,8 @@ export default function Combinedtradelist(props) {
                 </thead>
                 <tbody className="overflow text-body">
 
-    {tradelist.map((trade, index) => (
-                  <tr className={trade.sell_systemid===viewcombinedtrade.sell_systemid && trade.buy_systemid===viewcombinedtrade.buy_systemid ? "table-active" : "table-info"} key={index} onClick={() => setViewcombinedtrade(trade)}>
+    {list.map((trade, index) => (
+                  <tr className={trade.sell_systemid===compState.viewcombinedtrade.sell_systemid && trade.buy_systemid===compState.viewcombinedtrade.buy_systemid ? "table-active" : "table-info"} key={index} onClick={() => setViewcombinedtrade(trade)}>
                     <td style={colstart_system_jumps}>{trade.start_system_jumps}</td>
                     <td style={colordercount}><span className='float-right'>{trade.ordercount}</span></td>
                     <td style={colsell_regionname}>{trade.sellregion}</td>
@@ -393,16 +333,16 @@ export default function Combinedtradelist(props) {
 
       <div className="containerfooter mx-auto bg-light p-1">
         <Pagecomponent 
-          config={paginationconfig} 
+          config={compState.paginationconfig} 
           showpage={showpage}
           changePagelength={changePagelength}
           />
       </div>
 
       <Combinedtradeorders 
-        trade={viewcombinedtrade}
-        startsystemid={startsystemid}
-        startsystemname={startsystemname}
+        trade={compState.viewcombinedtrade}
+        startsystemid={compState.startsystemid}
+        startsystemname={compState.startsystemname}
         show={showtradeline} 
         onUpdatetrade={onUpdatetrade}
         onCancel={onTradelineCancel} 
