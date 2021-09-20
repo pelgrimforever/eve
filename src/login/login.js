@@ -10,7 +10,6 @@ export default function Login() {
   const [popupmessage, setPopupmessage] = useState('');
 
   useEffect(async () => {
-    const loggedinresult = await Store.user.authenticate("pelgrim", "fralas");
     setLoggedin(loggedinresult);
     setUsername(Store.user.username);
   }, []);
