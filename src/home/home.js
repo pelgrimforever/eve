@@ -36,8 +36,9 @@ export default function Home() {
 
   const askStart = async () => {
     try {
-        const result = await Rsdownloadswagger.startDownload(Store.user);
-        setRegions(result.regions);
+        let result = await Rsdownloadswagger.startDownload(Store.user);
+        const sortedregions = result.regions.sort((a, b) => (a.totalpages>b.totalpages) ? -1 : 1);        
+        setRegions(sortedregions);
         setMarketdone(result.done);
         setTimeractive(true);
     } catch (e) {
@@ -48,13 +49,14 @@ export default function Home() {
   const askUpdate = async () => {
     try {
         const result = await Rsdownloadswagger.getUpdate();
+        const sortedregions = result.regions.sort((a, b) => (a.totalpages>b.totalpages) ? -1 : 1);  
         let l_totalpages = 0;
         let l_totaldone = 0;
-        regions.map(region => {
+        sortedregions.map(region => {
             l_totalpages += region.totalpages;
             l_totaldone += region.page;
         });
-        setRegions(result.regions);
+        setRegions(sortedregions);
         setTotalpages(l_totalpages);
         setTotaldone(l_totaldone);
         setMessages(result.messages);

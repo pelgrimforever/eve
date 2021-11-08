@@ -10,8 +10,9 @@ export default function Login() {
   const [popupmessage, setPopupmessage] = useState('');
 
   useEffect(async () => {
+/*    const loggedinresult = await Store.user.authenticate("", "");
     setLoggedin(loggedinresult);
-    setUsername(Store.user.username);
+    setUsername(Store.user.username);*/
   }, []);
 
   const hidePopup = () => {

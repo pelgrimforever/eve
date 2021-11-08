@@ -144,6 +144,8 @@ export default function Tradetracking(props) {
     }
   }
 
+  const sec_highsec = 0.45;
+
   const col_systemnr = {width: '2rem'};
   const col_system = {width: '7rem'};
   const col_systemsec = {width: '3rem'};
@@ -458,7 +460,7 @@ export default function Tradetracking(props) {
                       <tr className={item.ship_kills>0 ? "table-danger" : "table-info"} key={index}>
                         <td style={col_systemnr}>{index}</td>
                         <td style={col_system}>{item.name}</td>
-                        <td className={item.security_status<0.5 ? "bg-danger" : ""} style={col_systemsec}>{format_2digits(item.security_status)}</td>
+                        <td className={item.security_status<sec_highsec ? "bg-danger" : ""} style={col_systemsec}>{format_2digits(item.security_status)}</td>
                         <td style={col_npc_kills}>{item.npc_kills}</td>
                         <td style={col_pod_kills}>{item.pod_kills}</td>
                         <td className={item.ship_kills>0 ? "bg-danger" : ""} style={col_ship_kills}>{item.ship_kills}</td>
@@ -495,6 +497,7 @@ export default function Tradetracking(props) {
                       <tr>
                         <th style={colorder_regionname}>region</th>
                         <th style={colorder_systemname}>system</th>
+                        <th style={col_systemsec}>sec</th>
                         <th style={colorder_volume_remain}># rem</th>
                         <th style={colorder_volume_min}># min</th>
                         <th style={colorder_price}>sell</th>
@@ -508,6 +511,7 @@ export default function Tradetracking(props) {
                       <tr className={item.ship_kills>0 ? "table-danger" : "table-info"} key={index}>
                         <td style={colorder_regionname}>{item.regionname}</td>
                         <td style={colorder_systemname}>{item.systemname}</td>
+                        <td className={item.security_status<sec_highsec ? "bg-danger" : ""} style={col_systemsec}>{format_2digits(item.security_status)}</td>
                         <td style={colorder_volume_remain}>{item.volume_remain}</td>
                         <td className={item.min_volume>1 ? "bg-danger" : ""} style={colorder_volume_min}>{item.min_volume}</td>
                         <td style={colorder_price}><span className='float-right'>{item.price}</span></td>
@@ -538,6 +542,7 @@ export default function Tradetracking(props) {
                       <tr>
                         <th style={colorder_regionname}>region</th>
                         <th style={colorder_systemname}>system</th>
+                        <th style={col_systemsec}>sec</th>
                         <th style={colorder_volume_remain}># rem</th>
                         <th style={colorder_volume_min}># min</th>
                         <th style={colorder_price}>buy</th>
@@ -551,6 +556,7 @@ export default function Tradetracking(props) {
                       <tr className={item.ship_kills>0 ? "table-danger" : "table-info"} key={index}>
                         <td style={colorder_regionname}>{item.regionname}</td>
                         <td style={colorder_systemname}>{item.systemname}</td>
+                        <td className={item.security_status<sec_highsec ? "bg-danger" : ""} style={col_systemsec}>{format_2digits(item.security_status)}</td>
                         <td style={colorder_volume_remain}>{item.volume_remain}</td>
                         <td className={item.min_volume>1 ? "bg-danger" : ""} style={colorder_volume_min}>{item.min_volume}</td>
                         <td style={colorder_price}><span className='float-right'>{item.price}</span></td>

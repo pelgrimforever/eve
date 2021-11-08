@@ -1,9 +1,8 @@
 //Auto generated code
 //don't change things here, it will be overwritten
-//extend classes in sitegroup.ts for table class definitions
 /* 
     Created on : Nov 16, 2018, 17:04:01 PM
-    Generated on 14.5.2021 13:42
+    Generated on 24.9.2021 14:50
     Author     : Franky Laseure
 */
 

@@ -2,7 +2,7 @@
 //don't change things here, it will be overwritten
 /* 
     Created on : Dec 16, 2018, 18:32:01
-    Generated on 18.8.2021 11:31
+    Generated on 8.10.2021 7:21
     Author     : Franky Laseure
 */
 
@@ -32,6 +32,7 @@ class VieworderJson {
 			"locationid": "" + vieworder.locationid,
 			"locationname": vieworder.locationname,
 			"systemname": vieworder.systemname,
+			"security_status": "" + vieworder.security_status,
 			"constellation": "" + vieworder.constellation,
 			"constellationname": vieworder.constellationname,
 			"region": "" + vieworder.region,
@@ -64,6 +65,7 @@ class VieworderJson {
 		model.locationid = "" + jsonobj.locationid;
 		model.locationname = jsonobj.locationname;
 		model.systemname = jsonobj.systemname;
+		model.security_status = parseFloat(jsonobj.security_status);
 		model.constellation = "" + jsonobj.constellation;
 		model.constellationname = jsonobj.constellationname;
 		model.region = "" + jsonobj.region;

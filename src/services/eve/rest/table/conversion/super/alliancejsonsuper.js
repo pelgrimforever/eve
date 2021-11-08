@@ -1,9 +1,8 @@
 //Auto generated code
 //don't change things here, it will be overwritten
-//change in alliance-json.js
 /* 
     Created on : Nov 19, 2018, 12:42:01 PM
-    Generated on 18.8.2021 11:31
+    Generated on 8.10.2021 7:21
     Author     : Franky Laseure
 */
 

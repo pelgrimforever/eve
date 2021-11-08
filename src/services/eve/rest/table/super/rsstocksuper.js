@@ -1,9 +1,8 @@
 //Auto generated code
 //don't change things here, it will be overwritten
-//redefine classes in stock.service.ts
 /* 
     Created on : Nov 20, 2018, 10:39:01 AM
-    Generated on 18.8.2021 11:31
+    Generated on 8.10.2021 7:21
     Author     : Franky Laseure
 */
 

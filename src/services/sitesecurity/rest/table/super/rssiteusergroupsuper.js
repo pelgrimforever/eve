@@ -1,9 +1,8 @@
 //Auto generated code
 //don't change things here, it will be overwritten
-//redefine classes in siteusergroup.service.ts
 /* 
     Created on : Nov 20, 2018, 10:39:01 AM
-    Generated on 14.5.2021 13:42
+    Generated on 24.9.2021 14:50
     Author     : Franky Laseure
 */
 
