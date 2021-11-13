@@ -10,9 +10,9 @@ class Codetables {
 	typelist = [];
 
   loadAll = async () => {
-    await this.loadSystemlist();
-    await this.loadAllsystemlist();
-    await this.loadTypelist();
+    this.loadSystemlist();
+    this.loadAllsystemlist();
+    this.loadTypelist();
   }
   
   loadSystemlist = async () => {
