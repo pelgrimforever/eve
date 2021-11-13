@@ -29,9 +29,9 @@ function Stock_add(props) {
       </ModalHeader>
       <ModalBody className="labels-10">
         <Row m-0="true">
-          <div class="d-flex">
+          <div className="d-flex">
 
-            <div class="p-2 flex-fill bg-info">
+            <div className="p-2 flex-fill bg-info">
               <div className="row m-0">
                 <div className="col col-sm-4 input-group-prepend">
                   <label className="input-group-text">type</label>

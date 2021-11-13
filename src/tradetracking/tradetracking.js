@@ -167,9 +167,9 @@ export default function Tradetracking(props) {
       <div className="containerheader">
         <div className="mx-auto bg-light p-1">
 
-          <div class="d-flex">
+          <div className="d-flex">
 
-            <div class="p-2 flex-fill bg-info">
+            <div className="p-2 flex-fill bg-info">
               <div className="row m-0">
                 <div className="col col-sm-4 input-group-prepend">
                   <label className="input-group-text">type</label>
@@ -231,7 +231,7 @@ export default function Tradetracking(props) {
               </div>
             </div>
 
-            <div class="p-2 flex-fill bg-info">
+            <div className="p-2 flex-fill bg-info">
               <div className="row m-0">
                 <button type="button" className="btn btn-sm btn-primary m-1" onClick={loadupdate}>refresh</button>
               </div>
@@ -268,7 +268,7 @@ export default function Tradetracking(props) {
               </div>
             </div>
 
-            <div class="p-2 flex-fill bg-info">
+            <div className="p-2 flex-fill bg-info">
               <div className="row m-0">
                 <div className="col col-sm-4 input-group-prepend">
                   <label className="input-group-text">volume (m3)</label>
@@ -330,7 +330,7 @@ export default function Tradetracking(props) {
               </div>
             </div>
 
-            <div class="p-2 flex-fill bg-info">
+            <div className="p-2 flex-fill bg-info">
               <div className="row m-0">
                 <div className="col col-sm-4 input-group-prepend">
                   <label className="input-group-text">total (m3)</label>

@@ -112,9 +112,9 @@ export default function Sellstock(props) {
       <div className="containerheader">
         <div className="mx-auto bg-light p-1">
 
-          <div class="d-flex">
+          <div className="d-flex">
 
-            <div class="p-2 flex-fill bg-info">
+            <div className="p-2 flex-fill bg-info">
               <div className="row m-0">
                 <div className="col col-sm-12 d-flex">
                   <span className="mx-2">type</span>
