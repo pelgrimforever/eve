@@ -2,7 +2,7 @@
 //don't change things here, it will be overwritten
 /* 
     Created on : Nov 16, 2018, 17:04:01 PM
-    Generated on 8.10.2021 7:21
+    Generated on 30.10.2021 10:4
     Author     : Franky Laseure
 */
 
@@ -15,6 +15,7 @@ import Stringsearcher from '../../../search/stringsearcher.js';
 import Foreignkeysearcher from '../../../search/foreignkeysearcher.js';
 import Primarykeysearcher from '../../../search/primarykeysearcher.js';
 import Relationalkeysearcher from '../../../search/relationalkeysearcher.js';
+import {Orderspk} from './orderssuper.js';
 
 export class Tradepk {
 	ordersSellorderidPK: Orderspk = null;

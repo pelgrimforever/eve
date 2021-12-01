@@ -27,7 +27,3 @@ export const setFiltercargo = (store, filtercargo) => {
 export const setPaginationconfig = (store, paginationconfig) => {
   store.setState({ paginationconfig: paginationconfig });
 };
-
-export const setViewcombinedtrade = (store, viewcombinedtrade) => {
-  store.setState({ viewcombinedtrade: viewcombinedtrade });
-};

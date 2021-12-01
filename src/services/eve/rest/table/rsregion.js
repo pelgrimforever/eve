@@ -1,4 +1,4 @@
-//ProjectGenerator: NO AUTHOMATIC UPDATE
+//Metacoder: NO AUTHOMATIC UPDATE
 //Change function definitions here, NOT in rsregionsuper.js
 /* 
     Created on : Nov 20, 2018, 10:39:01 AM

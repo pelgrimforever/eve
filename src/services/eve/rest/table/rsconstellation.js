@@ -1,4 +1,4 @@
-//ProjectGenerator: NO AUTHOMATIC UPDATE
+//Metacoder: NO AUTHOMATIC UPDATE
 //Change function definitions here, NOT in rsconstellationsuper.js
 /* 
     Created on : Nov 20, 2018, 10:39:01 AM

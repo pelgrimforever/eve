@@ -1,0 +1,26 @@
+.nav1 {
+	cursor: pointer;
+	display: block;
+	text-decoration: none;
+    text-decoration-line: none;
+    text-decoration-thickness: initial;
+    text-decoration-style: initial;
+    text-decoration-color: initial;
+  border-radius: .25rem;
+  padding-top: 0.1em;
+  padding-bottom: 0;
+  padding-right: .5rem;
+  padding-left: .5rem;
+  border-width: 0.1em;
+  border: 0.1em solid #000000;
+}
+
+.nav1active {
+	color: #ffffff;
+	background: #aaaaaa;	
+}
+
+.nav1inactive {
+	color: #ffffff;
+	background: #020202;
+}

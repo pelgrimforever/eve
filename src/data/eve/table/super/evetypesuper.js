@@ -2,7 +2,7 @@
 //don't change things here, it will be overwritten
 /* 
     Created on : Nov 16, 2018, 17:04:01 PM
-    Generated on 8.10.2021 7:21
+    Generated on 30.10.2021 10:4
     Author     : Franky Laseure
 */
 
@@ -15,6 +15,9 @@ import Stringsearcher from '../../../search/stringsearcher.js';
 import Foreignkeysearcher from '../../../search/foreignkeysearcher.js';
 import Primarykeysearcher from '../../../search/primarykeysearcher.js';
 import Relationalkeysearcher from '../../../search/relationalkeysearcher.js';
+import {Marketgrouppk} from './marketgroupsuper.js';
+import {Typegrouppk} from './typegroupsuper.js';
+import {Graphicpk} from './graphicsuper.js';
 
 export class Evetypepk {
     id: string = '';
@@ -88,6 +91,9 @@ export class Evetypesearcher extends Tablesearch {
         this.addKeysearcher(this.stocksearcher);
         this.addKeysearcher(this.orderhistorysearcher);
         this.addKeysearcher(this.regionsearcher);
+        this.addKeysearcher(this.tradecombinedsearcher);
+        this.addKeysearcher(this.system1searcher);
+        this.addKeysearcher(this.system2searcher);
 	}
 
     filtermodel: null;
@@ -114,6 +120,9 @@ export class Evetypesearcher extends Tablesearch {
     stocksearcher: Primarykeysearcher = new Primarykeysearcher();
     orderhistorysearcher: Primarykeysearcher = new Primarykeysearcher();
     regionsearcher: Relationalkeysearcher = new Relationalkeysearcher();
+    tradecombinedsearcher: Primarykeysearcher = new Primarykeysearcher();
+    system1searcher: Relationalkeysearcher = new Relationalkeysearcher();
+    system2searcher: Relationalkeysearcher = new Relationalkeysearcher();
 
     addids = (values, operators) => {
 		  let numvalues = [values.length];
@@ -268,6 +277,15 @@ export class Evetypesearcher extends Tablesearch {
     setregion = (regionsearch) => {
         this.regionsearcher.setTablesearch(regionsearch);
     }
+    settradecombined = (tradecombinedsearch) => {
+        this.tradecombinedsearcher.setTablesearch(tradecombinedsearch);
+    }
+    setsystem1 = (systemsearch) => {
+        this.system1searcher.setTablesearch(systemsearch);
+    }
+    setsystem2 = (systemsearch) => {
+        this.system2searcher.setTablesearch(systemsearch);
+    }
 
     toJSON = () => {
         let jsonobj = {
@@ -295,6 +313,9 @@ export class Evetypesearcher extends Tablesearch {
                 "stocksearcher": null,
                 "orderhistorysearcher": null,
                 "regionsearcher": null,
+                "tradecombinedsearcher": null,
+                "system1searcher": null,
+                "system2searcher": null,
             }; 
             if(this.marketgroupsearcher!=null && this.marketgroupsearcher.used()) {
                 kss.marketgroupsearcher = this.marketgroupsearcher.toJSON();
@@ -313,6 +334,15 @@ export class Evetypesearcher extends Tablesearch {
             }
             if(this.regionsearcher!=null && this.regionsearcher.used()) {
                 kss.regionsearcher = this.regionsearcher.toJSON();
+            }
+            if(this.tradecombinedsearcher!=null && this.tradecombinedsearcher.used()) {
+                kss.tradecombinedsearcher = this.tradecombinedsearcher.toJSON();
+            }
+            if(this.system1searcher!=null && this.system1searcher.used()) {
+                kss.system1searcher = this.system1searcher.toJSON();
+            }
+            if(this.system2searcher!=null && this.system2searcher.used()) {
+                kss.system2searcher = this.system2searcher.toJSON();
             }
             jsonobj.keysearch = kss;
         }

@@ -2,7 +2,7 @@
 //don't change things here, it will be overwritten
 /* 
     Created on : Nov 16, 2018, 17:04:01 PM
-    Generated on 8.10.2021 7:21
+    Generated on 30.10.2021 10:4
     Author     : Franky Laseure
 */
 
@@ -15,6 +15,8 @@ import Stringsearcher from '../../../search/stringsearcher.js';
 import Foreignkeysearcher from '../../../search/foreignkeysearcher.js';
 import Primarykeysearcher from '../../../search/primarykeysearcher.js';
 import Relationalkeysearcher from '../../../search/relationalkeysearcher.js';
+import {Securityislandpk} from './securityislandsuper.js';
+import {Constellationpk} from './constellationsuper.js';
 
 export class Systempk {
     id: string = '';
@@ -71,6 +73,10 @@ export class Systemsearcher extends Tablesearch {
         this.addKeysearcher(this.routetypesearcher);
         this.addKeysearcher(this.systemtradeSellsystemsearcher);
         this.addKeysearcher(this.systemtradeBuysystemsearcher);
+        this.addKeysearcher(this.tradecombinedBuysystemsearcher);
+        this.addKeysearcher(this.evetype1searcher);
+        this.addKeysearcher(this.tradecombinedSellsystemsearcher);
+        this.addKeysearcher(this.evetype2searcher);
 	}
 
     filtermodel: null;
@@ -90,6 +96,10 @@ export class Systemsearcher extends Tablesearch {
     routetypesearcher: Relationalkeysearcher = new Relationalkeysearcher();
     systemtradeSellsystemsearcher: Primarykeysearcher = new Primarykeysearcher();
     systemtradeBuysystemsearcher: Primarykeysearcher = new Primarykeysearcher();
+    tradecombinedBuysystemsearcher: Primarykeysearcher = new Primarykeysearcher();
+    evetype1searcher: Relationalkeysearcher = new Relationalkeysearcher();
+    tradecombinedSellsystemsearcher: Primarykeysearcher = new Primarykeysearcher();
+    evetype2searcher: Relationalkeysearcher = new Relationalkeysearcher();
 
     addids = (values, operators) => {
 		  let numvalues = [values.length];
@@ -157,6 +167,18 @@ export class Systemsearcher extends Tablesearch {
     setsystemtradeBuysystem = (systemtradesearch) => {
         this.systemtradeBuysystemsearcher.setTablesearch(systemtradesearch);
     }
+    settradecombinedBuysystem = (tradecombinedsearch) => {
+        this.tradecombinedBuysystemsearcher.setTablesearch(tradecombinedsearch);
+    }
+    setevetype1 = (evetypesearch) => {
+        this.evetype1searcher.setTablesearch(evetypesearch);
+    }
+    settradecombinedSellsystem = (tradecombinedsearch) => {
+        this.tradecombinedSellsystemsearcher.setTablesearch(tradecombinedsearch);
+    }
+    setevetype2 = (evetypesearch) => {
+        this.evetype2searcher.setTablesearch(evetypesearch);
+    }
 
     toJSON = () => {
         let jsonobj = {
@@ -186,6 +208,10 @@ export class Systemsearcher extends Tablesearch {
                 "routetypesearcher": null,
                 "systemtradeSellsystemsearcher": null,
                 "systemtradeBuysystemsearcher": null,
+                "tradecombinedBuysystemsearcher": null,
+                "evetype1searcher": null,
+                "tradecombinedSellsystemsearcher": null,
+                "evetype2searcher": null,
             }; 
             if(this.securityislandsearcher!=null && this.securityislandsearcher.used()) {
                 kss.securityislandsearcher = this.securityislandsearcher.toJSON();
@@ -210,6 +236,18 @@ export class Systemsearcher extends Tablesearch {
             }
             if(this.systemtradeBuysystemsearcher!=null && this.systemtradeBuysystemsearcher.used()) {
                 kss.systemtradeBuysystemsearcher = this.systemtradeBuysystemsearcher.toJSON();
+            }
+            if(this.tradecombinedBuysystemsearcher!=null && this.tradecombinedBuysystemsearcher.used()) {
+                kss.tradecombinedBuysystemsearcher = this.tradecombinedBuysystemsearcher.toJSON();
+            }
+            if(this.evetype1searcher!=null && this.evetype1searcher.used()) {
+                kss.evetype1searcher = this.evetype1searcher.toJSON();
+            }
+            if(this.tradecombinedSellsystemsearcher!=null && this.tradecombinedSellsystemsearcher.used()) {
+                kss.tradecombinedSellsystemsearcher = this.tradecombinedSellsystemsearcher.toJSON();
+            }
+            if(this.evetype2searcher!=null && this.evetype2searcher.used()) {
+                kss.evetype2searcher = this.evetype2searcher.toJSON();
             }
             jsonobj.keysearch = kss;
         }

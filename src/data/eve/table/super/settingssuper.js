@@ -2,7 +2,7 @@
 //don't change things here, it will be overwritten
 /* 
     Created on : Nov 16, 2018, 17:04:01 PM
-    Generated on 8.10.2021 7:21
+    Generated on 30.10.2021 10:4
     Author     : Franky Laseure
 */
 
@@ -41,7 +41,7 @@ class Settingssuper {
 		}
 		return result;
 	}
-	value: number = 0;
+	value = '';
 }
 
 export class Settingssearcher extends Tablesearch {
@@ -54,20 +54,14 @@ export class Settingssearcher extends Tablesearch {
 
     filtermodel: null;
     name: Stringsearcher = new Stringsearcher("settings.name");
-    value: Numbersearcher = new Numbersearcher("settings.value");
+    value: Stringsearcher = new Stringsearcher("settings.value");
     usersettingssearcher: Primarykeysearcher = new Primarykeysearcher();
 
     addnames = (values) => {
     	this.name.values = this.name.values.concat(values);
     }
-    addvalues = (values, operators) => {
-		  let numvalues = [values.length];
-		  let i=0;
-		  for(i=0; i<values.length; i++) {
-		    numvalues[i] = parseFloat(values[i]);
-		  }
-    	this.value.values = this.value.values.concat(numvalues);
-    	this.value.operators = this.value.operators.concat(operators);
+    addvalues = (values) => {
+    	this.value.values = this.value.values.concat(values);
     }
     setusersettings = (usersettingssearch) => {
         this.usersettingssearcher.setTablesearch(usersettingssearch);

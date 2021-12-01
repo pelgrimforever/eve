@@ -1,4 +1,4 @@
-//ProjectGenerator: NO AUTHOMATIC UPDATE
+//Metacoder: NO AUTHOMATIC UPDATE
 //Change function definitions here, NOT in Rsusersettingssuper
 /* 
     Created on : Nov 20, 2018, 10:39:01 AM
@@ -9,6 +9,15 @@
 import Rsusersettingssuper from './super/rsusersettingssuper.js';
 
 class Rsusersettings extends Rsusersettingssuper {
+    static SELECT_4USER = 40;
+
+    static loadUsersettingss4user = async (username): Usersettings[] => {
+        const postdata = {
+          operation: { type: super.OPERATIONTYPE_SELECT, operation: this.SELECT_4USER },
+          "username": username
+        }
+        return this.extractDataArray(await super.post(this.restservice, postdata));
+    }
 }
 
 export default Rsusersettings;

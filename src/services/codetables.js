@@ -1,10 +1,12 @@
 import React from 'react';
 import { Securityislandpk } from '../data/eve/table/super/securityislandsuper.js';
+import Rssettings from './eve/rest/table/rssettings.js';
 import Rssystem from './eve/rest/table/rssystem.js';
 import Rsevetype from './eve/rest/table/rsevetype.js';
 
 class Codetables {
 
+	settings = [];
 	systemlist = [];
 	allsystemlist = [];
 	typelist = [];

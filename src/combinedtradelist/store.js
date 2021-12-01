@@ -4,7 +4,7 @@ import globalHook from "../utilities/useglobalhook.js";
 import * as actions from "./actions.js";
 
 //datamodels
-import { Viewcombinedtrade } from '../data/eve/view/viewcombinedtrade.js';
+import { Viewtradecombined } from '../data/eve/view/viewtradecombined.js';
 
 
 export const sort_jumps = 'jumps';
@@ -39,7 +39,6 @@ const initialState = {
   filterendsystemid: null,
   filtercargo: 0,
   paginationconfig: paginationdefault,
-  viewcombinedtrade: new Viewcombinedtrade(),
 };
 
 const storeCombinedtradelist = globalHook(React, initialState, actions);

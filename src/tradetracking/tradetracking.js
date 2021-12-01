@@ -64,17 +64,14 @@ export default function Tradetracking(props) {
   //construct trade list data
   const loadlist = async () => {
     try {
-        if(appState.sellorderid!=null) {
-          let result = await Rsvieworder.getone(appState.sellorderid);
-          setSellvieworder(result);
+        if(appState.viewtrade.sell_id!=null) {
+          let result1 = await Rsvieworder.getone(appState.viewtrade.sell_id);
+          setSellvieworder(result1);
+          let result2 = await Rsvieworder.getone(appState.viewtrade.buy_id);
+          setBuyvieworder(result2);
+          loadupdate();
+          const dummy = await load4evetype();
         }
-        if(appState.buyorderid!==null) {
-          let result = await Rsvieworder.getone(appState.buyorderid);
-          setBuyvieworder(result);
-        }
-        const resultroute = await Rsloadroute.getroute(appState.viewtrade.sell_systemid, appState.viewtrade.buy_systemid, compState.viasystems, compState.avoidsystems, compState.secure);
-        setList(resultroute);
-        const dummy = await load4evetype();
     } catch (e) {
       console.log("loadlist failed");
       setLoading(false);
@@ -102,8 +99,8 @@ export default function Tradetracking(props) {
   }
 
   const loadupdate = async (event) => {
-    if(sellvieworder!=null && buyvieworder!=null) {
-      const result = await Rsloadorderupdate.getorderupdate(sellvieworder.id, buyvieworder.id);
+    if(appState.viewtrade.sell_id!=null) {
+      const result = await Rsloadorderupdate.getorderupdate(appState.viewtrade.sell_id, appState.viewtrade.buy_id);
       setSellremain(result.sellamount);
       setBuyremain(result.buyamount);
       const resultroute = await Rsloadroute.getroute(appState.viewtrade.sell_systemid, appState.viewtrade.buy_systemid, compState.viasystems, compState.avoidsystems, compState.secure);

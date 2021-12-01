@@ -17,13 +17,13 @@ export const sortmodes = [
   ];
 const sortmode_default = 3;
 
-const maxpagecontrols = 20;
+const maxpagecontrols = 15;
 
 const paginationdefault = {
       pageLength: 0,
       totalPages: 1,
       currentPage: 1,
-      pageLength: 20,
+      pageLength: 15,
       showMax: maxpagecontrols,
       size: "sm",
       threeDots: true,

@@ -16,7 +16,7 @@ import Combinedtradeorders from '../popups/combinedtradeorders.js';
 import Pagecomponent from '../utilities/pagecomponent.js';
 //services
 import Rstrade from '../services/eve/rest/table/rstrade.js';
-import Rsviewcombinedtrade from '../services/eve/rest/view/rsviewcombinedtrade.js';
+import Rsviewtradecombined from '../services/eve/rest/view/rsviewtradecombined.js';
 //data models
 import { Systempk } from '../data/eve/table/super/systemsuper.js';
 import { Orderspk } from '../data/eve/table/super/orderssuper.js';
@@ -149,7 +149,7 @@ export default function Combinedtradelist(props) {
           setLoading(true);
           let systempk = new Systempk();
           systempk.id = compState.startsystemid;
-          const result = await Rsviewcombinedtrade.getall_startsystem(Store.user, systempk);
+          const result = await Rsviewtradecombined.getall_startsystem(Store.user, systempk);
           setUnfilteredtradelist(result);
           setLoading(false);
         }
@@ -175,10 +175,10 @@ export default function Combinedtradelist(props) {
         listref.sort((a, b) => (a.start_system_jumps<b.start_system_jumps) ? -1 : 1);
         break;
       case sort_m3:
-        listref.sort((a, b) => (a.total_volume<b.total_volume) ? 1 : -1);
+        listref.sort((a, b) => (a.totalamount<b.totalamount) ? 1 : -1);
         break;
       case sort_profit:
-        listref.sort((a, b) => (a.profit<b.profit) ? 1 : -1);
+        listref.sort((a, b) => (a.totalprofit<b.totalprofit) ? 1 : -1);
         break;
     }
   }
@@ -186,6 +186,10 @@ export default function Combinedtradelist(props) {
   const format_price = (p) => {
     const rounded = Math.round(p);
     return "" + rounded;
+  };
+
+  const totalvolume = (trade) => {
+    return format_2digits(trade.totalamount * trade.packaged_volume);
   };
 
   const format_2digits = (n) => {
@@ -202,13 +206,13 @@ export default function Combinedtradelist(props) {
     );    
   }
 
-  const setViewcombinedtrade = (trade) => {
-    compActions.setViewcombinedtrade(trade);
+  const setViewtradecombined = (tradecombined) => {
+    appActions.setActivetradecombined(tradecombined);
   }
 
-  const showTradeline = (trade) => {
-    compActions.setViewcombinedtrade(trade);
-    setShowtradeline(true);
+  const showTradeline = (tradecombined) => {
+    appActions.setActivetradecombined(tradecombined);
+    appActions.setActivemenu('Trade tools', 'Combined trade tracking');
   }
 
   const onTradelineCancel = () => {
@@ -235,6 +239,9 @@ export default function Combinedtradelist(props) {
   const colsell_regionname = {width: '4rem' };
   const colsell_systemname = {width: '4rem'};
   const colbuy_systemname = {width: '4rem'};
+  const colevetype_name = {width: '12rem'};
+  const colltotalamount = {width: '3rem'};
+  const colpackaged_volume = {width: '3rem'};
   const coltotal_m3 = {width: '6rem'};
   const colsell_total = {width: '5rem'};
   const colbuy_total = {width: '5rem'};
@@ -295,12 +302,14 @@ export default function Combinedtradelist(props) {
                     <th style={colsell_regionname}>from region</th>
                     <th style={colsell_systemname}>system</th>
                     <th style={colbuy_systemname}>to system</th>
+                    <th style={colevetype_name}>type</th>
+                    <th style={colltotalamount}># asked</th>
+                    <th style={colpackaged_volume}>unit m3</th>
                     <th style={coltotal_m3}>m3 asked</th>
                     <th style={colsell_total}>tot. sell price</th>
                     <th style={colbuy_total}>tot. buy price</th>
                     <th style={coltrade_profit}>est. profit</th>
                     <th style={coltrade_jumps}>jumps / run</th>
-                    <th style={coltrade_runs}>runs</th>
                     <th></th>
                     <th className="dummyscroll"></th>
                   </tr>
@@ -308,18 +317,20 @@ export default function Combinedtradelist(props) {
                 <tbody className="overflow text-body">
 
     {list.map((trade, index) => (
-                  <tr className={trade.sell_systemid===compState.viewcombinedtrade.sell_systemid && trade.buy_systemid===compState.viewcombinedtrade.buy_systemid ? "table-active" : "table-info"} key={index} onClick={() => setViewcombinedtrade(trade)}>
+                  <tr className={trade.sell_systemid===appState.viewtradecombined.sell_systemid && trade.buy_systemid===appState.viewtradecombined.buy_systemid ? "table-active" : "table-info"} key={index} onClick={() => setViewtradecombined(trade)}>
                     <td style={colstart_system_jumps}>{trade.start_system_jumps}</td>
-                    <td style={colordercount}><span className='float-right'>{trade.ordercount}</span></td>
-                    <td style={colsell_regionname}>{trade.sellregion}</td>
-                    <td style={colsell_systemname}>{trade.sellsystem}</td>
-                    <td style={colbuy_systemname}>{trade.buysystem}</td>
-                    <td style={coltotal_m3}><span className='float-right'>{format_2digits(trade.total_volume)}</span></td>
-                    <td style={colsell_total}><span className='float-right'>{format_price(trade.sell_order_value)}</span></td>
-                    <td style={colbuy_total}><span className='float-right'>{format_price(trade.buy_order_value)}</span></td>
-                    <td style={coltrade_profit}><span className='float-right'>{format_price(trade.profit)}</span></td>
-                    <td style={coltrade_jumps}><span className='float-right'>{trade.jumps}</span></td>
-                    <td style={coltrade_runs}><span className='float-right'>{trade.runs}</span></td>
+                    <td style={colordercount}><span className='float-right'>{trade.orders}</span></td>
+                    <td style={colsell_regionname}>{trade.sell_regionname}</td>
+                    <td style={colsell_systemname}>{trade.sell_systemname}</td>
+                    <td style={colbuy_systemname}>{trade.buy_systemname}</td>
+                    <td style={colevetype_name}>{trade.evetype_name}</td>
+                    <td style={colltotalamount}><span className='float-right'>{trade.totalamount}</span></td>
+                    <td style={colpackaged_volume}><span className='float-right'>{trade.packaged_volume}</span></td>
+                    <td style={coltotal_m3}><span className='float-right'>{totalvolume(trade)}</span></td>
+                    <td style={colsell_total}><span className='float-right'>{format_price(trade.sell_order_total)}</span></td>
+                    <td style={colbuy_total}><span className='float-right'>{format_price(trade.buy_order_total)}</span></td>
+                    <td style={coltrade_profit}><span className='float-right'>{format_price(trade.totalprofit)}</span></td>
+                    <td style={coltrade_jumps}><span className='float-right'>{trade.trade_jumps}</span></td>
                     <td><button type="button" className="btn btn-sm small btn-primary" onClick={() => showTradeline(trade)}>show</button></td>
                   </tr>  
     ))}
@@ -339,14 +350,6 @@ export default function Combinedtradelist(props) {
           />
       </div>
 
-      <Combinedtradeorders 
-        trade={compState.viewcombinedtrade}
-        startsystemid={compState.startsystemid}
-        startsystemname={compState.startsystemname}
-        show={showtradeline} 
-        onUpdatetrade={onUpdatetrade}
-        onCancel={onTradelineCancel} 
-        />
     </div>
 
     );

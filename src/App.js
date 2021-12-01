@@ -30,7 +30,7 @@ import Systemkills from './systemkills/systemkills.js';
 import Sellstock from './sellstock/sellstock.js';
 //import Systemtradelist from './systemtradelist/systemtradelist.js';
 import Tradetracking from './tradetracking/tradetracking.js';
-import { Viewtrade } from './data/eve/view/viewtrade.js';
+import Combinedtradetracking from './combinedtradetracking/combinedtradetracking.js';
 
 //configured in .env and .env.production
 const {REACT_APP_TEST} = process.env;
@@ -41,16 +41,29 @@ export default function Page() {
 
   const [navitems, setNavitems] = useState(
       [ 
-        { name:'Trade download', link: '/home' }, 
-        { name:'Trade', link: '/tradelist' }, 
-        { name:'Combined trade', link: '/combinedtradelist' }, 
-        { name:'Trade tracking', link: '/tradetracking' }, 
-//        { name:'Systemtrade', link: '/systemtradelist' }, 
-        { name:'System kills', link: '/systemkills' }, 
-        { name:'Trade types', link: '/tradetypes' },
-        { name:'Sell stock', link: '/sellstock' },
+        { name:'Eve download', link: '/evedownload',
+          navitems: [
+              { name:'Trade download', link: '/home' }, 
+              { name:'Trade types', link: '/tradetypes' },
+          ]
+        }, 
+          { name:'Trade tools', link: '/tradetools',
+            navitems: [
+              { name:'Trade', link: '/tradelist' }, 
+              { name:'Trade tracking', link: '/tradetracking' }, 
+              { name:'Combined trade', link: '/combinedtradelist' }, 
+              { name:'Combined trade tracking', link: '/combinedtradetracking' }, 
+      //        { name:'Systemtrade', link: '/systemtradelist' }, 
+              { name:'Sell stock', link: '/sellstock' },
+            ]
+        },         
+        { name:'Routes', link: '/routes',
+          navitems: [
+              { name:'System kills', link: '/systemkills' }, 
+          ]
+        },         
+
       ]);
-  const [navitem, setNavitem] = useState(null);
 
   //set REST service paramaters
   Eveservice.test = REACT_APP_TEST;
@@ -61,23 +74,20 @@ export default function Page() {
   Sitesecurityservice.serverurl = REACT_APP_SERVERURL;
 
   useMemo(async () => {
-    await Store.load();
     //document.getElementById('body').className='body';
     document.getElementById('root').className='root fullheight';
   }, []);
 
-  const navigateEvent = (item) => {
-    setNavitem(item);
-  };
-
-//tradelist
+  useEffect(() => {
+    Store.load();
+  }, []);
 
   return (
 <HashRouter>      
 <div className="root fullheight">
 
   <div className="containerheader">
-    <Menubar navitems={navitems} navigateEvent={navigateEvent}/>
+    <Menubar navitems={navitems} />
   </div>
 
   <div className="content containercontent">
@@ -87,9 +97,10 @@ export default function Page() {
     <Route exact path="/home" component={Home}/>
     <Route exact path="/tradetypes" component={Tradetypes}/>
     <Route exact path="/tradelist" component={Tradelist}/>
-    <Route exact path="/combinedtradelist" component={Combinedtradelist}/>
 {/*    <Route exact path="/systemtradelist" component={Systemtradelist}/> */}
     <Route exact path="/tradetracking" component={Tradetracking}/>
+    <Route exact path="/combinedtradelist" component={Combinedtradelist}/>
+    <Route exact path="/combinedtradetracking" component={Combinedtradetracking}/>
     <Route exact path="/systemkills" component={Systemkills}/>
     <Route exact path="/sellstock" component={Sellstock}/>
   </div>

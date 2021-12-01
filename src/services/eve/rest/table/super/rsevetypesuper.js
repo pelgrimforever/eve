@@ -2,7 +2,7 @@
 //don't change things here, it will be overwritten
 /* 
     Created on : Nov 20, 2018, 10:39:01 AM
-    Generated on 8.10.2021 7:21
+    Generated on 30.10.2021 10:3
     Author     : Franky Laseure
 */
 
@@ -20,6 +20,8 @@ import { Stockpk } from '../../../../../data/eve/table/super/stocksuper.js';
 import StockJson from '../conversion/stockjson.js';
 import { Orderhistorypk } from '../../../../../data/eve/table/super/orderhistorysuper.js';
 import OrderhistoryJson from '../conversion/orderhistoryjson.js';
+import { Tradecombinedpk } from '../../../../../data/eve/table/super/tradecombinedsuper.js';
+import TradecombinedJson from '../conversion/tradecombinedjson.js';
 
 
 class Rsevetypesuper extends Eveservice {	
@@ -34,6 +36,7 @@ class Rsevetypesuper extends Eveservice {
 	static SELECT_Graphic = 100 + 2;
 	static SELECT_Stock = 100 + 3;
 	static SELECT_Orderhistory = 100 + 4;
+	static SELECT_Tradecombined = 100 + 5;
 
 	//UPDATE OPERATIONS
 	static UPDATE_EVETYPE = 10;
@@ -42,9 +45,9 @@ class Rsevetypesuper extends Eveservice {
 	static INSERT_EVETYPE = 20;
 
 	//DELETE OPERATIONS
-	static DELETE_Marketgroup = 100 + 5;
-	static DELETE_Typegroup = 100 + 6;
-	static DELETE_Graphic = 100 + 7;
+	static DELETE_Marketgroup = 100 + 6;
+	static DELETE_Typegroup = 100 + 7;
+	static DELETE_Graphic = 100 + 8;
 	static DELETE_EVETYPE = 30;
 
 	static extractDataArray = (jsonarray): Evetype[] => {
@@ -117,6 +120,14 @@ class Rsevetypesuper extends Eveservice {
     const postdata = {
       operation: { type: super.OPERATIONTYPE_SELECT, operation: this.SELECT_Orderhistory },
      	"order_historypk": OrderhistoryJson.PKtoJSON(orderhistorypk)
+    }
+    return this.extractDataArray(await super.post(this.restservice, postdata));
+	}
+
+	static loadEvetype4tradecombined = async (tradecombinedpk: Tradecombinedpk): Evetype[] => {
+    const postdata = {
+      operation: { type: super.OPERATIONTYPE_SELECT, operation: this.SELECT_Tradecombined },
+     	"tradecombinedpk": TradecombinedJson.PKtoJSON(tradecombinedpk)
     }
     return this.extractDataArray(await super.post(this.restservice, postdata));
 	}
@@ -229,6 +240,15 @@ class Rsevetypesuper extends Eveservice {
     	auth: user===null ? null : user.auth,
       operation: { type: super.OPERATIONTYPE_SECURESELECT, operation: this.SELECT_Orderhistory },
      	"order_historypk": OrderhistoryJson.PKtoJSON(orderhistorypk)
+    }
+    return this.extractDataArray(await super.post(this.restservice, postdata));
+	}
+
+	static sec_loadEvetype4tradecombined = async (user, tradecombinedpk: Tradecombinedpk): Evetype[] => {
+    const postdata = {
+    	auth: user===null ? null : user.auth,
+      operation: { type: super.OPERATIONTYPE_SECURESELECT, operation: this.SELECT_Tradecombined },
+     	"tradecombinedpk": TradecombinedJson.PKtoJSON(tradecombinedpk)
     }
     return this.extractDataArray(await super.post(this.restservice, postdata));
 	}

@@ -26,14 +26,24 @@ export default function Sellstock(props) {
   //variables with component scope
   const [compState, compActions] = storeSellstock();
 
+  const getsystemoptions = () => {
+    let systemlist = [];
+    Store.codetables.systemlist.map(s => {
+      systemlist.push({ value: s.PK.id, label: s.name });
+    });
+    return systemlist;
+  }
+
   const [loading, setLoading] = useState(false);
   const [showstockadd, setShowstockadd] = useState(false);
   const [showstockremove, setShowstockremove] = useState(false);
   const [showstocktradesystem, setShowstocktradesystem] = useState(false);
   const [evetype, setEvetype] = useState(new Evetype());
+  const [systems, setSystems] = useState(getsystemoptions());
   const [stocktradesystem, setStocktradesystem] = useState(new Stocktradesystem());
 
   useEffect(async () => {
+    compActions.loadSettings();
     compActions.loadTypes(compState.searchstring);
     compActions.loadStocklist();
     compActions.loadStocktradesystems();
@@ -43,6 +53,11 @@ export default function Sellstock(props) {
     compActions.setSearchstring(searchtextevent.target.value); 
     compActions.loadTypes(searchtextevent.target.value);
   }
+
+  const changeStocksystem = (selection) => { 
+    const selectedsystemid = selection.value;
+    compActions.setStocksystem(selectedsystemid);
+  };
 
   const openStock_add = (item) => {
     setEvetype(item);
@@ -98,6 +113,7 @@ export default function Sellstock(props) {
     return n.toFixed(2);
   };
 
+  const col_jumps = {width: '5rem'};
   const col_name = {width: '25rem'};
   const col_amount = {width: '5rem'};
   const col_price = {width: '10rem'};
@@ -217,6 +233,22 @@ export default function Sellstock(props) {
           <div className="col-5">
             <div className="root fullheight">
 
+      <div className="containerheader">
+        <div className="mx-auto bg-light p-1">
+          <div className="d-flex">
+            <div className="p-2 flex-fill bg-info">
+              <div className="row m-0">
+                <div className="col col-sm-12 d-flex">
+                  <span className="mx-2">Stocked in system</span>
+                  <div style={{width:'300px'}}>
+                    <Select options={systems} value={systems.find(option => option.value === compState.stocksystemid)} onChange={changeStocksystem}/>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
       <div className="containercontent container-relative">
             <div className="root fullheight">
               <div className="containercontent container-relative">
@@ -230,6 +262,7 @@ export default function Sellstock(props) {
                   <table className="table table-dark table-bordered table-hover fillparent">
                     <thead>
                       <tr>
+                        <th style={col_jumps}>jumps</th>
                         <th style={col_name}>system</th>
                         <th style={col_price}>total sell price</th>
                         <th></th>
@@ -240,6 +273,7 @@ export default function Sellstock(props) {
 
     {compState.stocktradesystems.map((item, index) => (
                       <tr className="table-info" key={index}>
+                        <td style={col_jumps}>{item.start_system_jumps}</td>
                         <td style={col_name}>{item.name}</td>
                         <td style={col_price}><span className='float-right'>{format_2digits(item.sellprice)}</span></td>
                         <td>

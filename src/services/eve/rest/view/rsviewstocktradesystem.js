@@ -1,4 +1,4 @@
-//ProjectGenerator: NO AUTHOMATIC UPDATE
+//Metacoder: NO AUTHOMATIC UPDATE
 //Change function definitions here, NOT in rsviewstocktradesystemsuper.js
 /* 
     Created on : Dec 16, 2018, 18:55:01
@@ -7,6 +7,7 @@
 */
 
 import Rsviewstocktradesystemsuper from './super/rsviewstocktradesystemsuper';
+import ViewstocktradesystemJson from './conversion/viewstocktradesystemjson.js';
 
 class Rsviewstocktradesystem extends Rsviewstocktradesystemsuper {
 
@@ -17,8 +18,22 @@ class Rsviewstocktradesystem extends Rsviewstocktradesystemsuper {
           operation: { type: super.OPERATIONTYPE_SELECT, operation: this.SELECT_4USER },
           username: username
         }
-        return super.extractDataArray(await super.post(this.restservice, postdata));
+        return this.extractDataArray_startsystem(await super.post(this.restservice, postdata));
     }
+
+  static extractDataArray_startsystem = (jsonarray): Viewstocktradesystem[] => {
+    let viewstocktradesystems: [] = [];
+    let viewstocktradesystem;
+    let jsonline;
+    for(let i = 0; i < jsonarray.length; i++) {
+      jsonline = jsonarray[i];
+      viewstocktradesystem = ViewstocktradesystemJson.fromJSON(jsonline);
+      viewstocktradesystem.start_system = "" + jsonline.start_system;
+      viewstocktradesystem.start_system_jumps = jsonline.start_system_jumps;
+      viewstocktradesystems.push(viewstocktradesystem);
+    }
+    return viewstocktradesystems;
+  }
 }
 
 export default Rsviewstocktradesystem;

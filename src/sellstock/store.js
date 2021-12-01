@@ -7,6 +7,7 @@ const initialState = {
   searchstring: '',
   typelist: [],
   stocklist: [],
+  stocksystemid: null,
   stocktradesystems: [],
 };
 

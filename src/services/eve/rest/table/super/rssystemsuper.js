@@ -2,7 +2,7 @@
 //don't change things here, it will be overwritten
 /* 
     Created on : Nov 20, 2018, 10:39:01 AM
-    Generated on 8.10.2021 7:21
+    Generated on 30.10.2021 10:3
     Author     : Franky Laseure
 */
 
@@ -20,6 +20,8 @@ import { Routepk } from '../../../../../data/eve/table/super/routesuper.js';
 import RouteJson from '../conversion/routejson.js';
 import { Systemtradepk } from '../../../../../data/eve/table/super/systemtradesuper.js';
 import SystemtradeJson from '../conversion/systemtradejson.js';
+import { Tradecombinedpk } from '../../../../../data/eve/table/super/tradecombinedsuper.js';
+import TradecombinedJson from '../conversion/tradecombinedjson.js';
 
 
 class Rssystemsuper extends Eveservice {	
@@ -36,6 +38,8 @@ class Rssystemsuper extends Eveservice {
 	static SELECT_Route = 100 + 4;
 	static SELECT_Systemtradesellsystem = 100 + 5;
 	static SELECT_Systemtradebuysystem = 100 + 6;
+	static SELECT_Tradecombinedbuysystem = 100 + 7;
+	static SELECT_Tradecombinedsellsystem = 100 + 8;
 
 	//UPDATE OPERATIONS
 	static UPDATE_SYSTEM = 10;
@@ -44,8 +48,8 @@ class Rssystemsuper extends Eveservice {
 	static INSERT_SYSTEM = 20;
 
 	//DELETE OPERATIONS
-	static DELETE_Securityisland = 100 + 7;
-	static DELETE_Constellation = 100 + 8;
+	static DELETE_Securityisland = 100 + 9;
+	static DELETE_Constellation = 100 + 10;
 	static DELETE_SYSTEM = 30;
 
 	static extractDataArray = (jsonarray): System[] => {
@@ -134,6 +138,22 @@ class Rssystemsuper extends Eveservice {
     const postdata = {
       operation: { type: super.OPERATIONTYPE_SELECT, operation: this.SELECT_Systemtradebuysystem },
      	"systemtradepk": SystemtradeJson.PKtoJSON(systemtradeBuysystempk)
+    }
+    return this.extractDataArray(await super.post(this.restservice, postdata));
+	}
+
+	static loadSystem4tradecombinedBuysystem = async (tradecombinedBuysystempk: Tradecombinedpk): System[] => {
+    const postdata = {
+      operation: { type: super.OPERATIONTYPE_SELECT, operation: this.SELECT_Tradecombinedbuysystem },
+     	"tradecombinedpk": TradecombinedJson.PKtoJSON(tradecombinedBuysystempk)
+    }
+    return this.extractDataArray(await super.post(this.restservice, postdata));
+	}
+
+	static loadSystem4tradecombinedSellsystem = async (tradecombinedSellsystempk: Tradecombinedpk): System[] => {
+    const postdata = {
+      operation: { type: super.OPERATIONTYPE_SELECT, operation: this.SELECT_Tradecombinedsellsystem },
+     	"tradecombinedpk": TradecombinedJson.PKtoJSON(tradecombinedSellsystempk)
     }
     return this.extractDataArray(await super.post(this.restservice, postdata));
 	}
@@ -264,6 +284,24 @@ class Rssystemsuper extends Eveservice {
     	auth: user===null ? null : user.auth,
       operation: { type: super.OPERATIONTYPE_SECURESELECT, operation: this.SELECT_Systemtradebuysystem },
      	"systemtradepk": SystemtradeJson.PKtoJSON(systemtradeBuysystempk)
+    }
+    return this.extractDataArray(await super.post(this.restservice, postdata));
+	}
+
+	static sec_loadSystem4tradecombinedBuysystem = async (user, tradecombinedBuysystempk: Tradecombinedpk): System[] => {
+    const postdata = {
+    	auth: user===null ? null : user.auth,
+      operation: { type: super.OPERATIONTYPE_SECURESELECT, operation: this.SELECT_Tradecombinedbuysystem },
+     	"tradecombinedpk": TradecombinedJson.PKtoJSON(tradecombinedBuysystempk)
+    }
+    return this.extractDataArray(await super.post(this.restservice, postdata));
+	}
+
+	static sec_loadSystem4tradecombinedSellsystem = async (user, tradecombinedSellsystempk: Tradecombinedpk): System[] => {
+    const postdata = {
+    	auth: user===null ? null : user.auth,
+      operation: { type: super.OPERATIONTYPE_SECURESELECT, operation: this.SELECT_Tradecombinedsellsystem },
+     	"tradecombinedpk": TradecombinedJson.PKtoJSON(tradecombinedSellsystempk)
     }
     return this.extractDataArray(await super.post(this.restservice, postdata));
 	}

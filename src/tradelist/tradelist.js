@@ -17,7 +17,10 @@ import Pagecomponent from '../utilities/pagecomponent.js';
 import { Systempk } from '../data/eve/table/super/systemsuper.js';
 import { Orderspk } from '../data/eve/table/super/orderssuper.js';
 import { Tradepk } from '../data/eve/table/super/tradesuper.js';
-import { Viewcombinedtrade } from '../data/eve/view/viewcombinedtrade.js';
+import { Tradecombinedpk } from '../data/eve/table/super/tradecombinedsuper.js';
+//services
+import Rsviewtradecombined from '../services/eve/rest/view/rsviewtradecombined.js';
+
 //component state
 import appstore from '../appstore.js';
 import storeTradelist, { sortmodes } from './store.js';
@@ -41,7 +44,6 @@ export default function Tradelist(props) {
   const [systems, setSystems] = useState(getsystemoptions());
   const [tradelist, setTradelist] = useState([]);
   const [showtradeline, setShowtradeline] = useState(false);
-  const [showcombinedtradeline, setShowcombinedtradeline] = useState(false);
   //need useEffect on pageLength
   const [pagelength, setPagelength] = useState(compState.paginationconfig.pageLength);
 
@@ -73,7 +75,7 @@ export default function Tradelist(props) {
 
   const changeSystem = (selection) => { 
     const selectedsystemid = selection.value;
-    const name = Store.codetables.findSystem(selectedsystemid).name;
+    const name = selection.label;
     compActions.setSystem(selectedsystemid, name);
   };
 
@@ -170,26 +172,33 @@ export default function Tradelist(props) {
     );    
   }
 
-  const showTradeline = (trade) => {
-    appActions.setActivetrade(trade);
-    setShowtradeline(true);
+  const showTradeline = (viewtradeline) => {
+    appActions.setActivetrade(viewtradeline);
+    appActions.setActivemenu('Trade tools', 'Trade tracking');
   }
 
   const showCombinedtrade = async (trade) => {
-    const dummy = await compActions.loadCombinedtrade(trade);
-    setShowcombinedtradeline(true);
+    let tradecombinedpk = new Tradecombinedpk();
+    tradecombinedpk.init();
+    tradecombinedpk.evetypePK.id = trade.evetype_id;
+    tradecombinedpk.systemBuysystemPK.id = trade.buy_systemid;
+    tradecombinedpk.systemSellsystemPK.id = trade.sell_systemid;
+    let tradecombined = await Rsviewtradecombined.getViewtradecombined(tradecombinedpk);
+    appActions.setActivetradecombined(tradecombined);
+    appActions.setActivemenu('Trade tools', 'Combined trade tracking');    
+  }
+
+  const delTradeline = (viewtradeline) => {
+    appActions.setActivetrade(viewtradeline);
+    setShowtradeline(true);
   }
 
   const onTradelineCancel = () => {
     setShowtradeline(false);
   }
 
-  const onCombinedtradelineCancel = () => {
-    setShowcombinedtradeline(false);
-  }
-
   const onTradeclick = (viewtradeline) => {
-    appActions.setActivetrade(viewtradeline, viewtradeline.sell_id, viewtradeline.buy_id);
+    appActions.setActivetrade(viewtradeline);
   }
 
   const onUpdatetrade = async (volume) => {
@@ -326,8 +335,10 @@ export default function Tradelist(props) {
                     <td style={coltrade_singlerunprofit}><span className='float-right'>{format_price(trade.trade_singlerunprofit)}</span></td>
                     <td style={coltrade_maxunits_per_run}><span className='float-right'>{format_price(trade.trade_maxunits_per_run)}</span></td>
                     <td>
-                      <button type="button" className="btn btn-sm small btn-primary" onClick={() => showTradeline(trade)}>show</button>
-                      <button type="button" className="btn btn-sm small btn-primary" onClick={() => showCombinedtrade(trade)}>show combined</button>
+                      <button type="button" className="btn btn-sm small btn-primary mx-1" onClick={() => showTradeline(trade)}>sel.</button>
+                      <button type="button" className="btn btn-sm small btn-primary mx-1" onClick={() => showCombinedtrade(trade)}>C.</button>
+                      <button type="button" className="btn btn-sm small btn-primary" onClick={() => delTradeline(trade)}>X</button>
+
                     </td>
                   </tr>  
     ))}
@@ -354,15 +365,6 @@ export default function Tradelist(props) {
         show={showtradeline} 
         onUpdatetrade={onUpdatetrade}
         onCancel={onTradelineCancel} 
-        />
-
-      <Combinedtradeorders 
-        trade={compState.viewcombinedtrade}
-        startsystemid={compState.startsystemid}
-        startsystemname={compState.startsystemname}
-        show={showcombinedtradeline} 
-        onUpdatetrade={onUpdatetrade}
-        onCancel={onCombinedtradelineCancel} 
         />
 
     </div>

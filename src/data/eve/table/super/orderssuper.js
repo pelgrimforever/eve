@@ -2,7 +2,7 @@
 //don't change things here, it will be overwritten
 /* 
     Created on : Nov 16, 2018, 17:04:01 PM
-    Generated on 8.10.2021 7:21
+    Generated on 30.10.2021 10:4
     Author     : Franky Laseure
 */
 
@@ -15,6 +15,8 @@ import Stringsearcher from '../../../search/stringsearcher.js';
 import Foreignkeysearcher from '../../../search/foreignkeysearcher.js';
 import Primarykeysearcher from '../../../search/primarykeysearcher.js';
 import Relationalkeysearcher from '../../../search/relationalkeysearcher.js';
+import {Evetypepk} from './evetypesuper.js';
+import {Systempk} from './systemsuper.js';
 
 export class Orderspk {
     id: string = '';
@@ -79,6 +81,10 @@ export class Orderssearcher extends Tablesearch {
         this.addKeysearcher(this.systemtrade1searcher);
         this.addKeysearcher(this.systemtradeorderSellordersearcher);
         this.addKeysearcher(this.systemtrade2searcher);
+        this.addKeysearcher(this.tradecombinedsellBuyorderidsearcher);
+        this.addKeysearcher(this.tradecombined1searcher);
+        this.addKeysearcher(this.tradecombinedsellSellorderidsearcher);
+        this.addKeysearcher(this.tradecombined2searcher);
         this.addKeysearcher(this.tradeSellorderidsearcher);
         this.addKeysearcher(this.tradeBuyorderidsearcher);
 	}
@@ -103,6 +109,10 @@ export class Orderssearcher extends Tablesearch {
     systemtrade1searcher: Relationalkeysearcher = new Relationalkeysearcher();
     systemtradeorderSellordersearcher: Primarykeysearcher = new Primarykeysearcher();
     systemtrade2searcher: Relationalkeysearcher = new Relationalkeysearcher();
+    tradecombinedsellBuyorderidsearcher: Primarykeysearcher = new Primarykeysearcher();
+    tradecombined1searcher: Relationalkeysearcher = new Relationalkeysearcher();
+    tradecombinedsellSellorderidsearcher: Primarykeysearcher = new Primarykeysearcher();
+    tradecombined2searcher: Relationalkeysearcher = new Relationalkeysearcher();
     tradeSellorderidsearcher: Primarykeysearcher = new Primarykeysearcher();
     tradeBuyorderidsearcher: Primarykeysearcher = new Primarykeysearcher();
 
@@ -217,6 +227,18 @@ export class Orderssearcher extends Tablesearch {
     setsystemtrade2 = (systemtradesearch) => {
         this.systemtrade2searcher.setTablesearch(systemtradesearch);
     }
+    settradecombinedsellBuyorderid = (tradecombinedsellsearch) => {
+        this.tradecombinedsellBuyorderidsearcher.setTablesearch(tradecombinedsellsearch);
+    }
+    settradecombined1 = (tradecombinedsearch) => {
+        this.tradecombined1searcher.setTablesearch(tradecombinedsearch);
+    }
+    settradecombinedsellSellorderid = (tradecombinedsellsearch) => {
+        this.tradecombinedsellSellorderidsearcher.setTablesearch(tradecombinedsellsearch);
+    }
+    settradecombined2 = (tradecombinedsearch) => {
+        this.tradecombined2searcher.setTablesearch(tradecombinedsearch);
+    }
     settradeSellorderid = (tradesearch) => {
         this.tradeSellorderidsearcher.setTablesearch(tradesearch);
     }
@@ -250,6 +272,10 @@ export class Orderssearcher extends Tablesearch {
                 "systemtrade1searcher": null,
                 "systemtradeorderSellordersearcher": null,
                 "systemtrade2searcher": null,
+                "tradecombinedsellBuyorderidsearcher": null,
+                "tradecombined1searcher": null,
+                "tradecombinedsellSellorderidsearcher": null,
+                "tradecombined2searcher": null,
                 "tradeSellorderidsearcher": null,
                 "tradeBuyorderidsearcher": null,
             }; 
@@ -270,6 +296,18 @@ export class Orderssearcher extends Tablesearch {
             }
             if(this.systemtrade2searcher!=null && this.systemtrade2searcher.used()) {
                 kss.systemtrade2searcher = this.systemtrade2searcher.toJSON();
+            }
+            if(this.tradecombinedsellBuyorderidsearcher!=null && this.tradecombinedsellBuyorderidsearcher.used()) {
+                kss.tradecombinedsellBuyorderidsearcher = this.tradecombinedsellBuyorderidsearcher.toJSON();
+            }
+            if(this.tradecombined1searcher!=null && this.tradecombined1searcher.used()) {
+                kss.tradecombined1searcher = this.tradecombined1searcher.toJSON();
+            }
+            if(this.tradecombinedsellSellorderidsearcher!=null && this.tradecombinedsellSellorderidsearcher.used()) {
+                kss.tradecombinedsellSellorderidsearcher = this.tradecombinedsellSellorderidsearcher.toJSON();
+            }
+            if(this.tradecombined2searcher!=null && this.tradecombined2searcher.used()) {
+                kss.tradecombined2searcher = this.tradecombined2searcher.toJSON();
             }
             if(this.tradeSellorderidsearcher!=null && this.tradeSellorderidsearcher.used()) {
                 kss.tradeSellorderidsearcher = this.tradeSellorderidsearcher.toJSON();

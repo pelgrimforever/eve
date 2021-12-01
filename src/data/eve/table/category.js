@@ -1,4 +1,4 @@
-//ProjectGenerator: NO AUTHOMATIC UPDATE
+//Metacoder: NO AUTHOMATIC UPDATE
 //Change function definitions here, NOT in categorybase.ts
 /* 
     Created on : Dec 16, 2018, 18:55:01
