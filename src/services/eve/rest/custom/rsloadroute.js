@@ -4,7 +4,9 @@ import Rssystem from '../table/rssystem.js';
 
 class Rsloadroute extends Eveservice { 
 
-  static restservice = 'rsloadroute';
+  //static restservice = 'rsloadroute';
+  static restservice = 'rscreateroutes';
+  
 
   //OPERATIONS
 
