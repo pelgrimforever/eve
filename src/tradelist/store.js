@@ -3,8 +3,6 @@ import globalHook from "../utilities/useglobalhook.js";
 
 import * as actions from "./actions.js";
 
-import { Viewcombinedtrade } from '../data/eve/view/viewcombinedtrade.js';
-
 export const sort_jumps = 'jumps';
 export const sort_m3 = 'volume';
 export const sort_profit = 'profit';
@@ -32,7 +30,6 @@ const paginationdefault = {
 
 const initialState = {
   unfilteredtradelist: [],
-  viewcombinedtrade: new Viewcombinedtrade(),
   startsystemid: null,
   startsystemname: null,
   filtersortfield: sortmodes[sortmode_default],

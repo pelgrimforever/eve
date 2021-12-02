@@ -9,7 +9,6 @@ import { Col, Row, Form } from "react-bootstrap";
 import Moment from 'moment';
 
 import Store from '../services/store.js';
-import './combinedtradeorders.scss';
 
 //services
 import Rsviewstocktradeorders from '../services/eve/rest/view/rsviewstocktradeorders.js';

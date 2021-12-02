@@ -2,7 +2,7 @@
 //don't change things here, it will be overwritten
 /* 
     Created on : Nov 16, 2018, 17:04:01 PM
-    Generated on 30.10.2021 10:4
+    Generated on 2.11.2021 18:45
     Author     : Franky Laseure
 */
 
@@ -71,8 +71,6 @@ export class Systemsearcher extends Tablesearch {
         this.addKeysearcher(this.systemjumpsSystemstartsearcher);
         this.addKeysearcher(this.routesearcher);
         this.addKeysearcher(this.routetypesearcher);
-        this.addKeysearcher(this.systemtradeSellsystemsearcher);
-        this.addKeysearcher(this.systemtradeBuysystemsearcher);
         this.addKeysearcher(this.tradecombinedBuysystemsearcher);
         this.addKeysearcher(this.evetype1searcher);
         this.addKeysearcher(this.tradecombinedSellsystemsearcher);
@@ -94,8 +92,6 @@ export class Systemsearcher extends Tablesearch {
     systemjumpsSystemstartsearcher: Primarykeysearcher = new Primarykeysearcher();
     routesearcher: Primarykeysearcher = new Primarykeysearcher();
     routetypesearcher: Relationalkeysearcher = new Relationalkeysearcher();
-    systemtradeSellsystemsearcher: Primarykeysearcher = new Primarykeysearcher();
-    systemtradeBuysystemsearcher: Primarykeysearcher = new Primarykeysearcher();
     tradecombinedBuysystemsearcher: Primarykeysearcher = new Primarykeysearcher();
     evetype1searcher: Relationalkeysearcher = new Relationalkeysearcher();
     tradecombinedSellsystemsearcher: Primarykeysearcher = new Primarykeysearcher();
@@ -161,12 +157,6 @@ export class Systemsearcher extends Tablesearch {
     setroutetype = (routetypesearch) => {
         this.routetypesearcher.setTablesearch(routetypesearch);
     }
-    setsystemtradeSellsystem = (systemtradesearch) => {
-        this.systemtradeSellsystemsearcher.setTablesearch(systemtradesearch);
-    }
-    setsystemtradeBuysystem = (systemtradesearch) => {
-        this.systemtradeBuysystemsearcher.setTablesearch(systemtradesearch);
-    }
     settradecombinedBuysystem = (tradecombinedsearch) => {
         this.tradecombinedBuysystemsearcher.setTablesearch(tradecombinedsearch);
     }
@@ -206,8 +196,6 @@ export class Systemsearcher extends Tablesearch {
                 "systemjumpsSystemstartsearcher": null,
                 "routesearcher": null,
                 "routetypesearcher": null,
-                "systemtradeSellsystemsearcher": null,
-                "systemtradeBuysystemsearcher": null,
                 "tradecombinedBuysystemsearcher": null,
                 "evetype1searcher": null,
                 "tradecombinedSellsystemsearcher": null,
@@ -230,12 +218,6 @@ export class Systemsearcher extends Tablesearch {
             }
             if(this.routetypesearcher!=null && this.routetypesearcher.used()) {
                 kss.routetypesearcher = this.routetypesearcher.toJSON();
-            }
-            if(this.systemtradeSellsystemsearcher!=null && this.systemtradeSellsystemsearcher.used()) {
-                kss.systemtradeSellsystemsearcher = this.systemtradeSellsystemsearcher.toJSON();
-            }
-            if(this.systemtradeBuysystemsearcher!=null && this.systemtradeBuysystemsearcher.used()) {
-                kss.systemtradeBuysystemsearcher = this.systemtradeBuysystemsearcher.toJSON();
             }
             if(this.tradecombinedBuysystemsearcher!=null && this.tradecombinedBuysystemsearcher.used()) {
                 kss.tradecombinedBuysystemsearcher = this.tradecombinedBuysystemsearcher.toJSON();

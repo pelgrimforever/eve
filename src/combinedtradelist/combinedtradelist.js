@@ -12,7 +12,6 @@ import './combinedtradelist.scss';
 import { AppContext } from "../App.js";
 //components
 import Sortmode from '../utilities/sortmode.js';
-import Combinedtradeorders from '../popups/combinedtradeorders.js';
 import Pagecomponent from '../utilities/pagecomponent.js';
 //services
 import Rstrade from '../services/eve/rest/table/rstrade.js';

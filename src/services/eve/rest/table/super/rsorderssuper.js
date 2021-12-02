@@ -2,7 +2,7 @@
 //don't change things here, it will be overwritten
 /* 
     Created on : Nov 20, 2018, 10:39:01 AM
-    Generated on 30.10.2021 10:3
+    Generated on 2.11.2021 18:45
     Author     : Franky Laseure
 */
 
@@ -14,8 +14,6 @@ import { Evetypepk } from '../../../../../data/eve/table/super/evetypesuper.js';
 import EvetypeJson from '../conversion/evetypejson.js';
 import { Systempk } from '../../../../../data/eve/table/super/systemsuper.js';
 import SystemJson from '../conversion/systemjson.js';
-import { Systemtradeorderpk } from '../../../../../data/eve/table/super/systemtradeordersuper.js';
-import SystemtradeorderJson from '../conversion/systemtradeorderjson.js';
 import { Tradecombinedsellpk } from '../../../../../data/eve/table/super/tradecombinedsellsuper.js';
 import TradecombinedsellJson from '../conversion/tradecombinedselljson.js';
 import { Tradepk } from '../../../../../data/eve/table/super/tradesuper.js';
@@ -31,12 +29,10 @@ class Rsorderssuper extends Eveservice {
 	static SELECT_Siteusergroup = 100 + 0;
 	static SELECT_Evetype = 100 + 0;
 	static SELECT_System = 100 + 1;
-	static SELECT_Systemtradeorderbuyorder = 100 + 2;
-	static SELECT_Systemtradeordersellorder = 100 + 3;
-	static SELECT_Tradecombinedsellbuyorderid = 100 + 4;
-	static SELECT_Tradecombinedsellsellorderid = 100 + 5;
-	static SELECT_Tradesellorderid = 100 + 6;
-	static SELECT_Tradebuyorderid = 100 + 7;
+	static SELECT_Tradecombinedsellbuyorderid = 100 + 2;
+	static SELECT_Tradecombinedsellsellorderid = 100 + 3;
+	static SELECT_Tradesellorderid = 100 + 4;
+	static SELECT_Tradebuyorderid = 100 + 5;
 
 	//UPDATE OPERATIONS
 	static UPDATE_ORDERS = 10;
@@ -45,8 +41,8 @@ class Rsorderssuper extends Eveservice {
 	static INSERT_ORDERS = 20;
 
 	//DELETE OPERATIONS
-	static DELETE_Evetype = 100 + 8;
-	static DELETE_System = 100 + 9;
+	static DELETE_Evetype = 100 + 6;
+	static DELETE_System = 100 + 7;
 	static DELETE_ORDERS = 30;
 
 	static extractDataArray = (jsonarray): Orders[] => {
@@ -95,22 +91,6 @@ class Rsorderssuper extends Eveservice {
     const postdata = {
       operation: { type: super.OPERATIONTYPE_SELECT, operation: this.SELECT_System },
      	"systempk": SystemJson.PKtoJSON(systempk)
-    }
-    return this.extractDataArray(await super.post(this.restservice, postdata));
-	}
-
-	static loadOrders4systemtradeorderBuyorder = async (systemtradeorderBuyorderpk: Systemtradeorderpk): Orders[] => {
-    const postdata = {
-      operation: { type: super.OPERATIONTYPE_SELECT, operation: this.SELECT_Systemtradeorderbuyorder },
-     	"systemtrade_orderpk": SystemtradeorderJson.PKtoJSON(systemtradeorderBuyorderpk)
-    }
-    return this.extractDataArray(await super.post(this.restservice, postdata));
-	}
-
-	static loadOrders4systemtradeorderSellorder = async (systemtradeorderSellorderpk: Systemtradeorderpk): Orders[] => {
-    const postdata = {
-      operation: { type: super.OPERATIONTYPE_SELECT, operation: this.SELECT_Systemtradeordersellorder },
-     	"systemtrade_orderpk": SystemtradeorderJson.PKtoJSON(systemtradeorderSellorderpk)
     }
     return this.extractDataArray(await super.post(this.restservice, postdata));
 	}
@@ -228,24 +208,6 @@ class Rsorderssuper extends Eveservice {
     	auth: user===null ? null : user.auth,
       operation: { type: super.OPERATIONTYPE_SECURESELECT, operation: this.SELECT_System },
      	"systempk": SystemJson.PKtoJSON(systempk)
-    }
-    return this.extractDataArray(await super.post(this.restservice, postdata));
-	}
-
-	static sec_loadOrders4systemtradeorderBuyorder = async (user, systemtradeorderBuyorderpk: Systemtradeorderpk): Orders[] => {
-    const postdata = {
-    	auth: user===null ? null : user.auth,
-      operation: { type: super.OPERATIONTYPE_SECURESELECT, operation: this.SELECT_Systemtradeorderbuyorder },
-     	"systemtrade_orderpk": SystemtradeorderJson.PKtoJSON(systemtradeorderBuyorderpk)
-    }
-    return this.extractDataArray(await super.post(this.restservice, postdata));
-	}
-
-	static sec_loadOrders4systemtradeorderSellorder = async (user, systemtradeorderSellorderpk: Systemtradeorderpk): Orders[] => {
-    const postdata = {
-    	auth: user===null ? null : user.auth,
-      operation: { type: super.OPERATIONTYPE_SECURESELECT, operation: this.SELECT_Systemtradeordersellorder },
-     	"systemtrade_orderpk": SystemtradeorderJson.PKtoJSON(systemtradeorderSellorderpk)
     }
     return this.extractDataArray(await super.post(this.restservice, postdata));
 	}

@@ -2,7 +2,7 @@
 //don't change things here, it will be overwritten
 /* 
     Created on : Nov 16, 2018, 17:04:01 PM
-    Generated on 30.10.2021 10:4
+    Generated on 2.11.2021 18:45
     Author     : Franky Laseure
 */
 
@@ -77,10 +77,6 @@ export class Orderssearcher extends Tablesearch {
 		this.addFieldsearcher(this.page);
         this.addKeysearcher(this.evetypesearcher);
         this.addKeysearcher(this.systemsearcher);
-        this.addKeysearcher(this.systemtradeorderBuyordersearcher);
-        this.addKeysearcher(this.systemtrade1searcher);
-        this.addKeysearcher(this.systemtradeorderSellordersearcher);
-        this.addKeysearcher(this.systemtrade2searcher);
         this.addKeysearcher(this.tradecombinedsellBuyorderidsearcher);
         this.addKeysearcher(this.tradecombined1searcher);
         this.addKeysearcher(this.tradecombinedsellSellorderidsearcher);
@@ -105,10 +101,6 @@ export class Orderssearcher extends Tablesearch {
     page: Numbersearcher = new Numbersearcher("orders.page");
     evetypesearcher: Foreignkeysearcher = new Foreignkeysearcher();
     systemsearcher: Foreignkeysearcher = new Foreignkeysearcher();
-    systemtradeorderBuyordersearcher: Primarykeysearcher = new Primarykeysearcher();
-    systemtrade1searcher: Relationalkeysearcher = new Relationalkeysearcher();
-    systemtradeorderSellordersearcher: Primarykeysearcher = new Primarykeysearcher();
-    systemtrade2searcher: Relationalkeysearcher = new Relationalkeysearcher();
     tradecombinedsellBuyorderidsearcher: Primarykeysearcher = new Primarykeysearcher();
     tradecombined1searcher: Relationalkeysearcher = new Relationalkeysearcher();
     tradecombinedsellSellorderidsearcher: Primarykeysearcher = new Primarykeysearcher();
@@ -215,18 +207,6 @@ export class Orderssearcher extends Tablesearch {
     setsystem = (systemsearch) => {
         this.systemsearcher.setTablesearch(systemsearch);
     }
-    setsystemtradeorderBuyorder = (systemtradeordersearch) => {
-        this.systemtradeorderBuyordersearcher.setTablesearch(systemtradeordersearch);
-    }
-    setsystemtrade1 = (systemtradesearch) => {
-        this.systemtrade1searcher.setTablesearch(systemtradesearch);
-    }
-    setsystemtradeorderSellorder = (systemtradeordersearch) => {
-        this.systemtradeorderSellordersearcher.setTablesearch(systemtradeordersearch);
-    }
-    setsystemtrade2 = (systemtradesearch) => {
-        this.systemtrade2searcher.setTablesearch(systemtradesearch);
-    }
     settradecombinedsellBuyorderid = (tradecombinedsellsearch) => {
         this.tradecombinedsellBuyorderidsearcher.setTablesearch(tradecombinedsellsearch);
     }
@@ -268,10 +248,6 @@ export class Orderssearcher extends Tablesearch {
             var kss = {
                 "evetypesearcher": null,
                 "systemsearcher": null,
-                "systemtradeorderBuyordersearcher": null,
-                "systemtrade1searcher": null,
-                "systemtradeorderSellordersearcher": null,
-                "systemtrade2searcher": null,
                 "tradecombinedsellBuyorderidsearcher": null,
                 "tradecombined1searcher": null,
                 "tradecombinedsellSellorderidsearcher": null,
@@ -284,18 +260,6 @@ export class Orderssearcher extends Tablesearch {
             }
             if(this.systemsearcher!=null && this.systemsearcher.used()) {
                 kss.systemsearcher = this.systemsearcher.toJSON();
-            }
-            if(this.systemtradeorderBuyordersearcher!=null && this.systemtradeorderBuyordersearcher.used()) {
-                kss.systemtradeorderBuyordersearcher = this.systemtradeorderBuyordersearcher.toJSON();
-            }
-            if(this.systemtrade1searcher!=null && this.systemtrade1searcher.used()) {
-                kss.systemtrade1searcher = this.systemtrade1searcher.toJSON();
-            }
-            if(this.systemtradeorderSellordersearcher!=null && this.systemtradeorderSellordersearcher.used()) {
-                kss.systemtradeorderSellordersearcher = this.systemtradeorderSellordersearcher.toJSON();
-            }
-            if(this.systemtrade2searcher!=null && this.systemtrade2searcher.used()) {
-                kss.systemtrade2searcher = this.systemtrade2searcher.toJSON();
             }
             if(this.tradecombinedsellBuyorderidsearcher!=null && this.tradecombinedsellBuyorderidsearcher.used()) {
                 kss.tradecombinedsellBuyorderidsearcher = this.tradecombinedsellBuyorderidsearcher.toJSON();

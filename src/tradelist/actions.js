@@ -4,7 +4,6 @@ import appstore from '../appstore.js';
 //services
 import Rstrade from '../services/eve/rest/table/rstrade.js';
 import Rsviewtrade from '../services/eve/rest/view/rsviewtrade.js';
-import Rsviewcombinedtrade from '../services/eve/rest/view/rsviewcombinedtrade.js';
 //data models
 import storeTradelist, { sort_jumps, sort_m3, sort_profit, sort_profitperjump, sortmodes} from './store.js';
 import { Systempk } from '../data/eve/table/super/systemsuper.js';
@@ -67,21 +66,6 @@ export const updateTrade = async (store, sell_id, buy_id, volume) => {
   tradepk.ordersBuyorderidPK.id = buy_id;
   const traderesult = await Rstrade.executetrade(tradepk, volume);
 };
-
-export const loadCombinedtrade = async (store, trade) => {
-  try {
-    let systempk = new Systempk();
-    systempk.id = store.state.startsystemid;
-    let startsystempk = new Systempk();
-    startsystempk.id = trade.sell_systemid;
-    let endsystempk = new Systempk();
-    endsystempk.id = trade.buy_systemid;
-    const result = await Rsviewcombinedtrade.get4_startendsystem(Store.user, systempk, startsystempk, endsystempk);
-    setViewcombinedtrade(store, result);
-  } catch (e) {
-    console.log("loadCombinedtrade failed");
-  }
-}
 
 export const filtertradelist = (store, list) => {
   let result = list.filter(obj => {

@@ -11,7 +11,6 @@ import './tradelist.scss';
 //components
 import Sortmode from '../utilities/sortmode.js';
 import Tradeline from '../popups/tradeline.js';
-import Combinedtradeorders from '../popups/combinedtradeorders.js';
 import Pagecomponent from '../utilities/pagecomponent.js';
 //data models
 import { Systempk } from '../data/eve/table/super/systemsuper.js';
