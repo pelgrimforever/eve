@@ -8,10 +8,12 @@
 
 import Rsviewtradecombinedsellsuper from './super/rsviewtradecombinedsellsuper';
 import TradecombinedJson from '../table/conversion/tradecombinedjson.js';
+import SystemJson from '../table/conversion/systemjson.js';
 
 class Rsviewtradecombinedsell extends Rsviewtradecombinedsellsuper {
 
   static SELECT4TRADECOMBINED = 2;
+  static SELECT4TRADESYSTEMS = 3;
 
   static get4Tradecombined = async (tradecombinedpk) => {
     const postdata = {
@@ -21,6 +23,14 @@ class Rsviewtradecombinedsell extends Rsviewtradecombinedsellsuper {
     return this.extractDataArray(await super.post(this.restservice, postdata));
   }
 
+  static get4Tradesystems = async (sell_systempk, buy_systempk) => {
+    const postdata = {
+      operation: { type: super.OPERATIONTYPE_SELECT, operation: this.SELECT4TRADESYSTEMS },
+      sell_systempk: SystemJson.PKtoJSON(sell_systempk),
+      buy_systempk: SystemJson.PKtoJSON(buy_systempk)
+    }
+    return this.extractDataArray(await super.post(this.restservice, postdata));
+  }
 }
 
 export default Rsviewtradecombinedsell;

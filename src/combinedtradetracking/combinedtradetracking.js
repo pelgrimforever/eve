@@ -14,6 +14,7 @@ import Rsloadroute from '../services/eve/rest/custom/rsloadroute.js';
 import Rsviewtradecombinedsell from '../services/eve/rest/view/rsviewtradecombinedsell.js';
 import Rsloadorderupdate from '../services/eve/rest/custom/rsloadorderupdate.js';
 import Rsvieworder from '../services/eve/rest/view/rsvieworder.js';
+import Rsviewtradesystem from '../services/eve/rest/view/rsviewtradesystem.js';
 //data models
 import { Systempk } from '../data/eve/table/super/systemsuper.js';
 import Orders, { Orderspk } from '../data/eve/table/super/orderssuper.js';
@@ -21,14 +22,14 @@ import { Tradecombinedpk } from '../data/eve/table/super/tradecombinedsuper.js';
 import { Evetypepk } from '../data/eve/table/super/evetypesuper.js';
 //component state
 import appstore from '../appstore.js';
-import storeTradetracking from './store.js';
+import storeCombinedtradetracking from './store.js';
 
 export default function Combinedtradetracking(props) {
 
   //variables with App scope
-  const [appState] = appstore();
+  const [appState, appActions] = appstore();
   //variables with component scope
-  const [compState, compActions] = storeTradetracking();
+  const [compState, compActions] = storeCombinedtradetracking();
 
   const getsystemoptions = () => {
     let systemlist = [];
@@ -126,6 +127,18 @@ export default function Combinedtradetracking(props) {
       const resultroute = await Rsloadroute.getroute(appState.viewtradecombined.sell_systemid, appState.viewtradecombined.buy_systemid, compState.viasystems, compState.avoidsystems, compState.secure);
       setList(resultroute);
       const dummy = await load4evetype();
+    }
+  }
+
+  const showSystemtrade = async (event) => {
+    if(appState.viewtradecombined.sell_regionid!=null) {
+      let buy_systempk = new Systempk();
+      buy_systempk.id = appState.viewtradecombined.buy_systemid;
+      let sell_systempk = new Systempk();
+      sell_systempk.id = appState.viewtradecombined.sell_systemid;
+      const viewsystemtrade = await Rsviewtradesystem.getviewtradesellbuysystem(sell_systempk, buy_systempk);
+      appActions.setActivetradesystem(viewsystemtrade);
+      appActions.setActivemenu('Trade tools', 'System trade tracking');
     }
   }
 
@@ -310,7 +323,12 @@ export default function Combinedtradetracking(props) {
 
             <div className="p-2 flex-fill bg-info">
               <div className="row m-0">
-                <button type="button" className="btn btn-sm btn-primary m-1" onClick={loadupdate}>refresh</button>
+                <div className="col col-sm-6">
+                  <button type="button" className="btn btn-sm btn-primary btn-block" onClick={loadupdate}>refresh</button>
+                </div>
+                <div className="col col-sm-6">
+                  <button type="button" className="btn btn-sm btn-primary btn-block" onClick={showSystemtrade}>system</button>
+                </div>
               </div>
               <div className="row m-0">
                 <div className="col col-sm-4 input-group-prepend">

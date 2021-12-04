@@ -14,7 +14,6 @@ import { AppContext } from "../App.js";
 import Sortmode from '../utilities/sortmode.js';
 import Pagecomponent from '../utilities/pagecomponent.js';
 //services
-import Rstrade from '../services/eve/rest/table/rstrade.js';
 import Rsviewtradecombined from '../services/eve/rest/view/rsviewtradecombined.js';
 //data models
 import { Systempk } from '../data/eve/table/super/systemsuper.js';
@@ -174,7 +173,7 @@ export default function Combinedtradelist(props) {
         listref.sort((a, b) => (a.start_system_jumps<b.start_system_jumps) ? -1 : 1);
         break;
       case sort_m3:
-        listref.sort((a, b) => (a.totalamount<b.totalamount) ? 1 : -1);
+        listref.sort((a, b) => (a.totalamount * a.packaged_volume < b.totalamount * b.packaged_volume) ? 1 : -1);
         break;
       case sort_profit:
         listref.sort((a, b) => (a.totalprofit<b.totalprofit) ? 1 : -1);
@@ -216,17 +215,6 @@ export default function Combinedtradelist(props) {
 
   const onTradelineCancel = () => {
     setShowtradeline(false);
-  }
-
-  const onUpdatetrade = async (volume) => {
-/*    let tradepk = new Tradepk();
-    tradepk.ordersSellorderidPK = new Orderspk();
-    tradepk.ordersSellorderidPK.id = compState.viewcombinedtrade.sell_id;
-    tradepk.ordersBuyorderidPK = new Orderspk();
-    tradepk.ordersBuyorderidPK.id = compState.viewcombinedtrade.buy_id;
-    const traderesult = await Rstrade.executetrade(tradepk, volume);
-    setShowtradeline(false);
-    const dummy = await loadlist();*/
   }
 
   const onSortfieldselected = (sortfield) => {

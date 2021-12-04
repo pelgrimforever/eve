@@ -28,9 +28,10 @@ import Tradelist from './tradelist/tradelist.js';
 import Combinedtradelist from './combinedtradelist/combinedtradelist.js';
 import Systemkills from './systemkills/systemkills.js';
 import Sellstock from './sellstock/sellstock.js';
-//import Systemtradelist from './systemtradelist/systemtradelist.js';
 import Tradetracking from './tradetracking/tradetracking.js';
 import Combinedtradetracking from './combinedtradetracking/combinedtradetracking.js';
+import Systemtradelist from './systemtradelist/systemtradelist.js';
+import Systemtradetracking from './systemtradetracking/systemtradetracking.js';
 
 //configured in .env and .env.production
 const {REACT_APP_TEST} = process.env;
@@ -53,7 +54,8 @@ export default function Page() {
               { name:'Trade tracking', link: '/tradetracking' }, 
               { name:'Combined trade', link: '/combinedtradelist' }, 
               { name:'Combined trade tracking', link: '/combinedtradetracking' }, 
-      //        { name:'Systemtrade', link: '/systemtradelist' }, 
+              { name:'System trade', link: '/systemtradelist' }, 
+              { name:'System trade tracking', link: '/systemtradetracking' },
               { name:'Sell stock', link: '/sellstock' },
             ]
         },         
@@ -97,12 +99,13 @@ export default function Page() {
     <Route exact path="/home" component={Home}/>
     <Route exact path="/tradetypes" component={Tradetypes}/>
     <Route exact path="/tradelist" component={Tradelist}/>
-{/*    <Route exact path="/systemtradelist" component={Systemtradelist}/> */}
     <Route exact path="/tradetracking" component={Tradetracking}/>
     <Route exact path="/combinedtradelist" component={Combinedtradelist}/>
     <Route exact path="/combinedtradetracking" component={Combinedtradetracking}/>
-    <Route exact path="/systemkills" component={Systemkills}/>
+    <Route exact path="/systemtradelist" component={Systemtradelist}/>
+    <Route exact path="/systemtradetracking" component={Systemtradetracking}/>
     <Route exact path="/sellstock" component={Sellstock}/>
+    <Route exact path="/systemkills" component={Systemkills}/>
   </div>
 
   <div className="containerfooter bg-dark d-flex justify-content-end">

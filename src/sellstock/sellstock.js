@@ -113,8 +113,9 @@ export default function Sellstock(props) {
     return n.toFixed(2);
   };
 
-  const col_jumps = {width: '5rem'};
-  const col_name = {width: '25rem'};
+  const col_jumps = {width: '4rem'};
+  const col_name = {width: '20rem'};
+  const col_region = {width: '10rem'};
   const col_amount = {width: '5rem'};
   const col_price = {width: '10rem'};
 
@@ -263,6 +264,7 @@ export default function Sellstock(props) {
                     <thead>
                       <tr>
                         <th style={col_jumps}>jumps</th>
+                        <th style={col_region}>region</th>
                         <th style={col_name}>system</th>
                         <th style={col_price}>total sell price</th>
                         <th></th>
@@ -274,6 +276,7 @@ export default function Sellstock(props) {
     {compState.stocktradesystems.map((item, index) => (
                       <tr className="table-info" key={index}>
                         <td style={col_jumps}>{item.start_system_jumps}</td>
+                        <td style={col_region}>{item.region}</td>
                         <td style={col_name}>{item.name}</td>
                         <td style={col_price}><span className='float-right'>{format_2digits(item.sellprice)}</span></td>
                         <td>

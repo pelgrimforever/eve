@@ -2,7 +2,7 @@
 //don't change things here, it will be overwritten
 /* 
     Created on : Dec 16, 2018, 18:32:01
-    Generated on 30.10.2021 10:4
+    Generated on 4.11.2021 14:51
     Author     : Franky Laseure
 */
 
@@ -15,6 +15,7 @@ class ViewstocktradesystemJson {
 			"username": viewstocktradesystem.username,
 			"id": "" + viewstocktradesystem.id,
 			"name": viewstocktradesystem.name,
+			"region": viewstocktradesystem.region,
 			"sellprice": "" + viewstocktradesystem.sellprice,
 			"totalvolume": "" + viewstocktradesystem.totalvolume,
 		};
@@ -26,6 +27,7 @@ class ViewstocktradesystemJson {
 		model.username = jsonobj.username;
 		model.id = "" + jsonobj.id;
 		model.name = jsonobj.name;
+		model.region = jsonobj.region;
 		model.sellprice = parseFloat(jsonobj.sellprice);
 		model.totalvolume = parseFloat(jsonobj.totalvolume);
 		return model;

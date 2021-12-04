@@ -16,9 +16,7 @@ import Pagecomponent from '../utilities/pagecomponent.js';
 import { Systempk } from '../data/eve/table/super/systemsuper.js';
 import { Orderspk } from '../data/eve/table/super/orderssuper.js';
 import { Tradepk } from '../data/eve/table/super/tradesuper.js';
-import { Tradecombinedpk } from '../data/eve/table/super/tradecombinedsuper.js';
 //services
-import Rsviewtradecombined from '../services/eve/rest/view/rsviewtradecombined.js';
 
 //component state
 import appstore from '../appstore.js';
@@ -176,17 +174,6 @@ export default function Tradelist(props) {
     appActions.setActivemenu('Trade tools', 'Trade tracking');
   }
 
-  const showCombinedtrade = async (trade) => {
-    let tradecombinedpk = new Tradecombinedpk();
-    tradecombinedpk.init();
-    tradecombinedpk.evetypePK.id = trade.evetype_id;
-    tradecombinedpk.systemBuysystemPK.id = trade.buy_systemid;
-    tradecombinedpk.systemSellsystemPK.id = trade.sell_systemid;
-    let tradecombined = await Rsviewtradecombined.getViewtradecombined(tradecombinedpk);
-    appActions.setActivetradecombined(tradecombined);
-    appActions.setActivemenu('Trade tools', 'Combined trade tracking');    
-  }
-
   const delTradeline = (viewtradeline) => {
     appActions.setActivetrade(viewtradeline);
     setShowtradeline(true);
@@ -213,16 +200,16 @@ export default function Tradelist(props) {
   const colstart_system_jumps = {width: '1rem'};
   const colsell_regionname = {width: '4rem' };
   const colsell_systemname = {width: '4rem'};
-  const colsell_stationname = {width: '15rem'};
+  const colsell_stationname = {width: '14rem'};
   const colevetype_name = {width: '12rem'};
   const colpackaged_volume = {width: '3rem'};
   const colsell_volume_remain = {width: '3rem'};
   const colsell_price = {width: '3rem'};
   const colbuy_price = {width: '3rem'};
   const colbuy_systemname = {width: '4rem'};
-  const colbuy_stationname = {width: '15rem'};
+  const colbuy_stationname = {width: '14rem'};
   const coltotal_volume = {width: '5rem'};
-  const coltotal_m3 = {width: '6rem'};
+  const coltotal_m3 = {width: '5rem'};
   const colsell_total = {width: '5rem'};
   const colbuy_total = {width: '5rem'};
   const coltrade_profit = {width: '5rem'};
@@ -335,7 +322,6 @@ export default function Tradelist(props) {
                     <td style={coltrade_maxunits_per_run}><span className='float-right'>{format_price(trade.trade_maxunits_per_run)}</span></td>
                     <td>
                       <button type="button" className="btn btn-sm small btn-primary mx-1" onClick={() => showTradeline(trade)}>sel.</button>
-                      <button type="button" className="btn btn-sm small btn-primary mx-1" onClick={() => showCombinedtrade(trade)}>C.</button>
                       <button type="button" className="btn btn-sm small btn-primary" onClick={() => delTradeline(trade)}>X</button>
 
                     </td>
