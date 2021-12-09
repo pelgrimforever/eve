@@ -220,10 +220,10 @@ export default function Combinedtradetracking(props) {
   return (
     <div className="root fullheight">
 
-      <div className="containerheader">
+      <div className="containerheader h-25 container-relative">
         <div className="mx-auto bg-light p-1">
           <div className="d-flex">
-            <div className="p-2 flex-fill bg-info">
+            <div className="p-2 flex-fill bg-info table-container container-fluid">
               <table className="table small table-dark table-bordered table-hover fillparent">
                 <thead>
                   <tr>

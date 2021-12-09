@@ -2,7 +2,7 @@
 //don't change things here, it will be overwritten
 /* 
     Created on : Dec 16, 2018, 18:32:01
-    Generated on 4.11.2021 14:51
+    Generated on 9.11.2021 14:30
     Author     : Franky Laseure
 */
 
@@ -36,6 +36,8 @@ class ViewtradeJson {
 			"buy_total": "" + viewtrade.buy_total,
 			"trade_profit": "" + viewtrade.trade_profit,
 			"trade_jumps": viewtrade.trade_jumps,
+			"trade_jumpslowsec": viewtrade.trade_jumpslowsec,
+			"trade_jumpsnullsec": viewtrade.trade_jumpsnullsec,
 			"trade_profit_per_jump": "" + viewtrade.trade_profit_per_jump,
 			"trade_runs": viewtrade.trade_runs,
 			"trade_total_jumps": viewtrade.trade_total_jumps,
@@ -71,6 +73,8 @@ class ViewtradeJson {
 		model.buy_total = parseFloat(jsonobj.buy_total);
 		model.trade_profit = parseFloat(jsonobj.trade_profit);
 		model.trade_jumps = jsonobj.trade_jumps;
+		model.trade_jumpslowsec = jsonobj.trade_jumpslowsec;
+		model.trade_jumpsnullsec = jsonobj.trade_jumpsnullsec;
 		model.trade_profit_per_jump = parseFloat(jsonobj.trade_profit_per_jump);
 		model.trade_runs = jsonobj.trade_runs;
 		model.trade_total_jumps = jsonobj.trade_total_jumps;

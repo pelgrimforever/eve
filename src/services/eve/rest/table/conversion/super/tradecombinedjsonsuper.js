@@ -2,7 +2,7 @@
 //don't change things here, it will be overwritten
 /* 
     Created on : Nov 19, 2018, 12:42:01 PM
-    Generated on 4.11.2021 14:51
+    Generated on 9.11.2021 14:30
     Author     : Franky Laseure
 */
 
@@ -38,6 +38,8 @@ class TradecombinedJsonsuper {
 		var jsonobj = {
 			"PK": this.PKtoJSON(tradecombined.PK),
 			"jumps": tradecombined.jumps,
+			"jumpslowsec": tradecombined.jumpslowsec,
+			"jumpsnullsec": tradecombined.jumpsnullsec,
 		};
 		return jsonobj;
 	}
@@ -67,6 +69,8 @@ class TradecombinedJsonsuper {
 		let model = new Tradecombined();
 		model.PK = this.PKfromJSON(jsonobj.PK);
 		model.jumps = jsonobj.jumps;
+		model.jumpslowsec = jsonobj.jumpslowsec;
+		model.jumpsnullsec = jsonobj.jumpsnullsec;
 		return model;
 	}
 }

@@ -2,7 +2,7 @@
 //don't change things here, it will be overwritten
 /* 
     Created on : Nov 19, 2018, 12:42:01 PM
-    Generated on 4.11.2021 14:51
+    Generated on 9.11.2021 14:30
     Author     : Franky Laseure
 */
 
@@ -34,6 +34,11 @@ class SystemjumpsJsonsuper {
 		var jsonobj = {
 			"PK": this.PKtoJSON(systemjumps.PK),
 			"jumps": systemjumps.jumps,
+			"jumpslowsec": systemjumps.jumpslowsec,
+			"jumpsnullsec": systemjumps.jumpsnullsec,
+			"jumpssafe": systemjumps.jumpssafe,
+			"jumpssafelowsec": systemjumps.jumpssafelowsec,
+			"jumpssafenullsec": systemjumps.jumpssafenullsec,
 		};
 		return jsonobj;
 	}
@@ -58,6 +63,11 @@ class SystemjumpsJsonsuper {
 		let model = new Systemjumps();
 		model.PK = this.PKfromJSON(jsonobj.PK);
 		model.jumps = jsonobj.jumps;
+		model.jumpslowsec = jsonobj.jumpslowsec;
+		model.jumpsnullsec = jsonobj.jumpsnullsec;
+		model.jumpssafe = jsonobj.jumpssafe;
+		model.jumpssafelowsec = jsonobj.jumpssafelowsec;
+		model.jumpssafenullsec = jsonobj.jumpssafenullsec;
 		return model;
 	}
 }

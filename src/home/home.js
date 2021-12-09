@@ -16,6 +16,7 @@ export default function Home() {
   const [loading, setLoading] = useState(false);
   const [totalpages, setTotalpages] = useState(0);
   const [totaldone, setTotaldone] = useState(0);
+  const [totalorders, setTotalorders] = useState(0);
   const [regions, setRegions] = useState([]);
   const [messages, setMessages] = useState([]);
   const [marketdone, setMarketdone] = useState(true);
@@ -52,13 +53,16 @@ export default function Home() {
         const sortedregions = result.regions.sort((a, b) => (a.totalpages>b.totalpages) ? -1 : 1);  
         let l_totalpages = 0;
         let l_totaldone = 0;
+        let l_totalorders = 0;
         sortedregions.map(region => {
             l_totalpages += region.totalpages;
             l_totaldone += region.page;
+            l_totalorders += region.orders;
         });
         setRegions(sortedregions);
         setTotalpages(l_totalpages);
         setTotaldone(l_totaldone);
+        setTotalorders(l_totalorders);
         setMessages(result.messages);
         setMarketdone(result.done);
         if(result.done) {
@@ -90,6 +94,8 @@ export default function Home() {
 
   const colname = {width: '6rem' };
   const colgraph = {width: '20rem'};
+  const colpages = {width: '4rem'};
+  const colorders = {width: '4rem'};
   const coldone = {width: '3rem'};
 
   return (
@@ -109,8 +115,9 @@ export default function Home() {
               <tr>
                 <th style={colname}>region</th>
                 <th style={colgraph}>pages downloaded</th>
-                <th style={coldone}>done</th>
-                <th></th>
+                <th style={colpages}>pages</th>
+                <th style={colorders}>#orders</th>
+                <th><span className='float-right'>{totalorders}</span></th>
                 <th className="dummyscroll"></th>
               </tr>
             </thead>
@@ -122,6 +129,8 @@ export default function Home() {
                 <td style={colgraph}>
                   <ProgressBar variant="success" now={region.page*100/region.totalpages} />
                 </td>
+                <td style={colpages}><span className='float-right'>{region.page} / {region.totalpages}</span></td>
+                <td style={colorders}><span className='float-right'>{region.orders}</span></td>
                 <td style={coldone}>
                   <div className="custom-control custom-checkbox cell-center">
                     <input type="checkbox" checked={region.done} className="form-check-input" disabled/>

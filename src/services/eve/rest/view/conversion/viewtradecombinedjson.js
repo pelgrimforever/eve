@@ -2,7 +2,7 @@
 //don't change things here, it will be overwritten
 /* 
     Created on : Dec 16, 2018, 18:32:01
-    Generated on 4.11.2021 14:51
+    Generated on 9.11.2021 14:30
     Author     : Franky Laseure
 */
 
@@ -27,6 +27,8 @@ class ViewtradecombinedJson {
 			"buy_systemid": "" + viewtradecombined.buy_systemid,
 			"buy_systemname": viewtradecombined.buy_systemname,
 			"trade_jumps": viewtradecombined.trade_jumps,
+			"trade_jumpslowsec": viewtradecombined.trade_jumpslowsec,
+			"trade_jumpsnullsec": viewtradecombined.trade_jumpsnullsec,
 		};
 		return jsonobj;
 	}
@@ -48,6 +50,8 @@ class ViewtradecombinedJson {
 		model.buy_systemid = "" + jsonobj.buy_systemid;
 		model.buy_systemname = jsonobj.buy_systemname;
 		model.trade_jumps = jsonobj.trade_jumps;
+		model.trade_jumpslowsec = jsonobj.trade_jumpslowsec;
+		model.trade_jumpsnullsec = jsonobj.trade_jumpsnullsec;
 		return model;
 	}
 }

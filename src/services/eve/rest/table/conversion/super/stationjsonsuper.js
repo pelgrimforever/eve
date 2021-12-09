@@ -2,7 +2,7 @@
 //don't change things here, it will be overwritten
 /* 
     Created on : Nov 19, 2018, 12:42:01 PM
-    Generated on 4.11.2021 14:51
+    Generated on 9.11.2021 14:30
     Author     : Franky Laseure
 */
 
@@ -44,6 +44,7 @@ class StationJsonsuper {
 			"reprocessing_stations_take": "" + station.reprocessing_stations_take,
 			"max_dockable_ship_volume": "" + station.max_dockable_ship_volume,
 			"owner": "" + station.owner,
+			"downloaddate": "" + station.downloaddate,
 		};
 		if(station.racePK!=null) {
 			jsonobj.racePK = RaceJson.PKtoJSON(station.racePK);
@@ -79,6 +80,12 @@ class StationJsonsuper {
 		model.reprocessing_stations_take = parseFloat(jsonobj.reprocessing_stations_take);
 		model.max_dockable_ship_volume = parseFloat(jsonobj.max_dockable_ship_volume);
 		model.owner = "" + jsonobj.owner;
+		model.downloaddate = jsonobj.downloaddate;
+		if(model.downloaddate) {
+			model.downloaddateUI = Moment(new Date(jsonobj.downloaddate)).format("YYYY MM DD");
+		} else {
+			model.downloaddate = "";
+		}
 		return model;
 	}
 }

@@ -2,7 +2,7 @@
 //don't change things here, it will be overwritten
 /* 
     Created on : Nov 16, 2018, 17:04:01 PM
-    Generated on 4.11.2021 14:51
+    Generated on 9.11.2021 14:30
     Author     : Franky Laseure
 */
 
@@ -71,6 +71,8 @@ class Tradesuper {
 	profit_per_jump: number = 0;
 	singlerun_profit_per_jump: number = 0;
 	maxunits_per_run: number = 0;
+	jumpslowsec: number = 0;
+	jumpsnullsec: number = 0;
 }
 
 export class Tradesearcher extends Tablesearch {
@@ -86,6 +88,8 @@ export class Tradesearcher extends Tablesearch {
 		this.addFieldsearcher(this.profit_per_jump);
 		this.addFieldsearcher(this.singlerun_profit_per_jump);
 		this.addFieldsearcher(this.maxunits_per_run);
+		this.addFieldsearcher(this.jumpslowsec);
+		this.addFieldsearcher(this.jumpsnullsec);
         this.addKeysearcher(this.ordersSellorderidsearcher);
         this.addKeysearcher(this.ordersBuyorderidsearcher);
 	}
@@ -101,6 +105,8 @@ export class Tradesearcher extends Tablesearch {
     profit_per_jump: Numbersearcher = new Numbersearcher("trade.profit_per_jump");
     singlerun_profit_per_jump: Numbersearcher = new Numbersearcher("trade.singlerun_profit_per_jump");
     maxunits_per_run: Numbersearcher = new Numbersearcher("trade.maxunits_per_run");
+    jumpslowsec: Numbersearcher = new Numbersearcher("trade.jumpslowsec");
+    jumpsnullsec: Numbersearcher = new Numbersearcher("trade.jumpsnullsec");
     ordersSellorderidsearcher: Foreignkeysearcher = new Foreignkeysearcher();
     ordersBuyorderidsearcher: Foreignkeysearcher = new Foreignkeysearcher();
 
@@ -193,6 +199,24 @@ export class Tradesearcher extends Tablesearch {
 		  }
     	this.maxunits_per_run.values = this.maxunits_per_run.values.concat(numvalues);
     	this.maxunits_per_run.operators = this.maxunits_per_run.operators.concat(operators);
+    }    
+    addjumpslowsecs = (values, operators) => {
+		  let numvalues = [values.length];
+		  let i=0;
+		  for(i=0; i<values.length; i++) {
+		    numvalues[i] = parseFloat(values[i]);
+		  }
+    	this.jumpslowsec.values = this.jumpslowsec.values.concat(numvalues);
+    	this.jumpslowsec.operators = this.jumpslowsec.operators.concat(operators);
+    }    
+    addjumpsnullsecs = (values, operators) => {
+		  let numvalues = [values.length];
+		  let i=0;
+		  for(i=0; i<values.length; i++) {
+		    numvalues[i] = parseFloat(values[i]);
+		  }
+    	this.jumpsnullsec.values = this.jumpsnullsec.values.concat(numvalues);
+    	this.jumpsnullsec.operators = this.jumpsnullsec.operators.concat(operators);
     }    
     setordersSellorderid = (orderssearch) => {
         this.ordersSellorderidsearcher.setTablesearch(orderssearch);

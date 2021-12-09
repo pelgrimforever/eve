@@ -2,7 +2,7 @@
 //don't change things here, it will be overwritten
 /* 
     Created on : Nov 20, 2018, 10:39:01 AM
-    Generated on 4.11.2021 14:51
+    Generated on 9.11.2021 14:30
     Author     : Franky Laseure
 */
 
@@ -12,8 +12,6 @@ import Routetype from '../../../../../data/eve/table/routetype.js';
 import RoutetypeJson from '../conversion/routetypejson.js';
 import { Securityislandpk } from '../../../../../data/eve/table/super/securityislandsuper.js';
 import SecurityislandJson from '../conversion/securityislandjson.js';
-import { Routepk } from '../../../../../data/eve/table/super/routesuper.js';
-import RouteJson from '../conversion/routejson.js';
 
 
 class Rsroutetypesuper extends Eveservice {	
@@ -24,7 +22,6 @@ class Rsroutetypesuper extends Eveservice {
 	static SELECT_ROUTETYPE = 2;
 	static SELECT_Siteusergroup = 100 + 0;
 	static SELECT_Securityisland = 100 + 0;
-	static SELECT_Route = 100 + 1;
 
 	//UPDATE OPERATIONS
 	static UPDATE_ROUTETYPE = 10;
@@ -33,7 +30,7 @@ class Rsroutetypesuper extends Eveservice {
 	static INSERT_ROUTETYPE = 20;
 
 	//DELETE OPERATIONS
-	static DELETE_Securityisland = 100 + 2;
+	static DELETE_Securityisland = 100 + 1;
 	static DELETE_ROUTETYPE = 30;
 
 	static extractDataArray = (jsonarray): Routetype[] => {
@@ -74,14 +71,6 @@ class Rsroutetypesuper extends Eveservice {
     const postdata = {
       operation: { type: super.OPERATIONTYPE_SELECT, operation: this.SELECT_Securityisland },
      	"security_islandpk": SecurityislandJson.PKtoJSON(securityislandpk)
-    }
-    return this.extractDataArray(await super.post(this.restservice, postdata));
-	}
-
-	static loadRoutetype4route = async (routepk: Routepk): Routetype[] => {
-    const postdata = {
-      operation: { type: super.OPERATIONTYPE_SELECT, operation: this.SELECT_Route },
-     	"routepk": RouteJson.PKtoJSON(routepk)
     }
     return this.extractDataArray(await super.post(this.restservice, postdata));
 	}
@@ -158,15 +147,6 @@ class Rsroutetypesuper extends Eveservice {
     	auth: user===null ? null : user.auth,
       operation: { type: super.OPERATIONTYPE_SECURESELECT, operation: this.SELECT_Securityisland },
      	"security_islandpk": SecurityislandJson.PKtoJSON(securityislandpk)
-    }
-    return this.extractDataArray(await super.post(this.restservice, postdata));
-	}
-
-	static sec_loadRoutetype4route = async (user, routepk: Routepk): Routetype[] => {
-    const postdata = {
-    	auth: user===null ? null : user.auth,
-      operation: { type: super.OPERATIONTYPE_SECURESELECT, operation: this.SELECT_Route },
-     	"routepk": RouteJson.PKtoJSON(routepk)
     }
     return this.extractDataArray(await super.post(this.restservice, postdata));
 	}

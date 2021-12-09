@@ -2,7 +2,7 @@
 //don't change things here, it will be overwritten
 /* 
     Created on : Nov 16, 2018, 17:04:01 PM
-    Generated on 4.11.2021 14:51
+    Generated on 9.11.2021 14:30
     Author     : Franky Laseure
 */
 
@@ -62,18 +62,33 @@ class Systemjumpssuper {
 		return result;
 	}
 	jumps: number = 0;
+	jumpslowsec: number = 0;
+	jumpsnullsec: number = 0;
+	jumpssafe: number = 0;
+	jumpssafelowsec: number = 0;
+	jumpssafenullsec: number = 0;
 }
 
 export class Systemjumpssearcher extends Tablesearch {
 	constructor() { 
 		super(); 
 		this.addFieldsearcher(this.jumps);
+		this.addFieldsearcher(this.jumpslowsec);
+		this.addFieldsearcher(this.jumpsnullsec);
+		this.addFieldsearcher(this.jumpssafe);
+		this.addFieldsearcher(this.jumpssafelowsec);
+		this.addFieldsearcher(this.jumpssafenullsec);
         this.addKeysearcher(this.systemSystemendsearcher);
         this.addKeysearcher(this.systemSystemstartsearcher);
 	}
 
     filtermodel: null;
     jumps: Numbersearcher = new Numbersearcher("systemjumps.jumps");
+    jumpslowsec: Numbersearcher = new Numbersearcher("systemjumps.jumpslowsec");
+    jumpsnullsec: Numbersearcher = new Numbersearcher("systemjumps.jumpsnullsec");
+    jumpssafe: Numbersearcher = new Numbersearcher("systemjumps.jumpssafe");
+    jumpssafelowsec: Numbersearcher = new Numbersearcher("systemjumps.jumpssafelowsec");
+    jumpssafenullsec: Numbersearcher = new Numbersearcher("systemjumps.jumpssafenullsec");
     systemSystemendsearcher: Foreignkeysearcher = new Foreignkeysearcher();
     systemSystemstartsearcher: Foreignkeysearcher = new Foreignkeysearcher();
 
@@ -85,6 +100,51 @@ export class Systemjumpssearcher extends Tablesearch {
 		  }
     	this.jumps.values = this.jumps.values.concat(numvalues);
     	this.jumps.operators = this.jumps.operators.concat(operators);
+    }    
+    addjumpslowsecs = (values, operators) => {
+		  let numvalues = [values.length];
+		  let i=0;
+		  for(i=0; i<values.length; i++) {
+		    numvalues[i] = parseFloat(values[i]);
+		  }
+    	this.jumpslowsec.values = this.jumpslowsec.values.concat(numvalues);
+    	this.jumpslowsec.operators = this.jumpslowsec.operators.concat(operators);
+    }    
+    addjumpsnullsecs = (values, operators) => {
+		  let numvalues = [values.length];
+		  let i=0;
+		  for(i=0; i<values.length; i++) {
+		    numvalues[i] = parseFloat(values[i]);
+		  }
+    	this.jumpsnullsec.values = this.jumpsnullsec.values.concat(numvalues);
+    	this.jumpsnullsec.operators = this.jumpsnullsec.operators.concat(operators);
+    }    
+    addjumpssafes = (values, operators) => {
+		  let numvalues = [values.length];
+		  let i=0;
+		  for(i=0; i<values.length; i++) {
+		    numvalues[i] = parseFloat(values[i]);
+		  }
+    	this.jumpssafe.values = this.jumpssafe.values.concat(numvalues);
+    	this.jumpssafe.operators = this.jumpssafe.operators.concat(operators);
+    }    
+    addjumpssafelowsecs = (values, operators) => {
+		  let numvalues = [values.length];
+		  let i=0;
+		  for(i=0; i<values.length; i++) {
+		    numvalues[i] = parseFloat(values[i]);
+		  }
+    	this.jumpssafelowsec.values = this.jumpssafelowsec.values.concat(numvalues);
+    	this.jumpssafelowsec.operators = this.jumpssafelowsec.operators.concat(operators);
+    }    
+    addjumpssafenullsecs = (values, operators) => {
+		  let numvalues = [values.length];
+		  let i=0;
+		  for(i=0; i<values.length; i++) {
+		    numvalues[i] = parseFloat(values[i]);
+		  }
+    	this.jumpssafenullsec.values = this.jumpssafenullsec.values.concat(numvalues);
+    	this.jumpssafenullsec.operators = this.jumpssafenullsec.operators.concat(operators);
     }    
     setsystemSystemend = (systemsearch) => {
         this.systemSystemendsearcher.setTablesearch(systemsearch);

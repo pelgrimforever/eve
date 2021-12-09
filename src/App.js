@@ -24,6 +24,8 @@ import Popupmessage from './popups/popupmessage.js';
 import Eveservice from './services/eveservice.js';
 import Home from './home/home.js';
 import Tradetypes from './tradetypes/tradetypes.js';
+import Universe from './universe/universe.js';
+import Systemjumps from './universe/systemjumps.js';
 import Tradelist from './tradelist/tradelist.js';
 import Combinedtradelist from './combinedtradelist/combinedtradelist.js';
 import Systemkills from './systemkills/systemkills.js';
@@ -46,6 +48,8 @@ export default function Page() {
           navitems: [
               { name:'Trade download', link: '/home' }, 
               { name:'Trade types', link: '/tradetypes' },
+              { name:'Universe', link: '/universe' },
+              { name:'System jumps', link: '/systemjumps' },
           ]
         }, 
           { name:'Trade tools', link: '/tradetools',
@@ -98,6 +102,8 @@ export default function Page() {
     </Route>
     <Route exact path="/home" component={Home}/>
     <Route exact path="/tradetypes" component={Tradetypes}/>
+    <Route exact path="/universe" component={Universe}/>
+    <Route exact path="/systemjumps" component={Systemjumps}/>
     <Route exact path="/tradelist" component={Tradelist}/>
     <Route exact path="/tradetracking" component={Tradetracking}/>
     <Route exact path="/combinedtradelist" component={Combinedtradelist}/>

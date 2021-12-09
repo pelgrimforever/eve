@@ -186,6 +186,11 @@ export default function Systemtradelist(props) {
     return "" + rounded;
   };
 
+  const format_int = (n) => {
+    const rounded = Math.round(n);
+    return "" + rounded;
+  };
+
   const format_2digits = (n) => {
     return n.toFixed(2);
   };
@@ -300,11 +305,11 @@ export default function Systemtradelist(props) {
                     <td style={colsell_regionname}>{trade.sell_regionname}</td>
                     <td style={colsell_systemname}>{trade.sell_systemname}</td>
                     <td style={colbuy_systemname}>{trade.buy_systemname}</td>
-                    <td style={coltotal_m3}><span className='float-right'>{trade.totalvolume}</span></td>
+                    <td style={coltotal_m3}><span className='float-right'>{format_2digits(trade.totalvolume)}</span></td>
                     <td style={colsell_total}><span className='float-right'>{format_price(trade.sell_total)}</span></td>
                     <td style={colbuy_total}><span className='float-right'>{format_price(trade.buy_total)}</span></td>
                     <td style={coltrade_profit}><span className='float-right'>{format_price(trade.totalprofit)}</span></td>
-                    <td style={coltrade_jumps}><span className='float-right'>{trade.trade_jumps}</span></td>
+                    <td style={coltrade_jumps}><span className={trade.trade_jumpslowsec>1 || trade.trade_jumpsnullsec>1 ? "float-right bg-danger" : "float-right"}>{trade.trade_jumps}</span></td>
                     <td><button type="button" className="btn btn-sm small btn-primary" onClick={() => showTradeline(trade)}>show</button></td>
                   </tr>  
     ))}

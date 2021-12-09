@@ -2,7 +2,7 @@
 //don't change things here, it will be overwritten
 /* 
     Created on : Nov 16, 2018, 17:04:01 PM
-    Generated on 4.11.2021 14:51
+    Generated on 9.11.2021 14:30
     Author     : Franky Laseure
 */
 
@@ -53,6 +53,8 @@ class Stationsuper {
 	reprocessing_stations_take: number = 0;
 	max_dockable_ship_volume: number = 0;
 	owner: string = '';
+	downloaddate: string = '';
+	downloaddateUI: string = '';
 }
 
 export class Stationsearcher extends Tablesearch {
@@ -65,6 +67,7 @@ export class Stationsearcher extends Tablesearch {
 		this.addFieldsearcher(this.reprocessing_stations_take);
 		this.addFieldsearcher(this.max_dockable_ship_volume);
 		this.addFieldsearcher(this.owner);
+		this.addFieldsearcher(this.downloaddate);
         this.addKeysearcher(this.racesearcher);
         this.addKeysearcher(this.evetypesearcher);
         this.addKeysearcher(this.systemsearcher);
@@ -79,6 +82,7 @@ export class Stationsearcher extends Tablesearch {
     reprocessing_stations_take: Numbersearcher = new Numbersearcher("station.reprocessing_stations_take");
     max_dockable_ship_volume: Numbersearcher = new Numbersearcher("station.max_dockable_ship_volume");
     owner: Numbersearcher = new Numbersearcher("station.owner");
+    downloaddate: Datesearcher = new Datesearcher("station.downloaddate");
     racesearcher: Foreignkeysearcher = new Foreignkeysearcher();
     evetypesearcher: Foreignkeysearcher = new Foreignkeysearcher();
     systemsearcher: Foreignkeysearcher = new Foreignkeysearcher();
@@ -140,6 +144,10 @@ export class Stationsearcher extends Tablesearch {
 		  }
     	this.owner.values = this.owner.values.concat(numvalues);
     	this.owner.operators = this.owner.operators.concat(operators);
+    }
+    adddownloaddates = (values, operators) => {
+    	this.downloaddate.values = this.downloaddate.values.concat(values);
+    	this.downloaddate.operators = this.downloaddate.operators.concat(operators);
     }
     setrace = (racesearch) => {
         this.racesearcher.setTablesearch(racesearch);

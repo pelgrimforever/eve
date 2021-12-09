@@ -2,7 +2,7 @@
 //don't change things here, it will be overwritten
 /* 
     Created on : Dec 16, 2018, 18:32:01
-    Generated on 4.11.2021 14:51
+    Generated on 9.11.2021 14:30
     Author     : Franky Laseure
 */
 
@@ -30,6 +30,8 @@ class ViewtradeordersJson {
 			"buy_volume_remain": "" + viewtradeorders.buy_volume_remain,
 			"buy_price": "" + viewtradeorders.buy_price,
 			"jumps": viewtradeorders.jumps,
+			"jumpslowsec": viewtradeorders.jumpslowsec,
+			"jumpsnullsec": viewtradeorders.jumpsnullsec,
 		};
 		return jsonobj;
 	}
@@ -54,6 +56,8 @@ class ViewtradeordersJson {
 		model.buy_volume_remain = "" + jsonobj.buy_volume_remain;
 		model.buy_price = parseFloat(jsonobj.buy_price);
 		model.jumps = jsonobj.jumps;
+		model.jumpslowsec = jsonobj.jumpslowsec;
+		model.jumpsnullsec = jsonobj.jumpsnullsec;
 		return model;
 	}
 }

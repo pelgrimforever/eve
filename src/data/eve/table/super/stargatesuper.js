@@ -2,7 +2,7 @@
 //don't change things here, it will be overwritten
 /* 
     Created on : Nov 16, 2018, 17:04:01 PM
-    Generated on 4.11.2021 14:51
+    Generated on 9.11.2021 14:30
     Author     : Franky Laseure
 */
 
@@ -51,6 +51,8 @@ class Stargatesuper {
 	z: number = 0;
 	isconstellationborder: boolean = false;
 	isregionborder: boolean = false;
+	downloaddate: string = '';
+	downloaddateUI: string = '';
 }
 
 export class Stargatesearcher extends Tablesearch {
@@ -64,6 +66,7 @@ export class Stargatesearcher extends Tablesearch {
 		this.addFieldsearcher(this.z);
 		this.addFieldsearcher(this.isconstellationborder);
 		this.addFieldsearcher(this.isregionborder);
+		this.addFieldsearcher(this.downloaddate);
         this.addKeysearcher(this.systemSystemsearcher);
         this.addKeysearcher(this.systemTosystemsearcher);
 	}
@@ -77,6 +80,7 @@ export class Stargatesearcher extends Tablesearch {
     z: Numbersearcher = new Numbersearcher("stargate.z");
     isconstellationborder: Booleansearcher = new Booleansearcher("stargate.isconstellationborder");
     isregionborder: Booleansearcher = new Booleansearcher("stargate.isregionborder");
+    downloaddate: Datesearcher = new Datesearcher("stargate.downloaddate");
     systemSystemsearcher: Foreignkeysearcher = new Foreignkeysearcher();
     systemTosystemsearcher: Foreignkeysearcher = new Foreignkeysearcher();
 
@@ -133,6 +137,10 @@ export class Stargatesearcher extends Tablesearch {
     }
     addisregionborder = (value) => {
     	this.isregionborder.values = [value];
+    }
+    adddownloaddates = (values, operators) => {
+    	this.downloaddate.values = this.downloaddate.values.concat(values);
+    	this.downloaddate.operators = this.downloaddate.operators.concat(operators);
     }
     setsystemSystem = (systemsearch) => {
         this.systemSystemsearcher.setTablesearch(systemsearch);

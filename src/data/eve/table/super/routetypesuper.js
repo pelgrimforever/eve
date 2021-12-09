@@ -2,7 +2,7 @@
 //don't change things here, it will be overwritten
 /* 
     Created on : Nov 16, 2018, 17:04:01 PM
-    Generated on 4.11.2021 14:51
+    Generated on 9.11.2021 14:30
     Author     : Franky Laseure
 */
 
@@ -52,16 +52,12 @@ export class Routetypesearcher extends Tablesearch {
 		this.addFieldsearcher(this.id);
 		this.addFieldsearcher(this.name);
         this.addKeysearcher(this.securityislandsearcher);
-        this.addKeysearcher(this.routesearcher);
-        this.addKeysearcher(this.systemsearcher);
 	}
 
     filtermodel: null;
     id: Numbersearcher = new Numbersearcher("routetype.id");
     name: Stringsearcher = new Stringsearcher("routetype.name");
     securityislandsearcher: Foreignkeysearcher = new Foreignkeysearcher();
-    routesearcher: Primarykeysearcher = new Primarykeysearcher();
-    systemsearcher: Relationalkeysearcher = new Relationalkeysearcher();
 
     addids = (values, operators) => {
 		  let numvalues = [values.length];
@@ -77,12 +73,6 @@ export class Routetypesearcher extends Tablesearch {
     }
     setsecurityisland = (securityislandsearch) => {
         this.securityislandsearcher.setTablesearch(securityislandsearch);
-    }
-    setroute = (routesearch) => {
-        this.routesearcher.setTablesearch(routesearch);
-    }
-    setsystem = (systemsearch) => {
-        this.systemsearcher.setTablesearch(systemsearch);
     }
 
     toJSON = () => {
@@ -106,17 +96,9 @@ export class Routetypesearcher extends Tablesearch {
             }
             var kss = {
                 "securityislandsearcher": null,
-                "routesearcher": null,
-                "systemsearcher": null,
             }; 
             if(this.securityislandsearcher!=null && this.securityislandsearcher.used()) {
                 kss.securityislandsearcher = this.securityislandsearcher.toJSON();
-            }
-            if(this.routesearcher!=null && this.routesearcher.used()) {
-                kss.routesearcher = this.routesearcher.toJSON();
-            }
-            if(this.systemsearcher!=null && this.systemsearcher.used()) {
-                kss.systemsearcher = this.systemsearcher.toJSON();
             }
             jsonobj.keysearch = kss;
         }

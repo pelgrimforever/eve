@@ -2,7 +2,7 @@
 //don't change things here, it will be overwritten
 /* 
     Created on : Nov 19, 2018, 12:42:01 PM
-    Generated on 4.11.2021 14:51
+    Generated on 9.11.2021 14:30
     Author     : Franky Laseure
 */
 
@@ -42,6 +42,7 @@ class SystemJsonsuper {
 			"noaccess": system.noaccess,
 			"isconstellationborder": system.isconstellationborder,
 			"isregionborder": system.isregionborder,
+			"downloaddate": "" + system.downloaddate,
 		};
 		if(system.securityislandPK!=null) {
 			jsonobj.securityislandPK = SecurityislandJson.PKtoJSON(system.securityislandPK);
@@ -73,6 +74,12 @@ class SystemJsonsuper {
 		model.noaccess = jsonobj.noaccess;
 		model.isconstellationborder = jsonobj.isconstellationborder;
 		model.isregionborder = jsonobj.isregionborder;
+		model.downloaddate = jsonobj.downloaddate;
+		if(model.downloaddate) {
+			model.downloaddateUI = Moment(new Date(jsonobj.downloaddate)).format("YYYY MM DD");
+		} else {
+			model.downloaddate = "";
+		}
 		return model;
 	}
 }

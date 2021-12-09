@@ -2,7 +2,7 @@
 //don't change things here, it will be overwritten
 /* 
     Created on : Nov 16, 2018, 17:04:01 PM
-    Generated on 4.11.2021 14:51
+    Generated on 9.11.2021 14:30
     Author     : Franky Laseure
 */
 
@@ -52,6 +52,8 @@ class Systemsuper {
 	noaccess: boolean = false;
 	isconstellationborder: boolean = false;
 	isregionborder: boolean = false;
+	downloaddate: string = '';
+	downloaddateUI: string = '';
 }
 
 export class Systemsearcher extends Tablesearch {
@@ -65,12 +67,11 @@ export class Systemsearcher extends Tablesearch {
 		this.addFieldsearcher(this.noaccess);
 		this.addFieldsearcher(this.isconstellationborder);
 		this.addFieldsearcher(this.isregionborder);
+		this.addFieldsearcher(this.downloaddate);
         this.addKeysearcher(this.securityislandsearcher);
         this.addKeysearcher(this.constellationsearcher);
         this.addKeysearcher(this.systemjumpsSystemendsearcher);
         this.addKeysearcher(this.systemjumpsSystemstartsearcher);
-        this.addKeysearcher(this.routesearcher);
-        this.addKeysearcher(this.routetypesearcher);
         this.addKeysearcher(this.tradecombinedBuysystemsearcher);
         this.addKeysearcher(this.evetype1searcher);
         this.addKeysearcher(this.tradecombinedSellsystemsearcher);
@@ -86,12 +87,11 @@ export class Systemsearcher extends Tablesearch {
     noaccess: Booleansearcher = new Booleansearcher("system.noaccess");
     isconstellationborder: Booleansearcher = new Booleansearcher("system.isconstellationborder");
     isregionborder: Booleansearcher = new Booleansearcher("system.isregionborder");
+    downloaddate: Datesearcher = new Datesearcher("system.downloaddate");
     securityislandsearcher: Foreignkeysearcher = new Foreignkeysearcher();
     constellationsearcher: Foreignkeysearcher = new Foreignkeysearcher();
     systemjumpsSystemendsearcher: Primarykeysearcher = new Primarykeysearcher();
     systemjumpsSystemstartsearcher: Primarykeysearcher = new Primarykeysearcher();
-    routesearcher: Primarykeysearcher = new Primarykeysearcher();
-    routetypesearcher: Relationalkeysearcher = new Relationalkeysearcher();
     tradecombinedBuysystemsearcher: Primarykeysearcher = new Primarykeysearcher();
     evetype1searcher: Relationalkeysearcher = new Relationalkeysearcher();
     tradecombinedSellsystemsearcher: Primarykeysearcher = new Primarykeysearcher();
@@ -139,6 +139,10 @@ export class Systemsearcher extends Tablesearch {
     addisregionborder = (value) => {
     	this.isregionborder.values = [value];
     }
+    adddownloaddates = (values, operators) => {
+    	this.downloaddate.values = this.downloaddate.values.concat(values);
+    	this.downloaddate.operators = this.downloaddate.operators.concat(operators);
+    }
     setsecurityisland = (securityislandsearch) => {
         this.securityislandsearcher.setTablesearch(securityislandsearch);
     }
@@ -150,12 +154,6 @@ export class Systemsearcher extends Tablesearch {
     }
     setsystemjumpsSystemstart = (systemjumpssearch) => {
         this.systemjumpsSystemstartsearcher.setTablesearch(systemjumpssearch);
-    }
-    setroute = (routesearch) => {
-        this.routesearcher.setTablesearch(routesearch);
-    }
-    setroutetype = (routetypesearch) => {
-        this.routetypesearcher.setTablesearch(routetypesearch);
     }
     settradecombinedBuysystem = (tradecombinedsearch) => {
         this.tradecombinedBuysystemsearcher.setTablesearch(tradecombinedsearch);
@@ -194,8 +192,6 @@ export class Systemsearcher extends Tablesearch {
                 "constellationsearcher": null,
                 "systemjumpsSystemendsearcher": null,
                 "systemjumpsSystemstartsearcher": null,
-                "routesearcher": null,
-                "routetypesearcher": null,
                 "tradecombinedBuysystemsearcher": null,
                 "evetype1searcher": null,
                 "tradecombinedSellsystemsearcher": null,
@@ -212,12 +208,6 @@ export class Systemsearcher extends Tablesearch {
             }
             if(this.systemjumpsSystemstartsearcher!=null && this.systemjumpsSystemstartsearcher.used()) {
                 kss.systemjumpsSystemstartsearcher = this.systemjumpsSystemstartsearcher.toJSON();
-            }
-            if(this.routesearcher!=null && this.routesearcher.used()) {
-                kss.routesearcher = this.routesearcher.toJSON();
-            }
-            if(this.routetypesearcher!=null && this.routetypesearcher.used()) {
-                kss.routetypesearcher = this.routetypesearcher.toJSON();
             }
             if(this.tradecombinedBuysystemsearcher!=null && this.tradecombinedBuysystemsearcher.used()) {
                 kss.tradecombinedBuysystemsearcher = this.tradecombinedBuysystemsearcher.toJSON();

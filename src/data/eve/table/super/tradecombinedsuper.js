@@ -2,7 +2,7 @@
 //don't change things here, it will be overwritten
 /* 
     Created on : Nov 16, 2018, 17:04:01 PM
-    Generated on 4.11.2021 14:51
+    Generated on 9.11.2021 14:30
     Author     : Franky Laseure
 */
 
@@ -77,12 +77,16 @@ class Tradecombinedsuper {
 		return result;
 	}
 	jumps: number = 0;
+	jumpslowsec: number = 0;
+	jumpsnullsec: number = 0;
 }
 
 export class Tradecombinedsearcher extends Tablesearch {
 	constructor() { 
 		super(); 
 		this.addFieldsearcher(this.jumps);
+		this.addFieldsearcher(this.jumpslowsec);
+		this.addFieldsearcher(this.jumpsnullsec);
         this.addKeysearcher(this.evetypesearcher);
         this.addKeysearcher(this.systemBuysystemsearcher);
         this.addKeysearcher(this.systemSellsystemsearcher);
@@ -93,6 +97,8 @@ export class Tradecombinedsearcher extends Tablesearch {
 
     filtermodel: null;
     jumps: Numbersearcher = new Numbersearcher("tradecombined.jumps");
+    jumpslowsec: Numbersearcher = new Numbersearcher("tradecombined.jumpslowsec");
+    jumpsnullsec: Numbersearcher = new Numbersearcher("tradecombined.jumpsnullsec");
     evetypesearcher: Foreignkeysearcher = new Foreignkeysearcher();
     systemBuysystemsearcher: Foreignkeysearcher = new Foreignkeysearcher();
     systemSellsystemsearcher: Foreignkeysearcher = new Foreignkeysearcher();
@@ -108,6 +114,24 @@ export class Tradecombinedsearcher extends Tablesearch {
 		  }
     	this.jumps.values = this.jumps.values.concat(numvalues);
     	this.jumps.operators = this.jumps.operators.concat(operators);
+    }    
+    addjumpslowsecs = (values, operators) => {
+		  let numvalues = [values.length];
+		  let i=0;
+		  for(i=0; i<values.length; i++) {
+		    numvalues[i] = parseFloat(values[i]);
+		  }
+    	this.jumpslowsec.values = this.jumpslowsec.values.concat(numvalues);
+    	this.jumpslowsec.operators = this.jumpslowsec.operators.concat(operators);
+    }    
+    addjumpsnullsecs = (values, operators) => {
+		  let numvalues = [values.length];
+		  let i=0;
+		  for(i=0; i<values.length; i++) {
+		    numvalues[i] = parseFloat(values[i]);
+		  }
+    	this.jumpsnullsec.values = this.jumpsnullsec.values.concat(numvalues);
+    	this.jumpsnullsec.operators = this.jumpsnullsec.operators.concat(operators);
     }    
     setevetype = (evetypesearch) => {
         this.evetypesearcher.setTablesearch(evetypesearch);

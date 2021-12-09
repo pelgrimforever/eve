@@ -2,7 +2,7 @@
 //don't change things here, it will be overwritten
 /* 
     Created on : Dec 16, 2018, 18:32:01
-    Generated on 4.11.2021 14:51
+    Generated on 9.11.2021 14:30
     Author     : Franky Laseure
 */
 
@@ -16,6 +16,8 @@ class ViewtradesystemsevetypeJson {
 			"systembuy": "" + viewtradesystemsevetype.systembuy,
 			"evetype": "" + viewtradesystemsevetype.evetype,
 			"jumps": viewtradesystemsevetype.jumps,
+			"jumpslowsec": viewtradesystemsevetype.jumpslowsec,
+			"jumpsnullsec": viewtradesystemsevetype.jumpsnullsec,
 		};
 		return jsonobj;
 	}
@@ -26,6 +28,8 @@ class ViewtradesystemsevetypeJson {
 		model.systembuy = "" + jsonobj.systembuy;
 		model.evetype = "" + jsonobj.evetype;
 		model.jumps = jsonobj.jumps;
+		model.jumpslowsec = jsonobj.jumpslowsec;
+		model.jumpsnullsec = jsonobj.jumpsnullsec;
 		return model;
 	}
 }

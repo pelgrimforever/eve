@@ -2,7 +2,7 @@
 //don't change things here, it will be overwritten
 /* 
     Created on : Dec 16, 2018, 18:10:00
-    Generated on 4.11.2021 14:51
+    Generated on 9.11.2021 14:30
     Author     : Franky Laseure
 */
 
@@ -33,6 +33,8 @@ class Viewtradesuper {
     buy_total: number = 0;
     trade_profit: number = 0;
     trade_jumps: number = 0;
+    trade_jumpslowsec: number = 0;
+    trade_jumpsnullsec: number = 0;
     trade_profit_per_jump: number = 0;
     trade_runs: number = 0;
     trade_total_jumps: number = 0;

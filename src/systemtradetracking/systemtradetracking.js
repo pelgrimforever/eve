@@ -114,6 +114,11 @@ export default function Systemtradetracking(props) {
     return "" + rounded;
   };
 
+  const format_int = (n) => {
+    const rounded = Math.round(n);
+    return "" + rounded;
+  };
+
   const format_2digits = (n) => {
     return n.toFixed(2);
   };
@@ -138,7 +143,7 @@ export default function Systemtradetracking(props) {
 
   const sec_highsec = 0.45;
 
-  const ordertableheight = {height: '50rem'};
+  const ordertableheight = {height: '100rem'};
 
   //ot -> order table
   const otcolsell_stationname = {width: '15rem'};
@@ -179,10 +184,10 @@ export default function Systemtradetracking(props) {
   return (
     <div className="root fullheight">
 
-      <div className="containerheader h-25">
+      <div className="containerheader h-50 container-relative">
         <div className="mx-auto bg-light h-100 p-1">
           <div className="d-flex h-100">
-            <div className="p-2 flex-fill bg-info">
+            <div className="p-2 flex-fill bg-info table-container container-fluid">
               <table className="table small table-dark table-bordered table-hover fillparent">
                 <thead>
                   <tr>
@@ -287,7 +292,7 @@ export default function Systemtradetracking(props) {
                   <label className="input-group-text">total (m3)</label>
                 </div>
                 <div className="col col-sm-8 input-group-prepend">
-                  <label className="input-group-text">{appState.viewtradesystem.totalvolume}</label>
+                  <label className="input-group-text">{format_int(appState.viewtradesystem.totalvolume)}</label>
                 </div>
               </div>
               <div className="row m-0">

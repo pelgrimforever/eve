@@ -2,7 +2,7 @@
 //don't change things here, it will be overwritten
 /* 
     Created on : Nov 19, 2018, 12:42:01 PM
-    Generated on 4.11.2021 14:51
+    Generated on 9.11.2021 14:30
     Author     : Franky Laseure
 */
 
@@ -40,6 +40,7 @@ class StargateJsonsuper {
 			"z": "" + stargate.z,
 			"isconstellationborder": stargate.isconstellationborder,
 			"isregionborder": stargate.isregionborder,
+			"downloaddate": "" + stargate.downloaddate,
 		};
 		if(stargate.systemSystemPK!=null) {
 			jsonobj.systemSystemPK = SystemJson.PKtoJSON(stargate.systemSystemPK);
@@ -71,6 +72,12 @@ class StargateJsonsuper {
 		model.z = parseFloat(jsonobj.z);
 		model.isconstellationborder = jsonobj.isconstellationborder;
 		model.isregionborder = jsonobj.isregionborder;
+		model.downloaddate = jsonobj.downloaddate;
+		if(model.downloaddate) {
+			model.downloaddateUI = Moment(new Date(jsonobj.downloaddate)).format("YYYY MM DD");
+		} else {
+			model.downloaddate = "";
+		}
 		return model;
 	}
 }

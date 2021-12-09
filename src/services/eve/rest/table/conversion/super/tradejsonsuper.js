@@ -2,7 +2,7 @@
 //don't change things here, it will be overwritten
 /* 
     Created on : Nov 19, 2018, 12:42:01 PM
-    Generated on 4.11.2021 14:51
+    Generated on 9.11.2021 14:30
     Author     : Franky Laseure
 */
 
@@ -43,6 +43,8 @@ class TradeJsonsuper {
 			"profit_per_jump": "" + trade.profit_per_jump,
 			"singlerun_profit_per_jump": "" + trade.singlerun_profit_per_jump,
 			"maxunits_per_run": trade.maxunits_per_run,
+			"jumpslowsec": trade.jumpslowsec,
+			"jumpsnullsec": trade.jumpsnullsec,
 		};
 		return jsonobj;
 	}
@@ -76,6 +78,8 @@ class TradeJsonsuper {
 		model.profit_per_jump = parseFloat(jsonobj.profit_per_jump);
 		model.singlerun_profit_per_jump = parseFloat(jsonobj.singlerun_profit_per_jump);
 		model.maxunits_per_run = jsonobj.maxunits_per_run;
+		model.jumpslowsec = jsonobj.jumpslowsec;
+		model.jumpsnullsec = jsonobj.jumpsnullsec;
 		return model;
 	}
 }
