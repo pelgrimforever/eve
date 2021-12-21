@@ -25,15 +25,21 @@ import Eveservice from './services/eveservice.js';
 import Home from './home/home.js';
 import Tradetypes from './tradetypes/tradetypes.js';
 import Universe from './universe/universe.js';
+import Markethistory from './markethistory/markethistory.js';
 import Systemjumps from './universe/systemjumps.js';
 import Tradelist from './tradelist/tradelist.js';
 import Combinedtradelist from './combinedtradelist/combinedtradelist.js';
 import Systemkills from './systemkills/systemkills.js';
 import Sellstock from './sellstock/sellstock.js';
+import Wishlist from './wishlist/wishlist.js';
 import Tradetracking from './tradetracking/tradetracking.js';
 import Combinedtradetracking from './combinedtradetracking/combinedtradetracking.js';
 import Systemtradelist from './systemtradelist/systemtradelist.js';
 import Systemtradetracking from './systemtradetracking/systemtradetracking.js';
+import Sellorderslowprice from './sellorderslowprice/sellorderslowprice.js';
+import Marketprice from './marketprice/marketprice.js';
+import Shipfits from './shipfits/shipfits.js';
+import Shipfitsorderlist from './shipfitsorderlist/shipfitsorderlist.js';
 
 //configured in .env and .env.production
 const {REACT_APP_TEST} = process.env;
@@ -47,21 +53,35 @@ export default function Page() {
         { name:'Eve download', link: '/evedownload',
           navitems: [
               { name:'Trade download', link: '/home' }, 
+              { name:'Market history', link: '/markethistory' },
               { name:'Trade types', link: '/tradetypes' },
               { name:'Universe', link: '/universe' },
               { name:'System jumps', link: '/systemjumps' },
           ]
         }, 
-          { name:'Trade tools', link: '/tradetools',
-            navitems: [
-              { name:'Trade', link: '/tradelist' }, 
-              { name:'Trade tracking', link: '/tradetracking' }, 
-              { name:'Combined trade', link: '/combinedtradelist' }, 
-              { name:'Combined trade tracking', link: '/combinedtradetracking' }, 
-              { name:'System trade', link: '/systemtradelist' }, 
-              { name:'System trade tracking', link: '/systemtradetracking' },
-              { name:'Sell stock', link: '/sellstock' },
-            ]
+        { name:'Trade tools', link: '/tradetools',
+          navitems: [
+            { name:'Trade', link: '/tradelist' }, 
+            { name:'Trade tracking', link: '/tradetracking' }, 
+            { name:'Combined trade', link: '/combinedtradelist' }, 
+            { name:'Combined trade tracking', link: '/combinedtradetracking' }, 
+            { name:'System trade', link: '/systemtradelist' }, 
+            { name:'System trade tracking', link: '/systemtradetracking' },
+            { name:'Sell stock', link: '/sellstock' },
+            { name:'Wish list', link: '/wishlist' },
+          ]
+        },         
+        { name:'Market tools', link: '/market',
+          navitems: [
+              { name:'Low price', link: '/lowprice' }, 
+              { name:'Market price', link: '/marketprice' }, 
+          ]
+        },         
+        { name:'Fits', link: '/fits',
+          navitems: [
+              { name:'Ship fits', link: '/shipfits' }, 
+              { name:'Order parts', link: '/orderparts' }, 
+          ]
         },         
         { name:'Routes', link: '/routes',
           navitems: [
@@ -101,6 +121,7 @@ export default function Page() {
       <Redirect to="/home" />
     </Route>
     <Route exact path="/home" component={Home}/>
+    <Route exact path="/markethistory" component={Markethistory}/>
     <Route exact path="/tradetypes" component={Tradetypes}/>
     <Route exact path="/universe" component={Universe}/>
     <Route exact path="/systemjumps" component={Systemjumps}/>
@@ -111,6 +132,11 @@ export default function Page() {
     <Route exact path="/systemtradelist" component={Systemtradelist}/>
     <Route exact path="/systemtradetracking" component={Systemtradetracking}/>
     <Route exact path="/sellstock" component={Sellstock}/>
+    <Route exact path="/wishlist" component={Wishlist}/>
+    <Route exact path="/lowprice" component={Sellorderslowprice}/>
+    <Route exact path="/marketprice" component={Marketprice}/>
+    <Route exact path="/shipfits" component={Shipfits}/>
+    <Route exact path="/orderparts" component={Shipfitsorderlist}/>
     <Route exact path="/systemkills" component={Systemkills}/>
   </div>
 

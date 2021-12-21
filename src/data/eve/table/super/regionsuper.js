@@ -2,7 +2,7 @@
 //don't change things here, it will be overwritten
 /* 
     Created on : Nov 16, 2018, 17:04:01 PM
-    Generated on 9.11.2021 14:30
+    Generated on 16.11.2021 15:46
     Author     : Franky Laseure
 */
 
@@ -55,8 +55,10 @@ export class Regionsearcher extends Tablesearch {
 		this.addFieldsearcher(this.noaccess);
 		this.addFieldsearcher(this.orderpages);
 		this.addFieldsearcher(this.ordererrors);
+        this.addKeysearcher(this.orderhistorymonthsearcher);
+        this.addKeysearcher(this.evetype1searcher);
         this.addKeysearcher(this.orderhistorysearcher);
-        this.addKeysearcher(this.evetypesearcher);
+        this.addKeysearcher(this.evetype2searcher);
         this.addKeysearcher(this.regionneighbourRegionsearcher);
         this.addKeysearcher(this.regionneighbourNeighboursearcher);
 	}
@@ -67,8 +69,10 @@ export class Regionsearcher extends Tablesearch {
     noaccess: Booleansearcher = new Booleansearcher("region.noaccess");
     orderpages: Numbersearcher = new Numbersearcher("region.orderpages");
     ordererrors: Numbersearcher = new Numbersearcher("region.ordererrors");
+    orderhistorymonthsearcher: Primarykeysearcher = new Primarykeysearcher();
+    evetype1searcher: Relationalkeysearcher = new Relationalkeysearcher();
     orderhistorysearcher: Primarykeysearcher = new Primarykeysearcher();
-    evetypesearcher: Relationalkeysearcher = new Relationalkeysearcher();
+    evetype2searcher: Relationalkeysearcher = new Relationalkeysearcher();
     regionneighbourRegionsearcher: Primarykeysearcher = new Primarykeysearcher();
     regionneighbourNeighboursearcher: Primarykeysearcher = new Primarykeysearcher();
 
@@ -105,11 +109,17 @@ export class Regionsearcher extends Tablesearch {
     	this.ordererrors.values = this.ordererrors.values.concat(numvalues);
     	this.ordererrors.operators = this.ordererrors.operators.concat(operators);
     }    
+    setorderhistorymonth = (orderhistorymonthsearch) => {
+        this.orderhistorymonthsearcher.setTablesearch(orderhistorymonthsearch);
+    }
+    setevetype1 = (evetypesearch) => {
+        this.evetype1searcher.setTablesearch(evetypesearch);
+    }
     setorderhistory = (orderhistorysearch) => {
         this.orderhistorysearcher.setTablesearch(orderhistorysearch);
     }
-    setevetype = (evetypesearch) => {
-        this.evetypesearcher.setTablesearch(evetypesearch);
+    setevetype2 = (evetypesearch) => {
+        this.evetype2searcher.setTablesearch(evetypesearch);
     }
     setregionneighbourRegion = (regionneighboursearch) => {
         this.regionneighbourRegionsearcher.setTablesearch(regionneighboursearch);
@@ -138,16 +148,24 @@ export class Regionsearcher extends Tablesearch {
                 }
             }
             var kss = {
+                "orderhistorymonthsearcher": null,
+                "evetype1searcher": null,
                 "orderhistorysearcher": null,
-                "evetypesearcher": null,
+                "evetype2searcher": null,
                 "regionneighbourRegionsearcher": null,
                 "regionneighbourNeighboursearcher": null,
             }; 
+            if(this.orderhistorymonthsearcher!=null && this.orderhistorymonthsearcher.used()) {
+                kss.orderhistorymonthsearcher = this.orderhistorymonthsearcher.toJSON();
+            }
+            if(this.evetype1searcher!=null && this.evetype1searcher.used()) {
+                kss.evetype1searcher = this.evetype1searcher.toJSON();
+            }
             if(this.orderhistorysearcher!=null && this.orderhistorysearcher.used()) {
                 kss.orderhistorysearcher = this.orderhistorysearcher.toJSON();
             }
-            if(this.evetypesearcher!=null && this.evetypesearcher.used()) {
-                kss.evetypesearcher = this.evetypesearcher.toJSON();
+            if(this.evetype2searcher!=null && this.evetype2searcher.used()) {
+                kss.evetype2searcher = this.evetype2searcher.toJSON();
             }
             if(this.regionneighbourRegionsearcher!=null && this.regionneighbourRegionsearcher.used()) {
                 kss.regionneighbourRegionsearcher = this.regionneighbourRegionsearcher.toJSON();

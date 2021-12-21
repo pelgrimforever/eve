@@ -2,7 +2,7 @@
 //don't change things here, it will be overwritten
 /* 
     Created on : Nov 16, 2018, 17:04:01 PM
-    Generated on 9.11.2021 14:30
+    Generated on 20.11.2021 17:22
     Author     : Franky Laseure
 */
 
@@ -81,6 +81,8 @@ export class Orderssearcher extends Tablesearch {
         this.addKeysearcher(this.tradecombined1searcher);
         this.addKeysearcher(this.tradecombinedsellSellorderidsearcher);
         this.addKeysearcher(this.tradecombined2searcher);
+        this.addKeysearcher(this.shipfitorderselectedsearcher);
+        this.addKeysearcher(this.shipfitordersearcher);
         this.addKeysearcher(this.tradeSellorderidsearcher);
         this.addKeysearcher(this.tradeBuyorderidsearcher);
 	}
@@ -105,6 +107,8 @@ export class Orderssearcher extends Tablesearch {
     tradecombined1searcher: Relationalkeysearcher = new Relationalkeysearcher();
     tradecombinedsellSellorderidsearcher: Primarykeysearcher = new Primarykeysearcher();
     tradecombined2searcher: Relationalkeysearcher = new Relationalkeysearcher();
+    shipfitorderselectedsearcher: Primarykeysearcher = new Primarykeysearcher();
+    shipfitordersearcher: Relationalkeysearcher = new Relationalkeysearcher();
     tradeSellorderidsearcher: Primarykeysearcher = new Primarykeysearcher();
     tradeBuyorderidsearcher: Primarykeysearcher = new Primarykeysearcher();
 
@@ -219,6 +223,12 @@ export class Orderssearcher extends Tablesearch {
     settradecombined2 = (tradecombinedsearch) => {
         this.tradecombined2searcher.setTablesearch(tradecombinedsearch);
     }
+    setshipfitorderselected = (shipfitorderselectedsearch) => {
+        this.shipfitorderselectedsearcher.setTablesearch(shipfitorderselectedsearch);
+    }
+    setshipfitorder = (shipfitordersearch) => {
+        this.shipfitordersearcher.setTablesearch(shipfitordersearch);
+    }
     settradeSellorderid = (tradesearch) => {
         this.tradeSellorderidsearcher.setTablesearch(tradesearch);
     }
@@ -252,6 +262,8 @@ export class Orderssearcher extends Tablesearch {
                 "tradecombined1searcher": null,
                 "tradecombinedsellSellorderidsearcher": null,
                 "tradecombined2searcher": null,
+                "shipfitorderselectedsearcher": null,
+                "shipfitordersearcher": null,
                 "tradeSellorderidsearcher": null,
                 "tradeBuyorderidsearcher": null,
             }; 
@@ -272,6 +284,12 @@ export class Orderssearcher extends Tablesearch {
             }
             if(this.tradecombined2searcher!=null && this.tradecombined2searcher.used()) {
                 kss.tradecombined2searcher = this.tradecombined2searcher.toJSON();
+            }
+            if(this.shipfitorderselectedsearcher!=null && this.shipfitorderselectedsearcher.used()) {
+                kss.shipfitorderselectedsearcher = this.shipfitorderselectedsearcher.toJSON();
+            }
+            if(this.shipfitordersearcher!=null && this.shipfitordersearcher.used()) {
+                kss.shipfitordersearcher = this.shipfitordersearcher.toJSON();
             }
             if(this.tradeSellorderidsearcher!=null && this.tradeSellorderidsearcher.used()) {
                 kss.tradeSellorderidsearcher = this.tradeSellorderidsearcher.toJSON();

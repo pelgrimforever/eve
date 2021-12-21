@@ -33,13 +33,15 @@ function Pagecomponent(props) {
     }
   }, [props.config]);
 
+  const pagebutton_width = {width: '3rem'};
+
   const getpages = () => {
     let rows = [];
     for (let i = pagestart; i <= pageend; i++) {
       if(i===props.config.currentPage) {
-        rows.push(<Pagination.Item active key={i}>{i}</Pagination.Item>);
+        rows.push(<Pagination.Item active key={i} style={pagebutton_width}>{i}</Pagination.Item>);
       } else {
-        rows.push(<Pagination.Item key={i} onClick={() => props.showpage(i)} >{i}</Pagination.Item>);        
+        rows.push(<Pagination.Item key={i} style={pagebutton_width} onClick={() => props.showpage(i)} >{i}</Pagination.Item>);        
       }
     }
     return <>{rows}</>;

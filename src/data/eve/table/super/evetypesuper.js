@@ -2,7 +2,7 @@
 //don't change things here, it will be overwritten
 /* 
     Created on : Nov 16, 2018, 17:04:01 PM
-    Generated on 9.11.2021 14:30
+    Generated on 19.11.2021 16:16
     Author     : Franky Laseure
 */
 
@@ -88,9 +88,16 @@ export class Evetypesearcher extends Tablesearch {
         this.addKeysearcher(this.marketgroupsearcher);
         this.addKeysearcher(this.typegroupsearcher);
         this.addKeysearcher(this.graphicsearcher);
+        this.addKeysearcher(this.wishlistsearcher);
+        this.addKeysearcher(this.orderhistorymonthsearcher);
+        this.addKeysearcher(this.region1searcher);
         this.addKeysearcher(this.stocksearcher);
         this.addKeysearcher(this.orderhistorysearcher);
-        this.addKeysearcher(this.regionsearcher);
+        this.addKeysearcher(this.region2searcher);
+        this.addKeysearcher(this.shipfitmodulesearcher);
+        this.addKeysearcher(this.shipfit1searcher);
+        this.addKeysearcher(this.shipfitordersearcher);
+        this.addKeysearcher(this.shipfit2searcher);
         this.addKeysearcher(this.tradecombinedsearcher);
         this.addKeysearcher(this.system1searcher);
         this.addKeysearcher(this.system2searcher);
@@ -117,9 +124,16 @@ export class Evetypesearcher extends Tablesearch {
     marketgroupsearcher: Foreignkeysearcher = new Foreignkeysearcher();
     typegroupsearcher: Foreignkeysearcher = new Foreignkeysearcher();
     graphicsearcher: Foreignkeysearcher = new Foreignkeysearcher();
+    wishlistsearcher: Primarykeysearcher = new Primarykeysearcher();
+    orderhistorymonthsearcher: Primarykeysearcher = new Primarykeysearcher();
+    region1searcher: Relationalkeysearcher = new Relationalkeysearcher();
     stocksearcher: Primarykeysearcher = new Primarykeysearcher();
     orderhistorysearcher: Primarykeysearcher = new Primarykeysearcher();
-    regionsearcher: Relationalkeysearcher = new Relationalkeysearcher();
+    region2searcher: Relationalkeysearcher = new Relationalkeysearcher();
+    shipfitmodulesearcher: Primarykeysearcher = new Primarykeysearcher();
+    shipfit1searcher: Relationalkeysearcher = new Relationalkeysearcher();
+    shipfitordersearcher: Primarykeysearcher = new Primarykeysearcher();
+    shipfit2searcher: Relationalkeysearcher = new Relationalkeysearcher();
     tradecombinedsearcher: Primarykeysearcher = new Primarykeysearcher();
     system1searcher: Relationalkeysearcher = new Relationalkeysearcher();
     system2searcher: Relationalkeysearcher = new Relationalkeysearcher();
@@ -268,14 +282,35 @@ export class Evetypesearcher extends Tablesearch {
     setgraphic = (graphicsearch) => {
         this.graphicsearcher.setTablesearch(graphicsearch);
     }
+    setwishlist = (wishlistsearch) => {
+        this.wishlistsearcher.setTablesearch(wishlistsearch);
+    }
+    setorderhistorymonth = (orderhistorymonthsearch) => {
+        this.orderhistorymonthsearcher.setTablesearch(orderhistorymonthsearch);
+    }
+    setregion1 = (regionsearch) => {
+        this.region1searcher.setTablesearch(regionsearch);
+    }
     setstock = (stocksearch) => {
         this.stocksearcher.setTablesearch(stocksearch);
     }
     setorderhistory = (orderhistorysearch) => {
         this.orderhistorysearcher.setTablesearch(orderhistorysearch);
     }
-    setregion = (regionsearch) => {
-        this.regionsearcher.setTablesearch(regionsearch);
+    setregion2 = (regionsearch) => {
+        this.region2searcher.setTablesearch(regionsearch);
+    }
+    setshipfitmodule = (shipfitmodulesearch) => {
+        this.shipfitmodulesearcher.setTablesearch(shipfitmodulesearch);
+    }
+    setshipfit1 = (shipfitsearch) => {
+        this.shipfit1searcher.setTablesearch(shipfitsearch);
+    }
+    setshipfitorder = (shipfitordersearch) => {
+        this.shipfitordersearcher.setTablesearch(shipfitordersearch);
+    }
+    setshipfit2 = (shipfitsearch) => {
+        this.shipfit2searcher.setTablesearch(shipfitsearch);
     }
     settradecombined = (tradecombinedsearch) => {
         this.tradecombinedsearcher.setTablesearch(tradecombinedsearch);
@@ -310,9 +345,16 @@ export class Evetypesearcher extends Tablesearch {
                 "marketgroupsearcher": null,
                 "typegroupsearcher": null,
                 "graphicsearcher": null,
+                "wishlistsearcher": null,
+                "orderhistorymonthsearcher": null,
+                "region1searcher": null,
                 "stocksearcher": null,
                 "orderhistorysearcher": null,
-                "regionsearcher": null,
+                "region2searcher": null,
+                "shipfitmodulesearcher": null,
+                "shipfit1searcher": null,
+                "shipfitordersearcher": null,
+                "shipfit2searcher": null,
                 "tradecombinedsearcher": null,
                 "system1searcher": null,
                 "system2searcher": null,
@@ -326,14 +368,35 @@ export class Evetypesearcher extends Tablesearch {
             if(this.graphicsearcher!=null && this.graphicsearcher.used()) {
                 kss.graphicsearcher = this.graphicsearcher.toJSON();
             }
+            if(this.wishlistsearcher!=null && this.wishlistsearcher.used()) {
+                kss.wishlistsearcher = this.wishlistsearcher.toJSON();
+            }
+            if(this.orderhistorymonthsearcher!=null && this.orderhistorymonthsearcher.used()) {
+                kss.orderhistorymonthsearcher = this.orderhistorymonthsearcher.toJSON();
+            }
+            if(this.region1searcher!=null && this.region1searcher.used()) {
+                kss.region1searcher = this.region1searcher.toJSON();
+            }
             if(this.stocksearcher!=null && this.stocksearcher.used()) {
                 kss.stocksearcher = this.stocksearcher.toJSON();
             }
             if(this.orderhistorysearcher!=null && this.orderhistorysearcher.used()) {
                 kss.orderhistorysearcher = this.orderhistorysearcher.toJSON();
             }
-            if(this.regionsearcher!=null && this.regionsearcher.used()) {
-                kss.regionsearcher = this.regionsearcher.toJSON();
+            if(this.region2searcher!=null && this.region2searcher.used()) {
+                kss.region2searcher = this.region2searcher.toJSON();
+            }
+            if(this.shipfitmodulesearcher!=null && this.shipfitmodulesearcher.used()) {
+                kss.shipfitmodulesearcher = this.shipfitmodulesearcher.toJSON();
+            }
+            if(this.shipfit1searcher!=null && this.shipfit1searcher.used()) {
+                kss.shipfit1searcher = this.shipfit1searcher.toJSON();
+            }
+            if(this.shipfitordersearcher!=null && this.shipfitordersearcher.used()) {
+                kss.shipfitordersearcher = this.shipfitordersearcher.toJSON();
+            }
+            if(this.shipfit2searcher!=null && this.shipfit2searcher.used()) {
+                kss.shipfit2searcher = this.shipfit2searcher.toJSON();
             }
             if(this.tradecombinedsearcher!=null && this.tradecombinedsearcher.used()) {
                 kss.tradecombinedsearcher = this.tradecombinedsearcher.toJSON();

@@ -10,6 +10,9 @@ import Viewordersuper from './super/viewordersuper.js';
 
 export class Vieworder extends Viewordersuper {
 
+    startsystem_jumps = 0;
+    startsystem_jumpslowsec = 0;
+    startsystem_jumpsnullsec = 0;
 }
 
 export default Vieworder;

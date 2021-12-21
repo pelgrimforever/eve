@@ -2,7 +2,7 @@
 //don't change things here, it will be overwritten
 /* 
     Created on : Nov 20, 2018, 10:39:01 AM
-    Generated on 9.11.2021 14:30
+    Generated on 16.11.2021 15:46
     Author     : Franky Laseure
 */
 
@@ -10,6 +10,8 @@ import Eveservice from '../../../../eveservice.js';
 import { Regionpk } from '../../../../../data/eve/table/super/regionsuper.js';
 import Region from '../../../../../data/eve/table/region.js';
 import RegionJson from '../conversion/regionjson.js';
+import { Orderhistorymonthpk } from '../../../../../data/eve/table/super/orderhistorymonthsuper.js';
+import OrderhistorymonthJson from '../conversion/orderhistorymonthjson.js';
 import { Orderhistorypk } from '../../../../../data/eve/table/super/orderhistorysuper.js';
 import OrderhistoryJson from '../conversion/orderhistoryjson.js';
 import { Regionneighbourpk } from '../../../../../data/eve/table/super/regionneighboursuper.js';
@@ -23,9 +25,10 @@ class Rsregionsuper extends Eveservice {
 	//SELECT OPERATIONS
 	static SELECT_REGION = 2;
 	static SELECT_Siteusergroup = 100 + 0;
-	static SELECT_Orderhistory = 100 + 0;
-	static SELECT_Regionneighbourregion = 100 + 1;
-	static SELECT_Regionneighbourneighbour = 100 + 2;
+	static SELECT_Orderhistorymonth = 100 + 0;
+	static SELECT_Orderhistory = 100 + 1;
+	static SELECT_Regionneighbourregion = 100 + 2;
+	static SELECT_Regionneighbourneighbour = 100 + 3;
 
 	//UPDATE OPERATIONS
 	static UPDATE_REGION = 10;
@@ -68,6 +71,14 @@ class Rsregionsuper extends Eveservice {
       "regionpk": RegionJson.PKtoJSON(regionpk)
     }
     return this.extractDataObject(await super.post(this.restservice, postdata));
+	}
+
+	static loadRegion4orderhistorymonth = async (orderhistorymonthpk: Orderhistorymonthpk): Region[] => {
+    const postdata = {
+      operation: { type: super.OPERATIONTYPE_SELECT, operation: this.SELECT_Orderhistorymonth },
+     	"order_history_monthpk": OrderhistorymonthJson.PKtoJSON(orderhistorymonthpk)
+    }
+    return this.extractDataArray(await super.post(this.restservice, postdata));
 	}
 
 	static loadRegion4orderhistory = async (orderhistorypk: Orderhistorypk): Region[] => {
@@ -159,6 +170,15 @@ class Rsregionsuper extends Eveservice {
       "regionpk": RegionJson.PKtoJSON(regionpk)
     }
     return this.extractDataObject(await super.post(this.restservice, postdata));
+	}
+
+	static sec_loadRegion4orderhistorymonth = async (user, orderhistorymonthpk: Orderhistorymonthpk): Region[] => {
+    const postdata = {
+    	auth: user===null ? null : user.auth,
+      operation: { type: super.OPERATIONTYPE_SECURESELECT, operation: this.SELECT_Orderhistorymonth },
+     	"order_history_monthpk": OrderhistorymonthJson.PKtoJSON(orderhistorymonthpk)
+    }
+    return this.extractDataArray(await super.post(this.restservice, postdata));
 	}
 
 	static sec_loadRegion4orderhistory = async (user, orderhistorypk: Orderhistorypk): Region[] => {

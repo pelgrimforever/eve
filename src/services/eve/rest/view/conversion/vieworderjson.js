@@ -2,7 +2,7 @@
 //don't change things here, it will be overwritten
 /* 
     Created on : Dec 16, 2018, 18:32:01
-    Generated on 9.11.2021 14:30
+    Generated on 16.11.2021 15:46
     Author     : Franky Laseure
 */
 
@@ -39,6 +39,8 @@ class VieworderJson {
 			"regionname": vieworder.regionname,
 			"evetypename": vieworder.evetypename,
 			"packaged_volume": "" + vieworder.packaged_volume,
+			"avg_buyorder": "" + vieworder.avg_buyorder,
+			"avg_sellorder": "" + vieworder.avg_sellorder,
 		};
 		return jsonobj;
 	}
@@ -72,6 +74,8 @@ class VieworderJson {
 		model.regionname = jsonobj.regionname;
 		model.evetypename = jsonobj.evetypename;
 		model.packaged_volume = parseFloat(jsonobj.packaged_volume);
+		model.avg_buyorder = parseFloat(jsonobj.avg_buyorder);
+		model.avg_sellorder = parseFloat(jsonobj.avg_sellorder);
 		return model;
 	}
 }

@@ -17,6 +17,10 @@ body {
   height: 100%;
 }
 
+.halfheight {
+  height: 50%;
+}
+
 .containerheader {
   flex: 0 1 auto;
 }
@@ -32,6 +36,10 @@ body {
 /* Use full width of parent container */
 .full-width {
 	width: 100%;
+}
+
+.stack {
+	position: absolute; 
 }
 
 /* Add vertical scroll bar */
@@ -131,4 +139,12 @@ div.cell {
   z-index: 1031; /* High z-index so it is on top of the page */
   top: calc( 50% - ( 1em / 2) );
   right: calc( 50% - ( 1em / 2) );
+}
+.spinner-border-center {
+  position:absolute;
+  margin: auto;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
 }

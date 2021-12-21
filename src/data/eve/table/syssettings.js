@@ -1,14 +1,14 @@
 //Metacoder: NO AUTHOMATIC UPDATE
-//Change function definitions here, NOT in orderhistbase.ts
+//Change function definitions here, NOT in Syssettingssuper
 /* 
     Created on : Dec 16, 2018, 18:55:01
-    Generated on 14.5.2021 13:35
+    Generated on 11.11.2021 13:40
     Author     : Franky Laseure
 */
 
-import Orderhistsuper, {Orderhistpk} from './super/orderhistsuper'
+import Syssettingssuper, {Syssettingspk} from './super/syssettingssuper'
 
-class Orderhist extends Orderhistsuper {
+class Syssettings extends Syssettingssuper {
 	constructor() { 
 		super();
 	}
@@ -20,4 +20,4 @@ class Orderhist extends Orderhistsuper {
 	}
 }
 
-export default Orderhist;
+export default Syssettings;

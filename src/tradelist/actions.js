@@ -5,7 +5,7 @@ import appstore from '../appstore.js';
 import Rstrade from '../services/eve/rest/table/rstrade.js';
 import Rsviewtrade from '../services/eve/rest/view/rsviewtrade.js';
 //data models
-import storeTradelist, { sort_jumps, sort_m3, sort_profit, sort_profitperjump, sortmodes} from './store.js';
+import storeTradelist, { sort_jumps, sort_m3, sort_profit, sort_profitperjump, sort_profitperrun, sortmodes} from './store.js';
 import { Systempk } from '../data/eve/table/super/systemsuper.js';
 import { Orderspk } from '../data/eve/table/super/orderssuper.js';
 import { Tradepk } from '../data/eve/table/super/tradesuper.js';
@@ -31,6 +31,14 @@ export const setFilterendsystemid = (store, filterendsystemid) => {
 
 export const setFiltercargo = (store, filtercargo) => {
   store.setState({ filtercargo: filtercargo });
+};
+
+export const setFilterprofitperrun = (store, filterprofitperrun) => {
+  store.setState({ filterprofitperrun: filterprofitperrun });
+};
+
+export const setFiltermaxlowsec = (store, filtermaxlowsec) => {
+  store.setState({ filtermaxlowsec: filtermaxlowsec });
 };
 
 export const setPaginationconfig = (store, paginationconfig) => {
@@ -72,7 +80,9 @@ export const filtertradelist = (store, list) => {
     const systemstartok = store.state.filterstartsystemid==null || obj.sell_systemid===store.state.filterstartsystemid;
     const systemendok = store.state.filterendsystemid==null || obj.buy_systemid===store.state.filterendsystemid;
     const cargook = store.state.filtercargo===0 || obj.total_volume * obj.packaged_volume<=store.state.filtercargo;
-    return systemstartok && systemendok && cargook;
+    const profitperrunok = store.state.filterprofitperrun===0 || obj.trade_singlerunprofit>=store.state.filterprofitperrun;
+    const profitmaxlowsecok = obj.trade_jumpslowsec<=store.state.filtermaxlowsec;
+    return systemstartok && systemendok && cargook && profitperrunok && profitmaxlowsecok;
   });
   return result;
 }
@@ -90,6 +100,9 @@ export const sorttradelist = (store, listref) => {
       break;
     case sort_profitperjump:
       listref.sort((a, b) => (a.trade_profit_per_jump<b.trade_profit_per_jump) ? 1 : -1);
+      break;
+    case sort_profitperrun:
+      listref.sort((a, b) => (a.trade_singlerunprofit<b.trade_singlerunprofit) ? 1 : -1);
       break;
   }
 }

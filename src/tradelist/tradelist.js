@@ -104,6 +104,30 @@ export default function Tradelist(props) {
     compActions.setFiltercargo(Number(selection.target.value)); 
   };
 
+  const changeProfitperrun = (profitperrunevent) => {
+    compActions.setFilterprofitperrun(Number(profitperrunevent.target.value)); 
+  }
+
+  const resetProfitperrun = () => {
+    compActions.setFilterprofitperrun(0); 
+  }
+
+  const exitProfitperrun = (selection) => { 
+    compActions.setFilterprofitperrun(Number(selection.target.value)); 
+  };
+
+  const changeFiltermaxlowsec = (filtermaxlowsecevent) => {
+    compActions.setFiltermaxlowsec(Number(filtermaxlowsecevent.target.value)); 
+  }
+
+  const resetFiltermaxlowsec = () => {
+    compActions.setFiltermaxlowsec(0); 
+  }
+
+  const exitFiltermaxlowsec = (selection) => { 
+    compActions.setFiltermaxlowsec(Number(selection.target.value)); 
+  };
+
   //update system select data if systemlist is updated
   useEffect(() => {
     setSystems(getsystemoptions());
@@ -121,7 +145,8 @@ export default function Tradelist(props) {
       let result = compActions.filtertradelist(compState.unfilteredtradelist);
       compActions.sorttradelist(result);
       setTradelist(result);
-  }, [compState.unfilteredtradelist, compState.filterstartsystemid, compState.filterendsystemid, compState.filtercargo]);
+  }, [compState.unfilteredtradelist, compState.filterstartsystemid, compState.filterendsystemid, 
+      compState.filtercargo, compState.filterprofitperrun, compState.filtermaxlowsec]);
 
   //update page properties after updating the tradelist
   useEffect(() => {
@@ -213,7 +238,7 @@ export default function Tradelist(props) {
   const colsell_total = {width: '5rem'};
   const colbuy_total = {width: '5rem'};
   const coltrade_profit = {width: '5rem'};
-  const coltrade_jumps= {width: '1rem'};
+  const coltrade_jumps= {width: '2rem'};
   const coltrade_profit_per_jump= {width: '5rem'};
   const coltrade_runs = {width: '1rem'};
   const coltrade_total_jumps = {width: '1.5rem'};
@@ -225,31 +250,51 @@ export default function Tradelist(props) {
         <div className="containerheader">
           <div className="mx-auto bg-light p-1">
               <div className="row m-0">
-                <div className="col col-sm-1">
-                  <Select options={systems} value={systems.find(option => option.value === compState.startsystemid)} onChange={changeSystem}/>
-                </div>
-                <div className="col col-sm-1">
+                <div className="col col-sm-2 d-flex">
+                  <div style={{width:'200px'}}>
+                    <Select options={systems} value={systems.find(option => option.value === compState.startsystemid)} onChange={changeSystem}/>
+                  </div>
                   <button type="button" className="btn btn-sm btn-primary m-1" onClick={loadlist}>refresh</button>
                 </div>
                 <div className="col col-sm-3">
                   <Sortmode title="sort" modes={sortmodes} sortmode={compState.filtersortfield} onModeselected={onSortfieldselected} />
                 </div>
-                <div className="col col-sm-4 d-flex">
+                <div className="col col-sm-2 d-flex">
                   <span className="mx-2">start</span>
                   <div style={{width:'200px'}}>
                     <Select options={systems} value={systems.find(option => option.value === compState.filterstartsystemid)} onChange={changeStartsystem}/>
                   </div>
                   <button type="button" className="btn btn-sm btn-secondary" onClick={resetStartsystem}>X</button>
+                </div>
+                <div className="col col-sm-2 d-flex">
                   <span className="mx-2">end</span>
                   <div style={{width:'200px'}}>
                     <Select options={systems} value={systems.find(option => option.value === compState.filterendsystemid)} onChange={changeEndsystem}/>
                   </div>
                   <button type="button" className="btn btn-sm btn-secondary" onClick={resetEndsystem}>X</button>
+                </div>
+              </div>
+              <div className="row m-0">
+                <div className="col col-sm-2 d-flex">
                   <span className="mx-2">cargo</span>
-                  <div style={{width:'200px'}}>
+                  <div style={{width:'100px'}}>
                     <FormControl type="number" id="maxcargo" name="maxcargo" value={compState.filtercargo} onChange={changeCargo} onBlur={exitCargo} />
                   </div>
                   <button type="button" className="btn btn-sm btn-secondary" onClick={resetCargo}>X</button>
+                </div>
+                <div className="col col-sm-2 d-flex">
+                  <span className="mx-2" style={{width:'120px'}}>min profit/run</span>
+                  <div style={{width:'120px'}}>
+                    <FormControl type="number" id="profitperrun" name="profitperrun" value={compState.filterprofitperrun} onChange={changeProfitperrun} onBlur={exitProfitperrun} />
+                  </div>
+                  <button type="button" className="btn btn-sm btn-secondary" onClick={resetProfitperrun}>X</button>
+                </div>
+                <div className="col col-sm-2 d-flex">
+                  <span className="mx-2" style={{width:'200px'}}>max lowsec jumps</span>
+                  <div style={{width:'120px'}}>
+                    <FormControl type="number" id="lowsecjumps" name="lowsecjumps" value={compState.filtermaxlowsec} onChange={changeFiltermaxlowsec} onBlur={exitFiltermaxlowsec} />
+                  </div>
+                  <button type="button" className="btn btn-sm btn-secondary" onClick={resetFiltermaxlowsec}>X</button>
                 </div>
               </div>
         </div>
@@ -284,8 +329,9 @@ export default function Tradelist(props) {
                     <th style={colsell_total}>tot. sell price</th>
                     <th style={colbuy_total}>tot. buy price</th>
                     <th style={coltrade_profit}>est. profit</th>
-                    <th style={coltrade_jumps}>jumps / run</th>
-                    <th style={coltrade_profit_per_jump}>profit/jump</th>
+                    <th style={coltrade_jumps}>jumps</th>
+                    <th style={coltrade_jumps}>lowsec</th>
+                    <th style={coltrade_profit_per_jump}><span className='float-right'>profit/jump</span></th>
                     <th style={coltrade_runs}>runs</th>
                     <th style={coltrade_total_jumps}>t.j</th>
                     <th style={coltrade_singlerunprofit}>profit / run</th>
@@ -314,7 +360,8 @@ export default function Tradelist(props) {
                     <td style={colsell_total}><span className='float-right'>{format_price(trade.sell_total)}</span></td>
                     <td style={colbuy_total}><span className='float-right'>{format_price(trade.buy_total)}</span></td>
                     <td style={coltrade_profit}><span className='float-right'>{format_price(trade.trade_profit)}</span></td>
-                    <td style={coltrade_jumps}><span className={trade.trade_jumpslowsec>1 || trade.trade_jumpsnullsec>1 ? "float-right bg-danger" : "float-right"}>{trade.trade_jumps}</span></td>
+                    <td style={coltrade_jumps}><span className="float-right">{trade.trade_jumps}</span></td>
+                    <td style={coltrade_jumps}><span className={trade.trade_jumpslowsec>0 ? "float-right bg-danger empty_fill" : ""}>{trade.trade_jumpslowsec}</span></td>
                     <td style={coltrade_profit_per_jump}><span className='float-right'>{format_price(trade.trade_profit_per_jump)}</span></td>
                     <td style={coltrade_runs}><span className='float-right'>{trade.trade_runs}</span></td>
                     <td style={coltrade_total_jumps}><span className='float-right'>{trade.trade_total_jumps}</span></td>

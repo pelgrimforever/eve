@@ -2,7 +2,7 @@
 //don't change things here, it will be overwritten
 /* 
     Created on : Nov 20, 2018, 10:39:01 AM
-    Generated on 9.11.2021 14:30
+    Generated on 20.11.2021 17:22
     Author     : Franky Laseure
 */
 
@@ -16,6 +16,8 @@ import { Systempk } from '../../../../../data/eve/table/super/systemsuper.js';
 import SystemJson from '../conversion/systemjson.js';
 import { Tradecombinedsellpk } from '../../../../../data/eve/table/super/tradecombinedsellsuper.js';
 import TradecombinedsellJson from '../conversion/tradecombinedselljson.js';
+import { Shipfitorderselectedpk } from '../../../../../data/eve/table/super/shipfitorderselectedsuper.js';
+import ShipfitorderselectedJson from '../conversion/shipfitorderselectedjson.js';
 import { Tradepk } from '../../../../../data/eve/table/super/tradesuper.js';
 import TradeJson from '../conversion/tradejson.js';
 
@@ -31,8 +33,9 @@ class Rsorderssuper extends Eveservice {
 	static SELECT_System = 100 + 1;
 	static SELECT_Tradecombinedsellbuyorderid = 100 + 2;
 	static SELECT_Tradecombinedsellsellorderid = 100 + 3;
-	static SELECT_Tradesellorderid = 100 + 4;
-	static SELECT_Tradebuyorderid = 100 + 5;
+	static SELECT_Shipfitorderselected = 100 + 4;
+	static SELECT_Tradesellorderid = 100 + 5;
+	static SELECT_Tradebuyorderid = 100 + 6;
 
 	//UPDATE OPERATIONS
 	static UPDATE_ORDERS = 10;
@@ -41,8 +44,8 @@ class Rsorderssuper extends Eveservice {
 	static INSERT_ORDERS = 20;
 
 	//DELETE OPERATIONS
-	static DELETE_Evetype = 100 + 6;
-	static DELETE_System = 100 + 7;
+	static DELETE_Evetype = 100 + 7;
+	static DELETE_System = 100 + 8;
 	static DELETE_ORDERS = 30;
 
 	static extractDataArray = (jsonarray): Orders[] => {
@@ -107,6 +110,14 @@ class Rsorderssuper extends Eveservice {
     const postdata = {
       operation: { type: super.OPERATIONTYPE_SELECT, operation: this.SELECT_Tradecombinedsellsellorderid },
      	"tradecombined_sellpk": TradecombinedsellJson.PKtoJSON(tradecombinedsellSellorderidpk)
+    }
+    return this.extractDataArray(await super.post(this.restservice, postdata));
+	}
+
+	static loadOrders4shipfitorderselected = async (shipfitorderselectedpk: Shipfitorderselectedpk): Orders[] => {
+    const postdata = {
+      operation: { type: super.OPERATIONTYPE_SELECT, operation: this.SELECT_Shipfitorderselected },
+     	"shipfitorderselectedpk": ShipfitorderselectedJson.PKtoJSON(shipfitorderselectedpk)
     }
     return this.extractDataArray(await super.post(this.restservice, postdata));
 	}
@@ -226,6 +237,15 @@ class Rsorderssuper extends Eveservice {
     	auth: user===null ? null : user.auth,
       operation: { type: super.OPERATIONTYPE_SECURESELECT, operation: this.SELECT_Tradecombinedsellsellorderid },
      	"tradecombined_sellpk": TradecombinedsellJson.PKtoJSON(tradecombinedsellSellorderidpk)
+    }
+    return this.extractDataArray(await super.post(this.restservice, postdata));
+	}
+
+	static sec_loadOrders4shipfitorderselected = async (user, shipfitorderselectedpk: Shipfitorderselectedpk): Orders[] => {
+    const postdata = {
+    	auth: user===null ? null : user.auth,
+      operation: { type: super.OPERATIONTYPE_SECURESELECT, operation: this.SELECT_Shipfitorderselected },
+     	"shipfitorderselectedpk": ShipfitorderselectedJson.PKtoJSON(shipfitorderselectedpk)
     }
     return this.extractDataArray(await super.post(this.restservice, postdata));
 	}

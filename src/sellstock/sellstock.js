@@ -41,6 +41,7 @@ export default function Sellstock(props) {
   const [evetype, setEvetype] = useState(new Evetype());
   const [systems, setSystems] = useState(getsystemoptions());
   const [stocktradesystem, setStocktradesystem] = useState(new Stocktradesystem());
+  const [stockamount, setStockamount] = useState(1);
 
   useEffect(async () => {
     compActions.loadSettings();
@@ -79,6 +80,7 @@ export default function Sellstock(props) {
     evetype.PK.id = item.evetype;
     evetype.name = item.name;
     setEvetype(evetype);
+    setStockamount(item.amount);
     setShowstockremove(true);
   }
 
@@ -308,6 +310,7 @@ export default function Sellstock(props) {
 
       <Stock_remove 
         evetype={evetype}
+        stockamount={stockamount}
         show={showstockremove} 
         onStockremove={onStock_remove}
         onCancel={onStock_removeCancel} 

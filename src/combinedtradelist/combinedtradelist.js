@@ -317,7 +317,7 @@ export default function Combinedtradelist(props) {
                     <td style={colsell_total}><span className='float-right'>{format_price(trade.sell_order_total)}</span></td>
                     <td style={colbuy_total}><span className='float-right'>{format_price(trade.buy_order_total)}</span></td>
                     <td style={coltrade_profit}><span className='float-right'>{format_price(trade.totalprofit)}</span></td>
-                    <td style={coltrade_jumps}><span className={trade.trade_jumpslowsec>1 || trade.trade_jumpsnullsec>1 ? "float-right bg-danger" : "float-right"}>{trade.trade_jumps}</span></td>
+                    <td style={coltrade_jumps}><span className={trade.trade_jumpslowsec>0 || trade.trade_jumpsnullsec>0 ? "float-right bg-danger empty_fill" : "float-right empty_fill"}>{trade.trade_jumps}</span></td>
                     <td><button type="button" className="btn btn-sm small btn-primary" onClick={() => showTradeline(trade)}>show</button></td>
                   </tr>  
     ))}
