@@ -8,12 +8,14 @@
 
 //services
 import Rsshipfitorderselectedsuper from './super/rsshipfitorderselectedsuper.js';
+import ShipfitorderselectedJson from './conversion/shipfitorderselectedjson.js';
 import ShipfitorderJson from './conversion/shipfitorderjson.js';
 import OrdersJson from './conversion/ordersjson.js';
 
 class Rsshipfitorderselected extends Rsshipfitorderselectedsuper {
 
     static INSERT_ORDERID = 21;
+    static UPDATE_CONFIRMORDER = 11;
 
     static addOrder2Shipfitorder = async (shipfitorderpk, orderpk) => {
         const postdata = {
@@ -24,6 +26,14 @@ class Rsshipfitorderselected extends Rsshipfitorderselectedsuper {
         return await super.post(this.restservice, postdata);
     }
 
+    static confirmShipfitorder = async (shipfitorderselectedpk, amount) => {
+        const postdata = {
+            operation: { type: super.OPERATIONTYPE_UPDATE, operation: this.UPDATE_CONFIRMORDER },
+            shipfitorderselectedpk: ShipfitorderselectedJson.PKtoJSON(shipfitorderselectedpk),
+            amount: amount
+        }
+        return await super.post(this.restservice, postdata);
+    }
 }
 
 export default Rsshipfitorderselected;

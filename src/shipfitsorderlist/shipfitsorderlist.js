@@ -11,6 +11,7 @@ import Store from '../services/store.js';
 import Shipfit_add from '../popups/shipfit_add.js';
 import Shipmodule_add from '../popups/shipmodule_add.js';
 import Shipfitorder_addstock from '../popups/shipfitorder_addstock.js';
+import Shipfirorder_confirm from '../popups/shipfirorder_confirm.js';
 //data models
 //component state
 import appstore from '../appstore.js';
@@ -24,6 +25,7 @@ export default function Shipfitsorderlist(props) {
   const [compState, compActions] = storeShipfitsorderlist();
 
   const [loading, setLoading] = useState(false);
+  const [showconfirmform, setShowconfirmform] = useState(false);
 
   useEffect(async () => {
     compActions.loadShipfitorders();
@@ -39,6 +41,20 @@ export default function Shipfitsorderlist(props) {
 
   const removeordereditem = async (viewshipfitorderselected) => {
     compActions.deleteShipfitorderlist(viewshipfitorderselected);
+  }
+
+  const confirmordereditem = async (viewshipfitorderselected) => {
+    compActions.setViewshipfitorderselected(viewshipfitorderselected);
+    setShowconfirmform(true);
+  }
+
+  const onconfirmordereditem = async (amount) => {
+    compActions.confirmShipfitorder(amount);
+    setShowconfirmform(false);
+  }
+
+  const oncancelordereditem = () => {
+    setShowconfirmform(false);
   }
 
   const format_price = (p) => {
@@ -110,7 +126,9 @@ export default function Shipfitsorderlist(props) {
                         <td style={col_amount}><span className='float-right'>{item.amountinstock}</span></td>
                         <td style={col_amount}><span className='float-right'>{item.amountplanned}</span></td>
                         <td>
+      { item.amountwanted>item.amountinstock+item.amountplanned &&
                           <button type="button" className="mx-2 btn btn-sm small btn-primary" onClick={() => findorders(item)}>-></button>
+      }
                         </td>
                       </tr>  
     ))}
@@ -222,6 +240,7 @@ export default function Shipfitsorderlist(props) {
                         <td style={colorder_typename}>{item.evetypename}</td>
                         <td>
                           <button type="button" className="mx-2 btn btn-sm small btn-primary" onClick={() => removeordereditem(item)}>-</button>
+                          <button type="button" className="mx-2 btn btn-sm small btn-primary" onClick={() => confirmordereditem(item)}>v</button>
                         </td>
                       </tr>  
     ))}
@@ -239,6 +258,13 @@ export default function Shipfitsorderlist(props) {
 
         </div>
       </div>
+
+      <Shipfirorder_confirm 
+        viewshipfitorderselected={compState.viewshipfitorderselected}
+        show={showconfirmform} 
+        onConfirm={onconfirmordereditem}
+        onCancel={oncancelordereditem} 
+        />
 
     </div>
 

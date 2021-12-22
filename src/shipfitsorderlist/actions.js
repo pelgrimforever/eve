@@ -52,4 +52,18 @@ export const deleteShipfitorderlist = async (store, viewshipfitorderselected) =>
   loadShipfitorders(store);
 }
 
+export const setViewshipfitorderselected = (store, viewshipfitorderselected) => {
+  store.setState({ viewshipfitorderselected: viewshipfitorderselected });
+}
 
+export const confirmShipfitorder = async (store, amount) => {
+  const shipfitorderselectedpk = new Shipfitorderselectedpk();
+  shipfitorderselectedpk.init();
+  shipfitorderselectedpk.shipfitorderPK.init();
+  shipfitorderselectedpk.shipfitorderPK.shipfitPK.username = store.state.viewshipfitorderselected.username;
+  shipfitorderselectedpk.shipfitorderPK.shipfitPK.shipname = store.state.viewshipfitorderselected.shipname;
+  shipfitorderselectedpk.shipfitorderPK.evetypePK.id = store.state.viewshipfitorderselected.evetype;
+  shipfitorderselectedpk.ordersPK.id = store.state.viewshipfitorderselected.id;
+  const result = await Rsshipfitorderselected.confirmShipfitorder(shipfitorderselectedpk, amount);
+  loadShipfitorders(store);
+}

@@ -67,14 +67,14 @@ export default function Page() {
             { name:'Combined trade tracking', link: '/combinedtradetracking' }, 
             { name:'System trade', link: '/systemtradelist' }, 
             { name:'System trade tracking', link: '/systemtradetracking' },
-            { name:'Sell stock', link: '/sellstock' },
-            { name:'Wish list', link: '/wishlist' },
           ]
         },         
         { name:'Market tools', link: '/market',
           navitems: [
-              { name:'Low price', link: '/lowprice' }, 
-              { name:'Market price', link: '/marketprice' }, 
+            { name:'Low price', link: '/lowprice' }, 
+            { name:'Market price', link: '/marketprice' }, 
+            { name:'Sell stock', link: '/sellstock' },
+            { name:'Wish list', link: '/wishlist' },
           ]
         },         
         { name:'Fits', link: '/fits',
