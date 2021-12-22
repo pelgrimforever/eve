@@ -257,7 +257,7 @@ export default function Tradelist(props) {
                   <button type="button" className="btn btn-sm btn-primary m-1" onClick={loadlist}>refresh</button>
                 </div>
                 <div className="col col-sm-3">
-                  <Sortmode title="sort" modes={sortmodes} sortmode={compState.filtersortfield} onModeselected={onSortfieldselected} />
+                  <Sortmode title="sort" modes={sortmodes} sortmode={0} onModeselected={onSortfieldselected} />
                 </div>
                 <div className="col col-sm-2 d-flex">
                   <span className="mx-2">start</span>

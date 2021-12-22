@@ -66,7 +66,7 @@ export default function Shipfits(props) {
   }
 
   const removeShipmodule = (item) => {
-    compActions.setShipfitorder(item);
+    compActions.removeShipmodule(item);
   }
 
   const onShipmoduleadd = async (activemodule, amount) => {

@@ -7,6 +7,7 @@ import ModalTitle from "react-bootstrap/ModalTitle";
 import FormControl from "react-bootstrap/FormControl";
 import { Col, Row, Form } from "react-bootstrap";
 import Moment from 'moment';
+import Sortmode from '../utilities/sortmode.js';
 
 import Store from '../services/store.js';
 
@@ -19,18 +20,41 @@ import Rsviewevetypes from '../services/eve/rest/view/rsviewevetypes.js';
 function Shipmodule_add(props) {
 
   const [shipmodules, setShipmodules] = useState([]);
+  const [shipcharges, setShipcharges] = useState([]);
+  const [shipdeployables, setShipdeployables] = useState([]);
   const [shipmodule, setShipmodule] = useState(null);
   const [displaylist, setDisplaylist] = useState([]);
   const [searchstring, setSearchstring] = useState('');
+  const sort_module = 'module';
+  const sort_charge = 'charge';
+  const sort_deploy = 'deployable';
+  const moduletypes = [ 
+    { name:sort_module, text: 'module' }, 
+    { name:sort_charge, text: 'charge' }, 
+    { name:sort_deploy, text: 'deployable' }, 
+  ];
+  const [activemodule, setActivemodule] = useState(moduletypes[0]);
 
   useEffect(async () => {
-    const result = await Rsviewevetypes.getmodules();
-    setShipmodules(result);
-    setDisplaylist(result);
+    const modules = await Rsviewevetypes.getmodules();
+    setShipmodules(modules);
+    setDisplaylist(modules);
+    const shipchargeslist = await Rsviewevetypes.getcharges();
+    setShipcharges(shipchargeslist);
+    const shipdeployableslist = await Rsviewevetypes.getdeployables();
+    setShipdeployables(shipdeployableslist);
   }, []);
 
-  const filterTypes = async (searchstring) => {
-    let result = shipmodules.filter(obj => {
+  const filterTypes = async (selectedmodule, searchstring) => {
+    let activelist = [];
+    if(selectedmodule.name==sort_module) {
+      activelist = shipmodules;
+    } else if(selectedmodule.name==sort_charge) {
+      activelist = shipcharges;
+    } else if(selectedmodule.name==sort_deploy) {
+      activelist = shipdeployables;
+    }
+    let result = activelist.filter(obj => {
       return obj.name.includes(searchstring);
     });
     setDisplaylist(result);
@@ -38,7 +62,7 @@ function Shipmodule_add(props) {
 
   const searchtextChange = (searchtextevent) => {
     setSearchstring(searchtextevent.target.value);
-    filterTypes(searchtextevent.target.value);
+    filterTypes(activemodule, searchtextevent.target.value);
   }
 
   const onShipmoduleclick = (item) => {
@@ -53,6 +77,11 @@ function Shipmodule_add(props) {
       props.onShipmoduleadd(shipmodule, amount);
     }
   }
+
+  const changeActivemodule = (selection) => { 
+    setActivemodule(selection);
+    filterTypes(selection, searchstring);
+  };
 
   const bodyheight = {height: '40rem'};
 
@@ -76,8 +105,13 @@ function Shipmodule_add(props) {
                     <div className="row m-0">
                       <div className="col col-sm-12 d-flex">
                         <span className="mx-2">name filter</span>
-                        <div style={{width:'200px'}}>
-                          <input type="text" className="form-input" style={{width:'400px'}} onChange={searchtextChange} defaultValue={searchstring} />
+                        <div style={{width:'400px'}}>
+                          <input type="text" className="form-input" style={{width:'200px'}} onChange={searchtextChange} defaultValue={searchstring} />
+                        </div>
+                      </div>
+                      <div className="col col-sm-12 d-flex mt-2">
+                        <div style={{width:'100%'}}>
+                          <Sortmode modes={moduletypes} sortmode={activemodule} onModeselected={changeActivemodule} />
                         </div>
                       </div>
                     </div>
@@ -123,9 +157,9 @@ function Shipmodule_add(props) {
                   <div className="p-2 flex-fill bg-info">
                     <div className="row m-0">
                       <div className="col col-sm-12 d-flex">
-                        <span className="mx-2">Ship Fit name</span>
+                        <span className="mx-2">amount</span>
                         <div className="mx-2" style={{width:'200px'}}>
-                          <Form.Control type="number" id="amount" name="amount" defaultValue={1} style={{width:'50px'}} />  
+                          <Form.Control type="number" id="amount" name="amount" defaultValue={1} style={{width:'100px'}} />  
                         </div>
                         <button type="submit" className="btn btn-primary">add</button>
                       </div>
