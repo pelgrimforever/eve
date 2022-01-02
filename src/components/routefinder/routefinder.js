@@ -1,30 +1,28 @@
 import React, { useState, useEffect } from 'react';
 import Spinner from 'react-bootstrap/Spinner'
-import ProgressBar from 'react-bootstrap/ProgressBar'
 import { Col, Row, Form } from "react-bootstrap";
 import FormControl from "react-bootstrap/FormControl";
 import Select from 'react-select';
 
-import Store from '../services/store.js';
+import './routefinder.scss';
 
 //components
+//services
+import Store from '../../services/store.js';
+import Rsloadroute from '../../services/eve/rest/custom/rsloadroute.js';
 //data models
-import { Systempk } from '../data/eve/table/super/systemsuper.js';
 //component state
-import appstore from '../appstore.js';
-import storeSystemkills from './store.js';
+import storeRoutefinder from './store.js';
 
-export default function Tradetracking(props) {
+export default function Routefinder(props) {
 
-  //variables with App scope
-  const [appState] = appstore();
   //variables with component scope
-  const [compState, compActions] = storeSystemkills();
+  const [compState, compActions] = storeRoutefinder();
 
   const getallsystemoptions = () => {
     let allsystemlist = [];
     Store.codetables.allsystemlist.map(s => {
-      allsystemlist.push({ value: s.PK.id, label: s.name, system: s });
+      allsystemlist.push({ value: s.PK.id, label: s.name });
     });
     return allsystemlist;
   }
@@ -33,18 +31,11 @@ export default function Tradetracking(props) {
 
   const [loading, setLoading] = useState(false);
   const [allsystems, setAllsystems] = useState(getallsystemoptions());
+  const [list, setList] = useState([]);
 
   useEffect(async () => {
-    await loadupdate();
+    await loadroute();
   }, []);
-
-  const setStartsystem = (selection) => { 
-    compActions.setStartsystem(selection.system);
-  };
-
-  const setEndsystem = (selection) => { 
-    compActions.setEndsystem(selection.system);
-  };
 
   const addSystem = (selection) => { 
     if(compState.viasystems.findIndex(v => v.value === selection.value)===-1) {
@@ -66,8 +57,11 @@ export default function Tradetracking(props) {
     compActions.setAvoidsystems(compState.avoidsystems.filter(item => item.value !== avoidsystem.value));
   }
 
-  const loadupdate = async (event) => {
-    compActions.loadRoute();
+  const loadroute = async (event) => {
+    if(props.startsystemid!=null && props.endsystemid!=null) {
+      const resultroute = await Rsloadroute.getroute(props.startsystemid, props.endsystemid, compState.viasystems, compState.avoidsystems, compState.secure);
+      setList(resultroute);
+    }
   }
 
   const format_2digits = (n) => {
@@ -84,78 +78,26 @@ export default function Tradetracking(props) {
     }
   }
 
-  const col_systemnr = {width: '3rem'};
-  const col_system = {width: '15rem'};
-  const col_systemsec = {width: '5rem'};
-  const col_npc_kills = {width: '5rem'};
-  const col_pod_kills = {width: '5rem'};
-  const col_ship_kills = {width: '5rem'};
-  const col_killmails = {width: '5rem'};
-  const col_killmailgates = {width: '8rem'};
-  const col_killboard = {width: '15rem'};
+  const col_systemnr = {width: '2rem'};
+  const col_system = {width: '7rem'};
+  const col_systemsec = {width: '3rem'};
+  const col_npc_kills = {width: '3rem'};
+  const col_pod_kills = {width: '3rem'};
+  const col_ship_kills = {width: '3rem'};
+  const col_killmails = {width: '3rem'};
+  const col_killmailgates = {width: '3rem'};
+  const col_killboard = {width: '5rem'};
 
   return (
     <div className="root fullheight">
       <div className="containerheader">
         <div className="mx-auto bg-light p-1">
-
-          <div className="d-flex">
-
-            <div className="p-2 flex-fill bg-info">
-              <div className="row m-0">
-                <div className="col col-sm-4 input-group-prepend">
-                  <label className="input-group-text">secure</label>
-                </div>
-                <div className="col col-sm-8 input-group-prepend">
-                  <div className="custom-control custom-checkbox cell-center mr-2">
-                    <input type="checkbox" checked={compState.secure} className="form-check-input" onClick={() => compActions.setSecure(!compState.secure)}/>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div className="p-2 flex-fill bg-info">
-              <div className="row m-0">
-                <div className="col col-sm-4 input-group-prepend">
-                  <label className="input-group-text">from</label>
-                </div>
-                <div className="col col-sm-8 input-group-prepend">
-                  <div style={{width:'200px'}}>
-                    <Select options={allsystems} value={allsystems.find(option => option.value === compState.startsystemid)} onChange={setStartsystem}/>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div className="p-2 flex-fill bg-info">
-              <div className="row m-0">
-                <div className="col col-sm-4 input-group-prepend">
-                  <label className="input-group-text">to</label>
-                </div>
-                <div className="col col-sm-8 input-group-prepend">
-                  <div style={{width:'200px'}}>
-                    <Select options={allsystems} value={allsystems.find(option => option.value === compState.endsystemid)} onChange={setEndsystem}/>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div className="p-2 flex-fill bg-info">
-              <div className="row m-0">
-                <button type="button" className="btn btn-sm btn-primary m-1" onClick={loadupdate}>search</button>
-              </div>
-            </div>
-
-
-          </div>
-
-        </div>
-      </div>
-
-      <div className="containerheader">
-        <div className="mx-auto bg-light p-1">
           <div className="row m-0">
-            <div className="col col-sm-10 d-flex">
+            <div className="d-flex">
+              <label className="input-group-text bg-light">secure</label>
+              <div className="custom-control custom-checkbox cell-center mr-2">
+                <input type="checkbox" checked={compState.secure} className="form-check-input" onClick={() => compActions.setSecure(!compState.secure)}/>
+              </div>
               <label className="input-group-text bg-light mr-2">via</label>
     {compState.viasystems.map((viasystem, index) => (
               <>
@@ -197,10 +139,10 @@ export default function Tradetracking(props) {
                     <Spinner animation="border" role="status" />
                   </div>
 }
-                  <table className="table table-dark table-bordered table-hover fillparent">
+                  <table className="table small table-dark table-bordered table-hover fillparent">
                     <thead>
                       <tr>
-                        <th style={col_systemnr}>{compState.routelist.length}</th>
+                        <th style={col_systemnr}>{list.length}</th>
                         <th style={col_system}>systems</th>
                         <th style={col_systemsec}>sec</th>
                         <th style={col_npc_kills}>npc</th>
@@ -215,7 +157,7 @@ export default function Tradetracking(props) {
                     </thead>
                     <tbody className="overflow text-body">
 
-    {compState.routelist.map((item, index) => (
+    {list.map((item, index) => (
                       <tr className={item.ship_kills>0 ? "table-danger" : "table-info"} key={index}>
                         <td style={col_systemnr}>{index}</td>
                         <td style={col_system}>{item.name}</td>
@@ -239,9 +181,8 @@ export default function Tradetracking(props) {
                 </div>
               </div>
             </div>
-
       </div>
     </div>
+  );
 
-    );
 }

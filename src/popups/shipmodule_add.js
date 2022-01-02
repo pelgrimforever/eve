@@ -21,16 +21,19 @@ function Shipmodule_add(props) {
 
   const [shipmodules, setShipmodules] = useState([]);
   const [shipcharges, setShipcharges] = useState([]);
+  const [shipdrones, setShipdrones] = useState([]);
   const [shipdeployables, setShipdeployables] = useState([]);
   const [shipmodule, setShipmodule] = useState(null);
   const [displaylist, setDisplaylist] = useState([]);
   const [searchstring, setSearchstring] = useState('');
   const sort_module = 'module';
   const sort_charge = 'charge';
+  const sort_drone = 'drone';
   const sort_deploy = 'deployable';
   const moduletypes = [ 
     { name:sort_module, text: 'module' }, 
     { name:sort_charge, text: 'charge' }, 
+    { name:sort_drone, text: 'drone' }, 
     { name:sort_deploy, text: 'deployable' }, 
   ];
   const [activemodule, setActivemodule] = useState(moduletypes[0]);
@@ -41,6 +44,8 @@ function Shipmodule_add(props) {
     setDisplaylist(modules);
     const shipchargeslist = await Rsviewevetypes.getcharges();
     setShipcharges(shipchargeslist);
+    const shipdroneslist = await Rsviewevetypes.getdrones();
+    setShipdrones(shipdroneslist);
     const shipdeployableslist = await Rsviewevetypes.getdeployables();
     setShipdeployables(shipdeployableslist);
   }, []);
@@ -51,6 +56,8 @@ function Shipmodule_add(props) {
       activelist = shipmodules;
     } else if(selectedmodule.name==sort_charge) {
       activelist = shipcharges;
+    } else if(selectedmodule.name==sort_drone) {
+      activelist = shipdrones;
     } else if(selectedmodule.name==sort_deploy) {
       activelist = shipdeployables;
     }

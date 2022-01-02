@@ -1,0 +1,33 @@
+table.small {
+  font-size: 0.65rem;
+}
+
+table.small > thead {
+  font-size: 0.7rem;    
+}
+
+table.small > thead > tr > th {
+  padding: 0.1rem 0.1rem;
+}
+
+table.small > tbody > tr > td {
+  padding: 0.1rem 0.1rem;
+}
+
+table.small > tbody > tr > td > .progress {
+    height: 0.5rem;
+}
+
+.spinner-local {
+  position: absolute;
+  right: auto;
+}
+
+button.small {
+  font-size: 0.65rem;
+  padding: 0rem 0.5rem;
+}
+
+ul.pagination {
+  margin-bottom: 0;
+}

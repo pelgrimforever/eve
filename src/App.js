@@ -40,6 +40,7 @@ import Sellorderslowprice from './sellorderslowprice/sellorderslowprice.js';
 import Marketprice from './marketprice/marketprice.js';
 import Shipfits from './shipfits/shipfits.js';
 import Shipfitsorderlist from './shipfitsorderlist/shipfitsorderlist.js';
+import Shipfitroute from './shipfitroute/shipfitroute.js';
 
 //configured in .env and .env.production
 const {REACT_APP_TEST} = process.env;
@@ -81,6 +82,7 @@ export default function Page() {
           navitems: [
               { name:'Ship fits', link: '/shipfits' }, 
               { name:'Order parts', link: '/orderparts' }, 
+              { name:'Order route', link: '/shipfitroute' }, 
           ]
         },         
         { name:'Routes', link: '/routes',
@@ -137,6 +139,7 @@ export default function Page() {
     <Route exact path="/marketprice" component={Marketprice}/>
     <Route exact path="/shipfits" component={Shipfits}/>
     <Route exact path="/orderparts" component={Shipfitsorderlist}/>
+    <Route exact path="/shipfitroute" component={Shipfitroute}/>
     <Route exact path="/systemkills" component={Systemkills}/>
   </div>
 

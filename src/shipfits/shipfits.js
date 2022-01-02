@@ -92,8 +92,6 @@ export default function Shipfits(props) {
     setShipfitorderaddstock(false);
   }
 
-  const sec_highsec = 0.45;
-
   const col_name = {width: '15rem'};
   const col_type = {width: '10rem'};
 
