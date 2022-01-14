@@ -2,7 +2,7 @@
 //don't change things here, it will be overwritten
 /* 
     Created on : Nov 16, 2018, 17:04:01 PM
-    Generated on 19.11.2021 16:16
+    Generated on 14.0.2022 16:56
     Author     : Franky Laseure
 */
 
@@ -63,6 +63,10 @@ class Evetypesuper {
 	max_buyorder: number = 0;
 	min_selorder: number = 0;
 	max_selorder: number = 0;
+	average: number = 0;
+	highest: number = 0;
+	lowest: number = 0;
+	order_count: string = '';
 }
 
 export class Evetypesearcher extends Tablesearch {
@@ -85,6 +89,10 @@ export class Evetypesearcher extends Tablesearch {
 		this.addFieldsearcher(this.max_buyorder);
 		this.addFieldsearcher(this.min_selorder);
 		this.addFieldsearcher(this.max_selorder);
+		this.addFieldsearcher(this.average);
+		this.addFieldsearcher(this.highest);
+		this.addFieldsearcher(this.lowest);
+		this.addFieldsearcher(this.order_count);
         this.addKeysearcher(this.marketgroupsearcher);
         this.addKeysearcher(this.typegroupsearcher);
         this.addKeysearcher(this.graphicsearcher);
@@ -121,6 +129,10 @@ export class Evetypesearcher extends Tablesearch {
     max_buyorder: Numbersearcher = new Numbersearcher("evetype.max_buyorder");
     min_selorder: Numbersearcher = new Numbersearcher("evetype.min_selorder");
     max_selorder: Numbersearcher = new Numbersearcher("evetype.max_selorder");
+    average: Numbersearcher = new Numbersearcher("evetype.average");
+    highest: Numbersearcher = new Numbersearcher("evetype.highest");
+    lowest: Numbersearcher = new Numbersearcher("evetype.lowest");
+    order_count: Numbersearcher = new Numbersearcher("evetype.order_count");
     marketgroupsearcher: Foreignkeysearcher = new Foreignkeysearcher();
     typegroupsearcher: Foreignkeysearcher = new Foreignkeysearcher();
     graphicsearcher: Foreignkeysearcher = new Foreignkeysearcher();
@@ -272,6 +284,42 @@ export class Evetypesearcher extends Tablesearch {
 		  }
     	this.max_selorder.values = this.max_selorder.values.concat(numvalues);
     	this.max_selorder.operators = this.max_selorder.operators.concat(operators);
+    }
+    addaverages = (values, operators) => {
+		  let numvalues = [values.length];
+		  let i=0;
+		  for(i=0; i<values.length; i++) {
+		    numvalues[i] = parseFloat(values[i]);
+		  }
+    	this.average.values = this.average.values.concat(numvalues);
+    	this.average.operators = this.average.operators.concat(operators);
+    }
+    addhighests = (values, operators) => {
+		  let numvalues = [values.length];
+		  let i=0;
+		  for(i=0; i<values.length; i++) {
+		    numvalues[i] = parseFloat(values[i]);
+		  }
+    	this.highest.values = this.highest.values.concat(numvalues);
+    	this.highest.operators = this.highest.operators.concat(operators);
+    }
+    addlowests = (values, operators) => {
+		  let numvalues = [values.length];
+		  let i=0;
+		  for(i=0; i<values.length; i++) {
+		    numvalues[i] = parseFloat(values[i]);
+		  }
+    	this.lowest.values = this.lowest.values.concat(numvalues);
+    	this.lowest.operators = this.lowest.operators.concat(operators);
+    }
+    addorder_counts = (values, operators) => {
+		  let numvalues = [values.length];
+		  let i=0;
+		  for(i=0; i<values.length; i++) {
+		    numvalues[i] = parseFloat(values[i]);
+		  }
+    	this.order_count.values = this.order_count.values.concat(numvalues);
+    	this.order_count.operators = this.order_count.operators.concat(operators);
     }
     setmarketgroup = (marketgroupsearch) => {
         this.marketgroupsearcher.setTablesearch(marketgroupsearch);

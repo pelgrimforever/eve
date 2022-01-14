@@ -256,8 +256,8 @@ export default function Systemtradetracking(props) {
         <div className="row h-100">
           <div className="col-6">
             <Routefinderlist 
-              startsystemid={appState.viewtrade.sell_systemid} 
-              endsystemid={appState.viewtrade.buy_systemid} 
+              startsystemid={appState.viewtradesystem.sell_systemid} 
+              endsystemid={appState.viewtradesystem.buy_systemid} 
               viasystems={compState.viasystems}
               avoidsystems={compState.avoidsystems}
               secure={compState.secure}

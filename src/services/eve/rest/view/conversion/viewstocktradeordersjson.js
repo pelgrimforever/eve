@@ -2,7 +2,7 @@
 //don't change things here, it will be overwritten
 /* 
     Created on : Dec 16, 2018, 18:32:01
-    Generated on 16.11.2021 15:46
+    Generated on 14.0.2022 16:56
     Author     : Franky Laseure
 */
 
@@ -21,6 +21,7 @@ class ViewstocktradeordersJson {
 			"evetypename": viewstocktradeorders.evetypename,
 			"packaged_volume": "" + viewstocktradeorders.packaged_volume,
 			"min_volume": viewstocktradeorders.min_volume,
+			"orderid": "" + viewstocktradeorders.orderid,
 			"sellamount": "" + viewstocktradeorders.sellamount,
 		};
 		return jsonobj;
@@ -37,6 +38,7 @@ class ViewstocktradeordersJson {
 		model.evetypename = jsonobj.evetypename;
 		model.packaged_volume = parseFloat(jsonobj.packaged_volume);
 		model.min_volume = jsonobj.min_volume;
+		model.orderid = "" + jsonobj.orderid;
 		model.sellamount = "" + jsonobj.sellamount;
 		return model;
 	}

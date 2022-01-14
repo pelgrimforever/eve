@@ -74,10 +74,9 @@ export default function Routefinderlist(props) {
             <div className="root fullheight">
               <div className="containercontent container-relative">
                 <div className="table-container container-fluid p-0">
-
 { loading && 
                   <div className="d-flex justify-content-center">
-                    <Spinner animation="border" role="status" />
+                    <Spinner className="spinner-border-center" animation="border" role="status" />
                   </div>
 }
                   <table className="table small table-dark table-bordered table-hover fillparent">

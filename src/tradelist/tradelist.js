@@ -238,7 +238,7 @@ export default function Tradelist(props) {
   const colsell_total = {width: '5rem'};
   const colbuy_total = {width: '5rem'};
   const coltrade_profit = {width: '5rem'};
-  const coltrade_jumps= {width: '2rem'};
+  const coltrade_jumps= {width: '3rem'};
   const coltrade_profit_per_jump= {width: '5rem'};
   const coltrade_runs = {width: '1rem'};
   const coltrade_total_jumps = {width: '1.5rem'};
@@ -330,7 +330,7 @@ export default function Tradelist(props) {
                     <th style={colbuy_total}>tot. buy price</th>
                     <th style={coltrade_profit}>est. profit</th>
                     <th style={coltrade_jumps}>jumps</th>
-                    <th style={coltrade_jumps}>lowsec</th>
+                    <th style={coltrade_jumps}><span className='float-right'>low/null</span></th>
                     <th style={coltrade_profit_per_jump}><span className='float-right'>profit/jump</span></th>
                     <th style={coltrade_runs}>runs</th>
                     <th style={coltrade_total_jumps}>t.j</th>
@@ -361,7 +361,7 @@ export default function Tradelist(props) {
                     <td style={colbuy_total}><span className='float-right'>{format_price(trade.buy_total)}</span></td>
                     <td style={coltrade_profit}><span className='float-right'>{format_price(trade.trade_profit)}</span></td>
                     <td style={coltrade_jumps}><span className="float-right">{trade.trade_jumps}</span></td>
-                    <td style={coltrade_jumps}><span className={trade.trade_jumpslowsec>0 ? "float-right bg-danger empty_fill" : ""}>{trade.trade_jumpslowsec}</span></td>
+                    <td style={coltrade_jumps}><span className={trade.trade_jumpslowsec>0 || trade.trade_jumpsnullsec>0 ? "float-right bg-danger empty_fill float-right" : "float-right"}>{trade.trade_jumpslowsec} / {trade.trade_jumpsnullsec}</span></td>
                     <td style={coltrade_profit_per_jump}><span className='float-right'>{format_price(trade.trade_profit_per_jump)}</span></td>
                     <td style={coltrade_runs}><span className='float-right'>{trade.trade_runs}</span></td>
                     <td style={coltrade_total_jumps}><span className='float-right'>{trade.trade_total_jumps}</span></td>

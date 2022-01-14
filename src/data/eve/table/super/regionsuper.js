@@ -2,7 +2,7 @@
 //don't change things here, it will be overwritten
 /* 
     Created on : Nov 16, 2018, 17:04:01 PM
-    Generated on 16.11.2021 15:46
+    Generated on 14.0.2022 16:56
     Author     : Franky Laseure
 */
 
@@ -45,6 +45,8 @@ class Regionsuper {
 	noaccess: boolean = false;
 	orderpages: number = 0;
 	ordererrors: number = 0;
+	contractpages: number = 0;
+	contracterrors: number = 0;
 }
 
 export class Regionsearcher extends Tablesearch {
@@ -55,6 +57,8 @@ export class Regionsearcher extends Tablesearch {
 		this.addFieldsearcher(this.noaccess);
 		this.addFieldsearcher(this.orderpages);
 		this.addFieldsearcher(this.ordererrors);
+		this.addFieldsearcher(this.contractpages);
+		this.addFieldsearcher(this.contracterrors);
         this.addKeysearcher(this.orderhistorymonthsearcher);
         this.addKeysearcher(this.evetype1searcher);
         this.addKeysearcher(this.orderhistorysearcher);
@@ -69,6 +73,8 @@ export class Regionsearcher extends Tablesearch {
     noaccess: Booleansearcher = new Booleansearcher("region.noaccess");
     orderpages: Numbersearcher = new Numbersearcher("region.orderpages");
     ordererrors: Numbersearcher = new Numbersearcher("region.ordererrors");
+    contractpages: Numbersearcher = new Numbersearcher("region.contractpages");
+    contracterrors: Numbersearcher = new Numbersearcher("region.contracterrors");
     orderhistorymonthsearcher: Primarykeysearcher = new Primarykeysearcher();
     evetype1searcher: Relationalkeysearcher = new Relationalkeysearcher();
     orderhistorysearcher: Primarykeysearcher = new Primarykeysearcher();
@@ -108,6 +114,24 @@ export class Regionsearcher extends Tablesearch {
 		  }
     	this.ordererrors.values = this.ordererrors.values.concat(numvalues);
     	this.ordererrors.operators = this.ordererrors.operators.concat(operators);
+    }    
+    addcontractpagess = (values, operators) => {
+		  let numvalues = [values.length];
+		  let i=0;
+		  for(i=0; i<values.length; i++) {
+		    numvalues[i] = parseFloat(values[i]);
+		  }
+    	this.contractpages.values = this.contractpages.values.concat(numvalues);
+    	this.contractpages.operators = this.contractpages.operators.concat(operators);
+    }    
+    addcontracterrorss = (values, operators) => {
+		  let numvalues = [values.length];
+		  let i=0;
+		  for(i=0; i<values.length; i++) {
+		    numvalues[i] = parseFloat(values[i]);
+		  }
+    	this.contracterrors.values = this.contracterrors.values.concat(numvalues);
+    	this.contracterrors.operators = this.contracterrors.operators.concat(operators);
     }    
     setorderhistorymonth = (orderhistorymonthsearch) => {
         this.orderhistorymonthsearcher.setTablesearch(orderhistorymonthsearch);

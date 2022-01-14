@@ -45,7 +45,7 @@ function Stock_add(props) {
                   <label className="input-group-text">volume</label>
                 </div>
                 <div className="col col-sm-8 input-group-prepend">
-                  <Form.Control type="number" id="volume" name="volume" defaultValue={1} />                  
+                  <Form.Control style={{width:'200px'}} type="number" id="volume" name="volume" defaultValue={1} />                  
                 </div>
               </div>
               <div className="row m-0">

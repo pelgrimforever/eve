@@ -3,6 +3,7 @@ import {Evetypesearcher} from '../data/eve/table/super/evetypesuper.js';
 import Evetype from '../data/eve/table/evetype.js';
 import Usersettings from '../data/eve/table/usersettings.js';
 import Stock from '../data/eve/table/stock.js';
+import Stocktrade from '../data/eve/table/stocktrade.js';
 //services
 import Store from '../services/store.js';
 import Rsevetype from '../services/eve/rest/table/rsevetype.js';
@@ -82,4 +83,23 @@ export const removeStock = async (store, evetype, volume ) => {
   stock.amount = volume;
   const result = await Rsstock.removestock(stock);
   loadStocklist(store);
+}
+
+export const sellStocktrade = async (store, viewstocktrade) => {
+  const stocktrade = new Stocktrade();
+  stocktrade.PK.init();
+  stocktrade.PK.stockPK.init();
+  stocktrade.PK.stockPK.evetypePK.id = viewstocktrade.evetypeid;
+  stocktrade.PK.stockPK.username = viewstocktrade.username;
+  stocktrade.PK.orderid = viewstocktrade.orderid;
+  stocktrade.sellamount = viewstocktrade.sellamount;
+  const result = await Rsstock.remove4Stocktrade(stocktrade);
+  loadStocklist(store);
+  loadStocktradesystems(store);
+}
+
+export const removeStocktradesystem = async (store, viewstocktradesystem) => {
+  const result = await Rsstock.remove4system(viewstocktradesystem.username, viewstocktradesystem.id);
+  loadStocklist(store);
+  loadStocktradesystems(store);
 }

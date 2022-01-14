@@ -2,7 +2,7 @@
 //don't change things here, it will be overwritten
 /* 
     Created on : Nov 19, 2018, 12:42:01 PM
-    Generated on 16.11.2021 15:46
+    Generated on 14.0.2022 16:56
     Author     : Franky Laseure
 */
 
@@ -33,6 +33,8 @@ class RegionJsonsuper {
 			"noaccess": region.noaccess,
 			"orderpages": region.orderpages,
 			"ordererrors": region.ordererrors,
+			"contractpages": region.contractpages,
+			"contracterrors": region.contracterrors,
 		};
 		return jsonobj;
 	}
@@ -51,6 +53,8 @@ class RegionJsonsuper {
 		model.noaccess = jsonobj.noaccess;
 		model.orderpages = jsonobj.orderpages;
 		model.ordererrors = jsonobj.ordererrors;
+		model.contractpages = jsonobj.contractpages;
+		model.contracterrors = jsonobj.contracterrors;
 		return model;
 	}
 }

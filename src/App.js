@@ -23,6 +23,7 @@ import Popupmessage from './popups/popupmessage.js';
 //app specific classes
 import Eveservice from './services/eveservice.js';
 import Home from './home/home.js';
+import Downloadcontracts from './downloadcontracts/downloadcontracts.js';
 import Tradetypes from './tradetypes/tradetypes.js';
 import Universe from './universe/universe.js';
 import Markethistory from './markethistory/markethistory.js';
@@ -31,6 +32,7 @@ import Tradelist from './tradelist/tradelist.js';
 import Combinedtradelist from './combinedtradelist/combinedtradelist.js';
 import Systemkills from './systemkills/systemkills.js';
 import Sellstock from './sellstock/sellstock.js';
+import Contractswitchprofit from './contractswithprofit/contractswitchprofit.js';
 import Wishlist from './wishlist/wishlist.js';
 import Tradetracking from './tradetracking/tradetracking.js';
 import Combinedtradetracking from './combinedtradetracking/combinedtradetracking.js';
@@ -54,6 +56,7 @@ export default function Page() {
         { name:'Eve download', link: '/evedownload',
           navitems: [
               { name:'Trade download', link: '/home' }, 
+              { name:'Contract download', link: '/contractsdownload' }, 
               { name:'Market history', link: '/markethistory' },
               { name:'Trade types', link: '/tradetypes' },
               { name:'Universe', link: '/universe' },
@@ -73,6 +76,7 @@ export default function Page() {
         { name:'Market tools', link: '/market',
           navitems: [
             { name:'Low price', link: '/lowprice' }, 
+            { name:'Contract/profit', link: '/contractswitchprofit' },
             { name:'Market price', link: '/marketprice' }, 
             { name:'Sell stock', link: '/sellstock' },
             { name:'Wish list', link: '/wishlist' },
@@ -123,6 +127,7 @@ export default function Page() {
       <Redirect to="/home" />
     </Route>
     <Route exact path="/home" component={Home}/>
+    <Route exact path="/contractsdownload" component={Downloadcontracts}/>
     <Route exact path="/markethistory" component={Markethistory}/>
     <Route exact path="/tradetypes" component={Tradetypes}/>
     <Route exact path="/universe" component={Universe}/>
@@ -136,6 +141,7 @@ export default function Page() {
     <Route exact path="/sellstock" component={Sellstock}/>
     <Route exact path="/wishlist" component={Wishlist}/>
     <Route exact path="/lowprice" component={Sellorderslowprice}/>
+    <Route exact path="/contractswitchprofit" component={Contractswitchprofit}/>
     <Route exact path="/marketprice" component={Marketprice}/>
     <Route exact path="/shipfits" component={Shipfits}/>
     <Route exact path="/orderparts" component={Shipfitsorderlist}/>

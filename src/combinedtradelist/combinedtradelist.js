@@ -296,7 +296,8 @@ export default function Combinedtradelist(props) {
                     <th style={colsell_total}>tot. sell price</th>
                     <th style={colbuy_total}>tot. buy price</th>
                     <th style={coltrade_profit}>est. profit</th>
-                    <th style={coltrade_jumps}>jumps / run</th>
+                    <th style={coltrade_jumps}><span className='float-right'>jumps / run</span></th>
+                    <th style={coltrade_jumps}><span className='float-right'>low/null</span></th>
                     <th></th>
                     <th className="dummyscroll"></th>
                   </tr>
@@ -317,7 +318,8 @@ export default function Combinedtradelist(props) {
                     <td style={colsell_total}><span className='float-right'>{format_price(trade.sell_order_total)}</span></td>
                     <td style={colbuy_total}><span className='float-right'>{format_price(trade.buy_order_total)}</span></td>
                     <td style={coltrade_profit}><span className='float-right'>{format_price(trade.totalprofit)}</span></td>
-                    <td style={coltrade_jumps}><span className={trade.trade_jumpslowsec>0 || trade.trade_jumpsnullsec>0 ? "float-right bg-danger empty_fill" : "float-right empty_fill"}>{trade.trade_jumps}</span></td>
+                    <td style={coltrade_jumps}><span className="float-right">{trade.trade_jumps}</span></td>
+                    <td style={coltrade_jumps}><span className={trade.trade_jumpslowsec>0 || trade.trade_jumpsnullsec>0 ? "float-right bg-danger empty_fill" : "float-right empty_fill"}>{trade.trade_jumpslowsec} / {trade.trade_jumpsnullsec}</span></td>
                     <td><button type="button" className="btn btn-sm small btn-primary" onClick={() => showTradeline(trade)}>show</button></td>
                   </tr>  
     ))}

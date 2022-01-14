@@ -22,14 +22,14 @@ import Rsviewshipfitorder from '../services/eve/rest/view/rsviewshipfitorder.js'
 import Rsshipfitorderselected from '../services/eve/rest/table/rsshipfitorderselected.js';
 import Rsviewshipfitorderselected from '../services/eve/rest/view/rsviewshipfitorderselected.js';
 
-export const setStartsystemid = (store, startsystemid) => {
+export const setStartsystemid = async (store, startsystemid) => {
   store.setState({ startsystemid: startsystemid });
-  loadShipfitroute(store);
+  await loadShipfitroute(store);
 };
 
-export const setEndsystemid = (store, endsystemid) => {
+export const setEndsystemid = async (store, endsystemid) => {
   store.setState({ endsystemid: endsystemid });
-  loadShipfitroute(store);
+  await loadShipfitroute(store);
 };
 
 export const loadShipfitroute = async (store) => {

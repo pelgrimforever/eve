@@ -107,6 +107,15 @@ export default function Sellstock(props) {
     setShowstocktradesystem(true);
   }
 
+  const sellStocktrade = (viewstocktrade) => {
+    compActions.sellStocktrade(viewstocktrade);
+  }
+
+  const onSellstockordersRemoveall = () => {
+    compActions.removeStocktradesystem(stocktradesystem);
+    setShowstocktradesystem(false);
+  }
+
   const onSellstockordersCancel = () => {
     setShowstocktradesystem(false);
   }
@@ -319,6 +328,8 @@ export default function Sellstock(props) {
       <Sellstockorders
         stocktradesystem={stocktradesystem}
         show={showstocktradesystem}
+        sellStocktrade={sellStocktrade}
+        onRemoveall={onSellstockordersRemoveall}
         onCancel={onSellstockordersCancel} 
         />
     </div>

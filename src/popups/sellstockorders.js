@@ -36,6 +36,14 @@ function Sellstockorders(props) {
     }
   };  
 
+  const sellStocktrade = async (trade) => {
+    const dummy1 = await props.sellStocktrade(trade);
+    const result = list.filter(function(item) {
+      return item.orderid !== trade.orderid;
+    });
+    setList(result);
+  }
+
   const totalvolume = (trade) => {
     return format_2digits(trade.sellamount * trade.packaged_volume);
   };
@@ -120,7 +128,7 @@ function Sellstockorders(props) {
                 <td style={colamount} className='text-center'>{trade.sellamount} <b>min: ({trade.min_volume})</b></td>
                 <td style={colm3}><span className='float-right'>{totalvolume(trade)}</span></td>
                 <td style={colsellprice}><span className='float-right'>{format_price(trade.sellamount)}</span></td>
-                <td><span className='float-right'></span></td>
+                <td><button type="button" className="btn btn-sm small btn-primary mr-1" onClick={() => sellStocktrade(trade)}>sell</button></td>
               </tr>
     ))}
             </tbody>
@@ -133,6 +141,7 @@ function Sellstockorders(props) {
 
       </ModalBody>
       <ModalFooter>
+        <button type="button" className="btn btn-primary" onClick={() => props.onRemoveall()}>remove all</button>
         <button type="button" className="btn btn-warning" onClick={() => props.onCancel()}>close</button>
       </ModalFooter>
 

@@ -45,7 +45,7 @@ function Stock_remove(props) {
                   <label className="input-group-text">volume</label>
                 </div>
                 <div className="col col-sm-8 input-group-prepend">
-                  <Form.Control type="number" id="volume" name="volume" defaultValue={props.stockamount} />                  
+                  <Form.Control style={{width:'200px'}} type="number" id="volume" name="volume" defaultValue={props.stockamount} />                  
                 </div>
               </div>
               <div className="row m-0">

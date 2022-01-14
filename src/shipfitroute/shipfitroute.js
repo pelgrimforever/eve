@@ -52,12 +52,16 @@ export default function Shipfitroute(props) {
     compActions.loadShipfitroute();
   }, []);
 
-  const changeStartsystem = (selection) => { 
-    compActions.setStartsystemid(selection.value); 
+  const changeStartsystem = async (selection) => { 
+    setLoading(true);
+    await compActions.setStartsystemid(selection.value); 
+    setLoading(false);
   };
 
-  const changeEndsystem = (selection) => { 
-    compActions.setEndsystemid(selection.value); 
+  const changeEndsystem = async (selection) => { 
+    setLoading(true);
+    await compActions.setEndsystemid(selection.value); 
+    setLoading(false);
   };
 
   const setSystem = (item) => {
@@ -153,7 +157,7 @@ export default function Shipfitroute(props) {
 
 { loading && 
                   <div className="d-flex justify-content-center">
-                    <Spinner animation="border" role="status" />
+                    <Spinner className="spinner-border-center" animation="border" role="status" />
                   </div>
 }
                   <table className="table table-dark table-bordered table-hover fillparent">
