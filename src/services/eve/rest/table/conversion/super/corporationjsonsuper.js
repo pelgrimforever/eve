@@ -2,7 +2,7 @@
 //don't change things here, it will be overwritten
 /* 
     Created on : Nov 19, 2018, 12:42:01 PM
-    Generated on 14.0.2022 16:56
+    Generated on 19.0.2022 22:13
     Author     : Franky Laseure
 */
 
@@ -44,7 +44,7 @@ class CorporationJsonsuper {
 			"member_count": corporation.member_count,
 			"tax_rate": "" + corporation.tax_rate,
 			"ticker": corporation.ticker,
-			"date_founded": corporation.date_founded,
+			"date_founded": "" + corporation.date_founded,
 			"description": corporation.description,
 			"shares": corporation.shares,
 			"url": corporation.url,
@@ -85,6 +85,11 @@ class CorporationJsonsuper {
 		model.tax_rate = parseFloat(jsonobj.tax_rate);
 		model.ticker = jsonobj.ticker;
 		model.date_founded = jsonobj.date_founded;
+		if(model.date_founded) {
+			model.date_foundedUI = Moment(new Date(jsonobj.date_founded)).format("YYYY MM DD - hh:mm:ss");
+		} else {
+			model.date_founded = "";
+		}
 		model.description = jsonobj.description;
 		model.shares = jsonobj.shares;
 		model.url = jsonobj.url;

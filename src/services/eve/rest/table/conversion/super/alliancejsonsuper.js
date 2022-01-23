@@ -2,7 +2,7 @@
 //don't change things here, it will be overwritten
 /* 
     Created on : Nov 19, 2018, 12:42:01 PM
-    Generated on 14.0.2022 16:56
+    Generated on 19.0.2022 22:13
     Author     : Franky Laseure
 */
 
@@ -35,7 +35,7 @@ class AllianceJsonsuper {
 			"corporationExecutorcorporationPK": null,
 			"name": alliance.name,
 			"creator": "" + alliance.creator,
-			"date_founded": alliance.date_founded,
+			"date_founded": "" + alliance.date_founded,
 			"ticker": alliance.ticker,
 			"faction_id": "" + alliance.faction_id,
 		};
@@ -65,6 +65,11 @@ class AllianceJsonsuper {
 		model.name = jsonobj.name;
 		model.creator = "" + jsonobj.creator;
 		model.date_founded = jsonobj.date_founded;
+		if(model.date_founded) {
+			model.date_foundedUI = Moment(new Date(jsonobj.date_founded)).format("YYYY MM DD - hh:mm:ss");
+		} else {
+			model.date_founded = "";
+		}
 		model.ticker = jsonobj.ticker;
 		model.faction_id = "" + jsonobj.faction_id;
 		return model;

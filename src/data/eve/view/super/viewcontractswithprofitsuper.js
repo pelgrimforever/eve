@@ -2,7 +2,7 @@
 //don't change things here, it will be overwritten
 /* 
     Created on : Dec 16, 2018, 18:10:00
-    Generated on 14.0.2022 16:56
+    Generated on 19.0.2022 22:13
     Author     : Franky Laseure
 */
 
@@ -10,8 +10,10 @@ class Viewcontractswithprofitsuper {
 	constructor() { }
 	tablename: string = 'viewcontractswithprofit';
     id: string = '';
-    date_expired = '';
-    date_issued = '';
+    date_expired: string = '';
+    date_expiredUI: string = '';
+    date_issued: string = '';
+    date_issuedUI: string = '';
     days_to_complete: number = 0;
     end_location_id: string = '';
     price: number = 0;

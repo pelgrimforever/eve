@@ -2,7 +2,7 @@
 //don't change things here, it will be overwritten
 /* 
     Created on : Nov 19, 2018, 12:42:01 PM
-    Generated on 14.0.2022 16:56
+    Generated on 19.0.2022 22:13
     Author     : Franky Laseure
 */
 
@@ -44,7 +44,7 @@ class OrdersJsonsuper {
 			"min_volume": orders.min_volume,
 			"location": "" + orders.location,
 			"is_buy_order": orders.is_buy_order,
-			"issued": orders.issued,
+			"issued": "" + orders.issued,
 			"duration": orders.duration,
 			"page": orders.page,
 		};
@@ -81,6 +81,11 @@ class OrdersJsonsuper {
 		model.location = "" + jsonobj.location;
 		model.is_buy_order = jsonobj.is_buy_order;
 		model.issued = jsonobj.issued;
+		if(model.issued) {
+			model.issuedUI = Moment(new Date(jsonobj.issued)).format("YYYY MM DD - hh:mm:ss");
+		} else {
+			model.issued = "";
+		}
 		model.duration = jsonobj.duration;
 		model.page = jsonobj.page;
 		return model;

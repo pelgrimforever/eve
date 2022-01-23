@@ -2,7 +2,7 @@
 //don't change things here, it will be overwritten
 /* 
     Created on : Nov 20, 2018, 10:39:01 AM
-    Generated on 14.0.2022 16:56
+    Generated on 19.0.2022 22:13
     Author     : Franky Laseure
 */
 
@@ -18,6 +18,8 @@ import { Graphicpk } from '../../../../../data/eve/table/super/graphicsuper.js';
 import GraphicJson from '../conversion/graphicjson.js';
 import { Wishlistpk } from '../../../../../data/eve/table/super/wishlistsuper.js';
 import WishlistJson from '../conversion/wishlistjson.js';
+import { Materialinputpk } from '../../../../../data/eve/table/super/materialinputsuper.js';
+import MaterialinputJson from '../conversion/materialinputjson.js';
 import { Orderhistorymonthpk } from '../../../../../data/eve/table/super/orderhistorymonthsuper.js';
 import OrderhistorymonthJson from '../conversion/orderhistorymonthjson.js';
 import { Stockpk } from '../../../../../data/eve/table/super/stocksuper.js';
@@ -43,12 +45,13 @@ class Rsevetypesuper extends Eveservice {
 	static SELECT_Typegroup = 100 + 1;
 	static SELECT_Graphic = 100 + 2;
 	static SELECT_Wishlist = 100 + 3;
-	static SELECT_Orderhistorymonth = 100 + 4;
-	static SELECT_Stock = 100 + 5;
-	static SELECT_Orderhistory = 100 + 6;
-	static SELECT_Shipfitmodule = 100 + 7;
-	static SELECT_Shipfitorder = 100 + 8;
-	static SELECT_Tradecombined = 100 + 9;
+	static SELECT_Materialinput = 100 + 4;
+	static SELECT_Orderhistorymonth = 100 + 5;
+	static SELECT_Stock = 100 + 6;
+	static SELECT_Orderhistory = 100 + 7;
+	static SELECT_Shipfitmodule = 100 + 8;
+	static SELECT_Shipfitorder = 100 + 9;
+	static SELECT_Tradecombined = 100 + 10;
 
 	//UPDATE OPERATIONS
 	static UPDATE_EVETYPE = 10;
@@ -57,9 +60,9 @@ class Rsevetypesuper extends Eveservice {
 	static INSERT_EVETYPE = 20;
 
 	//DELETE OPERATIONS
-	static DELETE_Marketgroup = 100 + 10;
-	static DELETE_Typegroup = 100 + 11;
-	static DELETE_Graphic = 100 + 12;
+	static DELETE_Marketgroup = 100 + 11;
+	static DELETE_Typegroup = 100 + 12;
+	static DELETE_Graphic = 100 + 13;
 	static DELETE_EVETYPE = 30;
 
 	static extractDataArray = (jsonarray): Evetype[] => {
@@ -124,6 +127,14 @@ class Rsevetypesuper extends Eveservice {
     const postdata = {
       operation: { type: super.OPERATIONTYPE_SELECT, operation: this.SELECT_Wishlist },
      	"wishlistpk": WishlistJson.PKtoJSON(wishlistpk)
+    }
+    return this.extractDataArray(await super.post(this.restservice, postdata));
+	}
+
+	static loadEvetype4materialinput = async (materialinputpk: Materialinputpk): Evetype[] => {
+    const postdata = {
+      operation: { type: super.OPERATIONTYPE_SELECT, operation: this.SELECT_Materialinput },
+     	"materialinputpk": MaterialinputJson.PKtoJSON(materialinputpk)
     }
     return this.extractDataArray(await super.post(this.restservice, postdata));
 	}
@@ -275,6 +286,15 @@ class Rsevetypesuper extends Eveservice {
     	auth: user===null ? null : user.auth,
       operation: { type: super.OPERATIONTYPE_SECURESELECT, operation: this.SELECT_Wishlist },
      	"wishlistpk": WishlistJson.PKtoJSON(wishlistpk)
+    }
+    return this.extractDataArray(await super.post(this.restservice, postdata));
+	}
+
+	static sec_loadEvetype4materialinput = async (user, materialinputpk: Materialinputpk): Evetype[] => {
+    const postdata = {
+    	auth: user===null ? null : user.auth,
+      operation: { type: super.OPERATIONTYPE_SECURESELECT, operation: this.SELECT_Materialinput },
+     	"materialinputpk": MaterialinputJson.PKtoJSON(materialinputpk)
     }
     return this.extractDataArray(await super.post(this.restservice, postdata));
 	}

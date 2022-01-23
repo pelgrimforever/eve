@@ -2,7 +2,7 @@
 //don't change things here, it will be overwritten
 /* 
     Created on : Dec 16, 2018, 18:10:00
-    Generated on 14.0.2022 16:56
+    Generated on 19.0.2022 22:13
     Author     : Franky Laseure
 */
 
@@ -24,7 +24,8 @@ class Viewshipfitorderselectedsuper {
     min_volume: number = 0;
     location: string = '';
     is_buy_order: boolean = false;
-    issued = '';
+    issued: string = '';
+    issuedUI: string = '';
     duration: number = 0;
     page: number = 0;
     stationid: string = '';

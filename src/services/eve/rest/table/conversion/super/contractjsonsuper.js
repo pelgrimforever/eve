@@ -2,7 +2,7 @@
 //don't change things here, it will be overwritten
 /* 
     Created on : Nov 19, 2018, 12:42:01 PM
-    Generated on 14.0.2022 16:56
+    Generated on 19.0.2022 22:13
     Author     : Franky Laseure
 */
 
@@ -30,8 +30,8 @@ class ContractJsonsuper {
 		var jsonobj = {
 			"PK": this.PKtoJSON(contract.PK),
 			"collateral": "" + contract.collateral,
-			"date_expired": contract.date_expired,
-			"date_issued": contract.date_issued,
+			"date_expired": "" + contract.date_expired,
+			"date_issued": "" + contract.date_issued,
 			"days_to_complete": contract.days_to_complete,
 			"end_location_id": "" + contract.end_location_id,
 			"for_corporation": contract.for_corporation,
@@ -59,7 +59,17 @@ class ContractJsonsuper {
 		model.PK = this.PKfromJSON(jsonobj.PK);
 		model.collateral = parseFloat(jsonobj.collateral);
 		model.date_expired = jsonobj.date_expired;
+		if(model.date_expired) {
+			model.date_expiredUI = Moment(new Date(jsonobj.date_expired)).format("YYYY MM DD - hh:mm:ss");
+		} else {
+			model.date_expired = "";
+		}
 		model.date_issued = jsonobj.date_issued;
+		if(model.date_issued) {
+			model.date_issuedUI = Moment(new Date(jsonobj.date_issued)).format("YYYY MM DD - hh:mm:ss");
+		} else {
+			model.date_issued = "";
+		}
 		model.days_to_complete = jsonobj.days_to_complete;
 		model.end_location_id = "" + jsonobj.end_location_id;
 		model.for_corporation = jsonobj.for_corporation;

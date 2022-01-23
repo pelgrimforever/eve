@@ -2,7 +2,7 @@
 //don't change things here, it will be overwritten
 /* 
     Created on : Dec 16, 2018, 18:32:01
-    Generated on 14.0.2022 16:56
+    Generated on 19.0.2022 22:13
     Author     : Franky Laseure
 */
 
@@ -66,6 +66,11 @@ class ViewshipfitorderselectedJson {
 		model.location = "" + jsonobj.location;
 		model.is_buy_order = jsonobj.is_buy_order;
 		model.issued = jsonobj.issued;
+		if(model.issued) {
+			model.issuedUI = Moment(new Date(jsonobj.issued)).format("YYYY MM DD - hh:mm:ss");
+		} else {
+			model.issued = "";
+		}
 		model.duration = jsonobj.duration;
 		model.page = jsonobj.page;
 		model.stationid = "" + jsonobj.stationid;

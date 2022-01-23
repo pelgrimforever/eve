@@ -2,7 +2,7 @@
 //don't change things here, it will be overwritten
 /* 
     Created on : Dec 16, 2018, 18:32:01
-    Generated on 14.0.2022 16:56
+    Generated on 19.0.2022 22:13
     Author     : Franky Laseure
 */
 
@@ -35,7 +35,17 @@ class ViewcontractswithprofitJson {
 		let model = new Viewcontractswithprofit();
 		model.id = "" + jsonobj.id;
 		model.date_expired = jsonobj.date_expired;
+		if(model.date_expired) {
+			model.date_expiredUI = Moment(new Date(jsonobj.date_expired)).format("YYYY MM DD - hh:mm:ss");
+		} else {
+			model.date_expired = "";
+		}
 		model.date_issued = jsonobj.date_issued;
+		if(model.date_issued) {
+			model.date_issuedUI = Moment(new Date(jsonobj.date_issued)).format("YYYY MM DD - hh:mm:ss");
+		} else {
+			model.date_issued = "";
+		}
 		model.days_to_complete = jsonobj.days_to_complete;
 		model.end_location_id = "" + jsonobj.end_location_id;
 		model.price = parseFloat(jsonobj.price);

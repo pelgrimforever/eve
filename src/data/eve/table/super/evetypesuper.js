@@ -2,7 +2,7 @@
 //don't change things here, it will be overwritten
 /* 
     Created on : Nov 16, 2018, 17:04:01 PM
-    Generated on 14.0.2022 16:56
+    Generated on 19.0.2022 22:13
     Author     : Franky Laseure
 */
 
@@ -97,6 +97,7 @@ export class Evetypesearcher extends Tablesearch {
         this.addKeysearcher(this.typegroupsearcher);
         this.addKeysearcher(this.graphicsearcher);
         this.addKeysearcher(this.wishlistsearcher);
+        this.addKeysearcher(this.materialinputsearcher);
         this.addKeysearcher(this.orderhistorymonthsearcher);
         this.addKeysearcher(this.region1searcher);
         this.addKeysearcher(this.stocksearcher);
@@ -137,6 +138,7 @@ export class Evetypesearcher extends Tablesearch {
     typegroupsearcher: Foreignkeysearcher = new Foreignkeysearcher();
     graphicsearcher: Foreignkeysearcher = new Foreignkeysearcher();
     wishlistsearcher: Primarykeysearcher = new Primarykeysearcher();
+    materialinputsearcher: Primarykeysearcher = new Primarykeysearcher();
     orderhistorymonthsearcher: Primarykeysearcher = new Primarykeysearcher();
     region1searcher: Relationalkeysearcher = new Relationalkeysearcher();
     stocksearcher: Primarykeysearcher = new Primarykeysearcher();
@@ -333,6 +335,9 @@ export class Evetypesearcher extends Tablesearch {
     setwishlist = (wishlistsearch) => {
         this.wishlistsearcher.setTablesearch(wishlistsearch);
     }
+    setmaterialinput = (materialinputsearch) => {
+        this.materialinputsearcher.setTablesearch(materialinputsearch);
+    }
     setorderhistorymonth = (orderhistorymonthsearch) => {
         this.orderhistorymonthsearcher.setTablesearch(orderhistorymonthsearch);
     }
@@ -394,6 +399,7 @@ export class Evetypesearcher extends Tablesearch {
                 "typegroupsearcher": null,
                 "graphicsearcher": null,
                 "wishlistsearcher": null,
+                "materialinputsearcher": null,
                 "orderhistorymonthsearcher": null,
                 "region1searcher": null,
                 "stocksearcher": null,
@@ -418,6 +424,9 @@ export class Evetypesearcher extends Tablesearch {
             }
             if(this.wishlistsearcher!=null && this.wishlistsearcher.used()) {
                 kss.wishlistsearcher = this.wishlistsearcher.toJSON();
+            }
+            if(this.materialinputsearcher!=null && this.materialinputsearcher.used()) {
+                kss.materialinputsearcher = this.materialinputsearcher.toJSON();
             }
             if(this.orderhistorymonthsearcher!=null && this.orderhistorymonthsearcher.used()) {
                 kss.orderhistorymonthsearcher = this.orderhistorymonthsearcher.toJSON();

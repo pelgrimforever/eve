@@ -43,6 +43,7 @@ import Marketprice from './marketprice/marketprice.js';
 import Shipfits from './shipfits/shipfits.js';
 import Shipfitsorderlist from './shipfitsorderlist/shipfitsorderlist.js';
 import Shipfitroute from './shipfitroute/shipfitroute.js';
+import Materialinput from './materialinput/materialinput.js';
 
 //configured in .env and .env.production
 const {REACT_APP_TEST} = process.env;
@@ -87,6 +88,11 @@ export default function Page() {
               { name:'Ship fits', link: '/shipfits' }, 
               { name:'Order parts', link: '/orderparts' }, 
               { name:'Order route', link: '/shipfitroute' }, 
+          ]
+        },         
+        { name:'Industry', link: '/industry',
+          navitems: [
+              { name:'Material input', link: '/materialinput' }, 
           ]
         },         
         { name:'Routes', link: '/routes',
@@ -146,6 +152,7 @@ export default function Page() {
     <Route exact path="/shipfits" component={Shipfits}/>
     <Route exact path="/orderparts" component={Shipfitsorderlist}/>
     <Route exact path="/shipfitroute" component={Shipfitroute}/>
+    <Route exact path="/materialinput" component={Materialinput}/>
     <Route exact path="/systemkills" component={Systemkills}/>
   </div>
 
