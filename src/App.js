@@ -43,6 +43,7 @@ import Marketprice from './marketprice/marketprice.js';
 import Shipfits from './shipfits/shipfits.js';
 import Shipfitsorderlist from './shipfitsorderlist/shipfitsorderlist.js';
 import Shipfitroute from './shipfitroute/shipfitroute.js';
+import Blueprints from './blueprints/blueprints.js';
 import Materialinput from './materialinput/materialinput.js';
 
 //configured in .env and .env.production
@@ -92,6 +93,7 @@ export default function Page() {
         },         
         { name:'Industry', link: '/industry',
           navitems: [
+              { name:'Blueprints', link: '/blueprints' }, 
               { name:'Material input', link: '/materialinput' }, 
           ]
         },         
@@ -152,6 +154,7 @@ export default function Page() {
     <Route exact path="/shipfits" component={Shipfits}/>
     <Route exact path="/orderparts" component={Shipfitsorderlist}/>
     <Route exact path="/shipfitroute" component={Shipfitroute}/>
+    <Route exact path="/blueprints" component={Blueprints}/>
     <Route exact path="/materialinput" component={Materialinput}/>
     <Route exact path="/systemkills" component={Systemkills}/>
   </div>

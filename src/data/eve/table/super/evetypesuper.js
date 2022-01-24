@@ -2,7 +2,7 @@
 //don't change things here, it will be overwritten
 /* 
     Created on : Nov 16, 2018, 17:04:01 PM
-    Generated on 19.0.2022 22:13
+    Generated on 24.0.2022 16:47
     Author     : Franky Laseure
 */
 
@@ -98,6 +98,8 @@ export class Evetypesearcher extends Tablesearch {
         this.addKeysearcher(this.graphicsearcher);
         this.addKeysearcher(this.wishlistsearcher);
         this.addKeysearcher(this.materialinputsearcher);
+        this.addKeysearcher(this.bpmaterialBpsearcher);
+        this.addKeysearcher(this.bpmaterialMaterialsearcher);
         this.addKeysearcher(this.orderhistorymonthsearcher);
         this.addKeysearcher(this.region1searcher);
         this.addKeysearcher(this.stocksearcher);
@@ -139,6 +141,8 @@ export class Evetypesearcher extends Tablesearch {
     graphicsearcher: Foreignkeysearcher = new Foreignkeysearcher();
     wishlistsearcher: Primarykeysearcher = new Primarykeysearcher();
     materialinputsearcher: Primarykeysearcher = new Primarykeysearcher();
+    bpmaterialBpsearcher: Primarykeysearcher = new Primarykeysearcher();
+    bpmaterialMaterialsearcher: Primarykeysearcher = new Primarykeysearcher();
     orderhistorymonthsearcher: Primarykeysearcher = new Primarykeysearcher();
     region1searcher: Relationalkeysearcher = new Relationalkeysearcher();
     stocksearcher: Primarykeysearcher = new Primarykeysearcher();
@@ -338,6 +342,12 @@ export class Evetypesearcher extends Tablesearch {
     setmaterialinput = (materialinputsearch) => {
         this.materialinputsearcher.setTablesearch(materialinputsearch);
     }
+    setbpmaterialBp = (bpmaterialsearch) => {
+        this.bpmaterialBpsearcher.setTablesearch(bpmaterialsearch);
+    }
+    setbpmaterialMaterial = (bpmaterialsearch) => {
+        this.bpmaterialMaterialsearcher.setTablesearch(bpmaterialsearch);
+    }
     setorderhistorymonth = (orderhistorymonthsearch) => {
         this.orderhistorymonthsearcher.setTablesearch(orderhistorymonthsearch);
     }
@@ -400,6 +410,8 @@ export class Evetypesearcher extends Tablesearch {
                 "graphicsearcher": null,
                 "wishlistsearcher": null,
                 "materialinputsearcher": null,
+                "bpmaterialBpsearcher": null,
+                "bpmaterialMaterialsearcher": null,
                 "orderhistorymonthsearcher": null,
                 "region1searcher": null,
                 "stocksearcher": null,
@@ -427,6 +439,12 @@ export class Evetypesearcher extends Tablesearch {
             }
             if(this.materialinputsearcher!=null && this.materialinputsearcher.used()) {
                 kss.materialinputsearcher = this.materialinputsearcher.toJSON();
+            }
+            if(this.bpmaterialBpsearcher!=null && this.bpmaterialBpsearcher.used()) {
+                kss.bpmaterialBpsearcher = this.bpmaterialBpsearcher.toJSON();
+            }
+            if(this.bpmaterialMaterialsearcher!=null && this.bpmaterialMaterialsearcher.used()) {
+                kss.bpmaterialMaterialsearcher = this.bpmaterialMaterialsearcher.toJSON();
             }
             if(this.orderhistorymonthsearcher!=null && this.orderhistorymonthsearcher.used()) {
                 kss.orderhistorymonthsearcher = this.orderhistorymonthsearcher.toJSON();

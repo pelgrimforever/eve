@@ -17,6 +17,7 @@ class Rsviewevetypes extends Rsviewevetypessuper {
     static SELECT_DEPLOYABLES = 6;
     static SELECT_MINERALS = 7;
     static SELECT_SALVAGED = 8;
+    static SELECT_BLEUPRINT = 9;
 
     static getships = async () => {
         const postdata = {
@@ -63,6 +64,14 @@ class Rsviewevetypes extends Rsviewevetypessuper {
     static getsalvagedmaterials = async () => {
         const postdata = {
           operation: { type: super.OPERATIONTYPE_SELECT, operation: this.SELECT_SALVAGED }
+        }
+        return super.extractDataArray(await super.post(this.restservice, postdata));
+    }
+
+    static getblueprints = async (searchstring) => {
+        const postdata = {
+          operation: { type: super.OPERATIONTYPE_SELECT, operation: this.SELECT_BLEUPRINT },
+          searchstring: searchstring
         }
         return super.extractDataArray(await super.post(this.restservice, postdata));
     }
