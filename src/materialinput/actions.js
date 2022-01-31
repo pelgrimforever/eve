@@ -37,15 +37,24 @@ export const addMaterial = async (store, material, amount, unitprice) => {
   loadViewmaterialinputavglist(store);
 }
 
-export const changeMaterial = async (store, viewmaterialinput) => {
+export const changeMaterial = async (store, viewmaterialinput, amount, unitprice) => {
   const materialinput = new Materialinput();
   materialinput.PK.init();
   materialinput.PK.evetypePK.id = viewmaterialinput.evetype;
   materialinput.PK.username = viewmaterialinput.username;
   materialinput.PK.addtimestamp = viewmaterialinput.addtimestamp;
-  materialinput.amount = viewmaterialinput.amount;
-  materialinput.unitprice = viewmaterialinput.unitprice;
+  materialinput.amount = amount;
+  materialinput.unitprice = unitprice;
   const result = await Rsmaterialinput.save(materialinput);
   loadMaterialinputlist(store);
   loadViewmaterialinputavglist(store);
 }
+
+export const useMaterial = async (store, material, amount) => {
+  const evetypepk = new Evetypepk();
+  evetypepk.id = material.id;
+  const result = await Rsmaterialinput.usematerial(Store.user.username, evetypepk, amount);
+  loadMaterialinputlist(store);
+  loadViewmaterialinputavglist(store);
+}
+

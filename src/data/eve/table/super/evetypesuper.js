@@ -2,7 +2,7 @@
 //don't change things here, it will be overwritten
 /* 
     Created on : Nov 16, 2018, 17:04:01 PM
-    Generated on 24.0.2022 16:47
+    Generated on 31.0.2022 17:49
     Author     : Franky Laseure
 */
 
@@ -112,6 +112,7 @@ export class Evetypesearcher extends Tablesearch {
         this.addKeysearcher(this.tradecombinedsearcher);
         this.addKeysearcher(this.system1searcher);
         this.addKeysearcher(this.system2searcher);
+        this.addKeysearcher(this.userbpsearcher);
 	}
 
     filtermodel: null;
@@ -155,6 +156,7 @@ export class Evetypesearcher extends Tablesearch {
     tradecombinedsearcher: Primarykeysearcher = new Primarykeysearcher();
     system1searcher: Relationalkeysearcher = new Relationalkeysearcher();
     system2searcher: Relationalkeysearcher = new Relationalkeysearcher();
+    userbpsearcher: Primarykeysearcher = new Primarykeysearcher();
 
     addids = (values, operators) => {
 		  let numvalues = [values.length];
@@ -384,6 +386,9 @@ export class Evetypesearcher extends Tablesearch {
     setsystem2 = (systemsearch) => {
         this.system2searcher.setTablesearch(systemsearch);
     }
+    setuserbp = (userbpsearch) => {
+        this.userbpsearcher.setTablesearch(userbpsearch);
+    }
 
     toJSON = () => {
         let jsonobj = {
@@ -424,6 +429,7 @@ export class Evetypesearcher extends Tablesearch {
                 "tradecombinedsearcher": null,
                 "system1searcher": null,
                 "system2searcher": null,
+                "userbpsearcher": null,
             }; 
             if(this.marketgroupsearcher!=null && this.marketgroupsearcher.used()) {
                 kss.marketgroupsearcher = this.marketgroupsearcher.toJSON();
@@ -481,6 +487,9 @@ export class Evetypesearcher extends Tablesearch {
             }
             if(this.system2searcher!=null && this.system2searcher.used()) {
                 kss.system2searcher = this.system2searcher.toJSON();
+            }
+            if(this.userbpsearcher!=null && this.userbpsearcher.used()) {
+                kss.userbpsearcher = this.userbpsearcher.toJSON();
             }
             jsonobj.keysearch = kss;
         }

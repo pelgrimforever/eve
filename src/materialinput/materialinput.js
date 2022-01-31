@@ -12,6 +12,7 @@ import Viewmaterialinput from '../data/eve/view/viewmaterialinput.js';
 //components
 import Material_add from '../popups/material_add.js';
 import Material_change from '../popups/material_change.js';
+import Material_usage from '../popups/material_usage.js';
 //data models
 //component state
 import appstore from '../appstore.js';
@@ -27,6 +28,7 @@ export default function Materialinput(props) {
   const [loading, setLoading] = useState(false);
   const [materialinputadd, setMaterialinputadd] = useState(false);
   const [materialinputchange, setMaterialinputchange] = useState(false);
+  const [materialusage, setMaterialusage] = useState(false);
   const [viewmaterialinput, setViewmaterialinput] = useState(new Viewmaterialinput());
 
   useEffect(async () => {
@@ -52,14 +54,36 @@ export default function Materialinput(props) {
     setMaterialinputchange(true);
   }
 
-  const onMaterialchange = async () => {
-    const result = await compActions.changeMaterial(viewmaterialinput);
+  const onMaterialchange = async (amount, unitprice) => {
+    const result = await compActions.changeMaterial(viewmaterialinput, amount, unitprice);
     setMaterialinputchange(false);
   }
 
   const onMaterialchangeCancel = () => {
     setMaterialinputchange(false);
   }
+
+  const openMaterialusage = () => {
+    setMaterialusage(true);
+  }
+
+  const onMaterialusageCancel = () => {
+    setMaterialusage(false);
+  }  
+
+  const onMaterialuse = async (activematerial, amount) => {
+    compActions.useMaterial(activematerial, amount);
+    setMaterialusage(false);
+  }
+
+  const format_price = (p) => {
+    const rounded = Math.round(p);
+    return "" + rounded;
+  };
+
+  const format_2digits = (n) => {
+    return n.toFixed(2);
+  };
 
   const col_date = {width: '8rem'};
   const col_name = {width: '12rem'};
@@ -69,9 +93,9 @@ export default function Materialinput(props) {
 
   const col_avgdate = {width: '8rem'};
   const col_avgname = {width: '12rem'};
-  const col_avgamount = {width: '4rem'};
-  const col_avgprice = {width: '4rem'};
-  const col_avgused = {width: '4rem'};
+  const col_avgamount = {width: '5rem'};
+  const col_avgprice = {width: '6rem'};
+  const col_avgused = {width: '5rem'};
 
   return (
     <div className="root fullheight">
@@ -127,7 +151,7 @@ export default function Materialinput(props) {
                         <td style={col_date}>{item.addtimestampUI}</td>
                         <td style={col_name}>{item.name}</td>
                         <td style={col_amount}><span className='float-right'>{item.amount}</span></td>
-                        <td style={col_price}><span className='float-right'>{item.unitprice}</span></td>
+                        <td style={col_price}><span className='float-right'>{format_2digits(item.unitprice)}</span></td>
                         <td style={col_used}><span className='float-right'>{item.usedamount}</span></td>
                         <td>
                           <button type="button" className="btn btn-sm small btn-primary" onClick={() => openMaterialinputchange(item)}>**</button>
@@ -157,7 +181,7 @@ export default function Materialinput(props) {
             <div className="p-2 flex-fill bg-info">
               <div className="row m-0">
                 <div className="col col-sm-12 d-flex">
-                  <button type="button" className="btn btn-sm small btn-primary">dummy</button>
+                  <button type="button" className="btn btn-sm small btn-primary" onClick={() => openMaterialusage()}>Material usage</button>
                 </div>
               </div>
             </div>
@@ -196,7 +220,7 @@ export default function Materialinput(props) {
                         <td style={col_avgdate}>{item.lastbuytimestampUI}</td>
                         <td style={col_avgname}>{item.name}</td>
                         <td style={col_avgamount}><span className='float-right'>{item.totalamount}</span></td>
-                        <td style={col_avgprice}><span className='float-right'>{item.avgunitprice}</span></td>
+                        <td style={col_avgprice}><span className='float-right'>{format_2digits(item.avgunitprice)}</span></td>
                         <td style={col_avgused}><span className='float-right'>{item.totalusedamount}</span></td>
                         <td>
                         </td>
@@ -225,6 +249,11 @@ export default function Materialinput(props) {
         viewmaterialinput={viewmaterialinput}
         onMaterialchange={onMaterialchange}
         onCancel={onMaterialchangeCancel} 
+        />
+      <Material_usage
+        show={materialusage} 
+        onMaterialuse={onMaterialuse}
+        onCancel={onMaterialusageCancel} 
         />
 
     </div>

@@ -30,7 +30,7 @@ function Bpmaterial_change(props) {
     const result = await props.onMaterialchange();
   }
 
-  const bodyheight = {height: '40rem'};
+  const bodyheight = {height: '10rem'};
 
   const col_name = {width: '15rem'};
   const col_type = {width: '30rem'};

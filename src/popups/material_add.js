@@ -101,7 +101,7 @@ function Material_add(props) {
     <Modal show={props.show} size="lg" id="tradelinemodal" centered>
         <Form onSubmit={addmaterial}>
       <ModalHeader className="bg-dark">
-        <ModalTitle className="text-light">Add Ship module</ModalTitle>
+        <ModalTitle className="text-light">Add material</ModalTitle>
       </ModalHeader>
       <ModalBody>
 

@@ -26,12 +26,12 @@ function Material_change(props) {
   const changematerial = async (event) => {
     event.preventDefault();
     const formdata = new FormData(event.target);
-    props.viewmaterialinput.amount = formdata.get('amount');
-    props.viewmaterialinput.unitprice = formdata.get('unitprice');
-    const result = await props.onMaterialchange();
+    const amount = formdata.get('amount');
+    const unitprice = formdata.get('unitprice');
+    const result = await props.onMaterialchange(amount, unitprice);
   }
 
-  const bodyheight = {height: '40rem'};
+  const bodyheight = {height: '11rem'};
 
   const col_name = {width: '15rem'};
   const col_type = {width: '30rem'};
@@ -40,7 +40,7 @@ function Material_change(props) {
     <Modal show={props.show} size="lg" id="tradelinemodal" centered>
         <Form onSubmit={changematerial}>
       <ModalHeader className="bg-dark">
-        <ModalTitle className="text-light">Add Ship module</ModalTitle>
+        <ModalTitle className="text-light">Change material</ModalTitle>
       </ModalHeader>
       <ModalBody>
 

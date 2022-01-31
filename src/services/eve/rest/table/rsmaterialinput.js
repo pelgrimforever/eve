@@ -7,8 +7,23 @@
 */
 
 import Rsmaterialinputsuper from './super/rsmaterialinputsuper.js';
+import EvetypeJson from './conversion/evetypejson.js';
 
 class Rsmaterialinput extends Rsmaterialinputsuper {
+
+    static UPDATE_MATERIALUSAGE = 11;
+
+    static usematerial = async (username, evetypepk, amount) => {
+        const postdata = {
+            operation: { type: super.OPERATIONTYPE_UPDATE, operation: this.UPDATE_MATERIALUSAGE },
+            username: username,
+            evetypepk: EvetypeJson.PKtoJSON(evetypepk),
+            amount: amount
+        }
+        return await super.post(this.restservice, postdata);
+    }
+
+
 }
 
 export default Rsmaterialinput;

@@ -1,5 +1,4 @@
 //datamodels
-import {Evetypesearcher} from '../data/eve/table/super/evetypesuper.js';
 import { Evetypepk } from '../data/eve/table/super/evetypesuper.js';
 import Evetype from '../data/eve/table/evetype.js';
 import Usersettings from '../data/eve/table/usersettings.js';

@@ -40,11 +40,13 @@ import Systemtradelist from './systemtradelist/systemtradelist.js';
 import Systemtradetracking from './systemtradetracking/systemtradetracking.js';
 import Sellorderslowprice from './sellorderslowprice/sellorderslowprice.js';
 import Marketprice from './marketprice/marketprice.js';
+import Typeorders from './typeorders/typeorders.js';
 import Shipfits from './shipfits/shipfits.js';
 import Shipfitsorderlist from './shipfitsorderlist/shipfitsorderlist.js';
 import Shipfitroute from './shipfitroute/shipfitroute.js';
 import Blueprints from './blueprints/blueprints.js';
 import Materialinput from './materialinput/materialinput.js';
+import Userblueprints from './userblueprints/userblueprints.js';
 
 //configured in .env and .env.production
 const {REACT_APP_TEST} = process.env;
@@ -80,6 +82,7 @@ export default function Page() {
             { name:'Low price', link: '/lowprice' }, 
             { name:'Contract/profit', link: '/contractswitchprofit' },
             { name:'Market price', link: '/marketprice' }, 
+            { name:'Type orders', link: '/typeorders' }, 
             { name:'Sell stock', link: '/sellstock' },
             { name:'Wish list', link: '/wishlist' },
           ]
@@ -95,6 +98,7 @@ export default function Page() {
           navitems: [
               { name:'Blueprints', link: '/blueprints' }, 
               { name:'Material input', link: '/materialinput' }, 
+              { name:'Userblueprints', link: '/userblueprints' }, 
           ]
         },         
         { name:'Routes', link: '/routes',
@@ -151,11 +155,13 @@ export default function Page() {
     <Route exact path="/lowprice" component={Sellorderslowprice}/>
     <Route exact path="/contractswitchprofit" component={Contractswitchprofit}/>
     <Route exact path="/marketprice" component={Marketprice}/>
+    <Route exact path="/typeorders" component={Typeorders}/>
     <Route exact path="/shipfits" component={Shipfits}/>
     <Route exact path="/orderparts" component={Shipfitsorderlist}/>
     <Route exact path="/shipfitroute" component={Shipfitroute}/>
     <Route exact path="/blueprints" component={Blueprints}/>
     <Route exact path="/materialinput" component={Materialinput}/>
+    <Route exact path="/userblueprints" component={Userblueprints}/>
     <Route exact path="/systemkills" component={Systemkills}/>
   </div>
 

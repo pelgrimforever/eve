@@ -2,7 +2,7 @@
 //don't change things here, it will be overwritten
 /* 
     Created on : Dec 16, 2018, 18:32:01
-    Generated on 24.0.2022 17:38
+    Generated on 31.0.2022 17:49
     Author     : Franky Laseure
 */
 
@@ -19,6 +19,7 @@ class ViewbpmaterialJson {
 			"typegroupid": "" + viewbpmaterial.typegroupid,
 			"typegroupname": viewbpmaterial.typegroupname,
 			"name": viewbpmaterial.name,
+			"average": "" + viewbpmaterial.average,
 		};
 		return jsonobj;
 	}
@@ -32,6 +33,7 @@ class ViewbpmaterialJson {
 		model.typegroupid = "" + jsonobj.typegroupid;
 		model.typegroupname = jsonobj.typegroupname;
 		model.name = jsonobj.name;
+		model.average = parseFloat(jsonobj.average);
 		return model;
 	}
 }

@@ -28,10 +28,19 @@ export default function Blueprints(props) {
   const [materialinputadd, setMaterialinputadd] = useState(false);
   const [materialinputchange, setMaterialinputchange] = useState(false);
   const [bpmaterial, setBpmaterial] = useState(new Viewbpmaterial());
+  const [totalprice, setTotalprice] = useState(0);
 
   useEffect(async () => {
     compActions.loadBlueprints(compState.searchstring);
   }, []);
+
+  useEffect(async () => {
+    let price = 0;
+    compState.bpmateriallist.forEach(function myFunction(item) {
+      price += parseInt(item.amount) * item.average;
+    });
+    setTotalprice(price);
+  }, [compState.bpmateriallist]);
 
   const searchtextChange = (searchtextevent) => {
     compActions.setSearchstring(searchtextevent.target.value); 
@@ -69,6 +78,15 @@ export default function Blueprints(props) {
     setMaterialinputchange(false);
   }
 
+  const format_price = (p) => {
+    const rounded = Math.round(p);
+    return "" + rounded;
+  };
+
+  const format_2digits = (n) => {
+    return n.toFixed(2);
+  };
+
   const col_name = {width: '12rem'};
   const col_amount = {width: '4rem'};
   const col_price = {width: '4rem'};
@@ -76,12 +94,13 @@ export default function Blueprints(props) {
 
   const col_matname = {width: '12rem'};
   const col_matamount = {width: '4rem'};
+  const col_matunitprice = {width: '4rem'};
   
   return (
     <div className="root fullheight">
       <div className="containercontent container-relative">
         <div className="row h-100">
-          <div className="col-2">
+          <div className="col-3">
             <div className="root fullheight">
 
       <div className="containerheader">
@@ -118,6 +137,7 @@ export default function Blueprints(props) {
                   <table className="table small table-dark table-bordered table-hover fillparent">
                     <thead>
                       <tr>
+                        <th style={col_name}>group</th>
                         <th style={col_name}>type</th>
                         <th></th>
                         <th className="dummyscroll"></th>
@@ -127,6 +147,7 @@ export default function Blueprints(props) {
 
     {compState.blueprintlist.map((item, index) => (
                       <tr className={item.id===compState.blueprint.id ? "table-active" : "table-info"} key={index}  onClick={() => { onBlueprintclick(item); } }>
+                        <td style={col_name}>{item.typegroupname}</td>
                         <td style={col_name}>{item.name}</td>
                         <td>
                         </td>
@@ -145,7 +166,7 @@ export default function Blueprints(props) {
             </div>
           </div>
 
-          <div className="col-10 root fullheight">
+          <div className="col-9 root fullheight">
 
       <div className="containerheader">
         <div className="mx-auto bg-light p-1">
@@ -155,10 +176,12 @@ export default function Blueprints(props) {
             <div className="p-2 flex-fill bg-info">
               <div className="row m-0">
                 <div className="col col-sm-12 d-flex">
-                  <span className="mx-2">{compState.blueprint.name}</span>
+                  <span className="mx-2">{compState.blueprint.name}</span>                  
                   <div style={{width:'200px'}}>
                     <button type="button" className="btn btn-sm small btn-primary" onClick={() => openMaterialinput()}>add material</button>
                   </div>
+                  <span className="mx-2">material price: {format_price(totalprice)} ISK</span>
+
                 </div>
               </div>
             </div>
@@ -183,6 +206,7 @@ export default function Blueprints(props) {
                         <th style={col_matname}>group</th>
                         <th style={col_matname}>type</th>
                         <th style={col_matamount}><span className='float-right'>amount</span></th>
+                        <th style={col_matunitprice}><span className='float-right'>unitprice</span></th>
                         <th></th>
                         <th className="dummyscroll"></th>
                       </tr>
@@ -194,6 +218,7 @@ export default function Blueprints(props) {
                         <td style={col_matname}>{item.typegroupname}</td>
                         <td style={col_matname}>{item.name}</td>
                         <td style={col_matamount}><span className='float-right'>{item.amount}</span></td>
+                        <td style={col_matunitprice}><span className='float-right'>{format_2digits(item.average)}</span></td>
                         <td>
                           <button type="button" className="btn btn-sm small btn-primary" onClick={() => openMaterialinputchange(item)}>**</button>
                         </td>
