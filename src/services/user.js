@@ -1,11 +1,15 @@
 import Rssiteuser from '../services/sitesecurity/rest/table/rssiteuser.js';
 import base64 from 'react-native-base64';
 
+import { Eveuserpk } from '../data/eve/table/super/eveusersuper.js';
+import Rsfrontendpageauth from '../services/eve/rest/table/rsfrontendpageauth.js';
+
 class User {
 
   loggedin = false;
 	username = '';
   auth = '';
+  pageauth = [];
 
   //subscribers
   notifyactions = {};
@@ -43,14 +47,34 @@ class User {
       this.reset();
 	  }
     console.log("user " + this.username + " " + this.auth);
+    //load page authentications
+    const eveuserpk = new Eveuserpk();
+    eveuserpk.username = this.username;
+    this.pageauth = await Rsfrontendpageauth.sec_loadFrontendpageauths4eveuser(this, eveuserpk);
     return this.loggedin;
 	};
+
+  ispageauthorized = (pagename) => {
+    let pageautorized = false;
+    this.pageauth.map(frontendpage => {
+      if(pagename===frontendpage.PK.getFrontendpage()) {
+        pageautorized = true;
+      }
+    });
+    return pageautorized;
+  }
 
   reset = () => {
     this.username = '';
     this.auth = '';    
     this.loggedin = false;
     this.notifyall();
+  }
+
+  createAuth = (user, password) => {
+      var md5 = require('md5');
+      const rawdata = user + ":" + md5(password);
+      return base64.encode(rawdata);
   }
 
 }

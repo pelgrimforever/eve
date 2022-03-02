@@ -31,3 +31,13 @@ button.small {
 ul.pagination {
   margin-bottom: 0;
 }
+
+button.tiny {
+  height: 1.5rem;
+  width: 1.5rem;
+}
+
+button.right {
+  position: relative;
+  float: right;  
+}

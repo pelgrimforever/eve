@@ -2,7 +2,7 @@
 //don't change things here, it will be overwritten
 /* 
     Created on : Nov 19, 2018, 12:42:01 PM
-    Generated on 31.0.2022 17:49
+    Generated on 22.1.2022 10:55
     Author     : Franky Laseure
 */
 
@@ -58,6 +58,8 @@ class EvetypeJsonsuper {
 			"highest": "" + evetype.highest,
 			"lowest": "" + evetype.lowest,
 			"order_count": "" + evetype.order_count,
+			"configuredbp": evetype.configuredbp,
+			"estimatedproductioncost": "" + evetype.estimatedproductioncost,
 		};
 		if(evetype.marketgroupPK!=null) {
 			jsonobj.marketgroupPK = MarketgroupJson.PKtoJSON(evetype.marketgroupPK);
@@ -107,6 +109,8 @@ class EvetypeJsonsuper {
 		model.highest = parseFloat(jsonobj.highest);
 		model.lowest = parseFloat(jsonobj.lowest);
 		model.order_count = "" + jsonobj.order_count;
+		model.configuredbp = jsonobj.configuredbp;
+		model.estimatedproductioncost = parseFloat(jsonobj.estimatedproductioncost);
 		return model;
 	}
 }

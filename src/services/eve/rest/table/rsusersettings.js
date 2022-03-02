@@ -11,10 +11,11 @@ import Rsusersettingssuper from './super/rsusersettingssuper.js';
 class Rsusersettings extends Rsusersettingssuper {
     static SELECT_4USER = 40;
 
-    static loadUsersettingss4user = async (username): Usersettings[] => {
+    static loadUsersettingss4user = async (user, username): Usersettings[] => {
         const postdata = {
-          operation: { type: super.OPERATIONTYPE_SELECT, operation: this.SELECT_4USER },
-          "username": username
+          auth: user!=null ? user.auth : null,
+          operation: { type: super.OPERATIONTYPE_SECURESELECT, operation: this.SELECT_4USER },
+          username: username
         }
         return this.extractDataArray(await super.post(this.restservice, postdata));
     }

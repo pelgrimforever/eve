@@ -11,8 +11,6 @@ import Moment from 'moment';
 import Store from '../services/store.js';
 
 //data models
-import { Evetypepk } from '../data/eve/table/super/evetypesuper.js';
-import Evetype from '../data/eve/table/evetype.js';
 //services
 import Rsviewevetypes from '../services/eve/rest/view/rsviewevetypes.js';
 
@@ -24,7 +22,7 @@ function Shipfit_add(props) {
   const [searchstring, setSearchstring] = useState('');
 
   useEffect(async () => {
-    const result = await Rsviewevetypes.getships();
+    const result = await Rsviewevetypes.getships(Store.user);
     setActiveships(result);
     setDisplaylist(result);
   }, []);
@@ -70,18 +68,12 @@ function Shipfit_add(props) {
         <Row m-0="true" style={bodyheight}>
           <div className="col-12 root fullheight">
             <div className="containerheader">
-              <div className="mx-auto bg-light p-1">
-                <div className="d-flex">
                   <div className="p-2 flex-fill bg-info">
                     <div className="row m-0">
-                      <div className="col col-sm-12 d-flex">
-                        <span className="mx-2">name filter</span>
-                        <div style={{width:'200px'}}>
-                          <input type="text" className="form-input" style={{width:'200px'}} onChange={searchtextChange} defaultValue={searchstring} />
-                        </div>
+                      <div className="col col-sm-12 d-flex align-items-baseline mx-2">
+                        <label for="searchtext" className="mx-2">name filter</label>
+                        <input type="text" id="searchtext" className="form-input" style={{width:'200px'}} onChange={searchtextChange} defaultValue={searchstring} />
                       </div>
-                    </div>
-                  </div>
                 </div>
               </div>
             </div>
@@ -118,18 +110,12 @@ function Shipfit_add(props) {
               </div>
             </div>
             <div className="containerheader">
-              <div className="mx-auto bg-light p-1">
-                <div className="d-flex">
-                  <div className="p-2 flex-fill bg-info">
-                    <div className="row m-0">
-                      <div className="col col-sm-12 d-flex">
-                        <span className="mx-2">Ship Fit name</span>
-                        <div className="mx-2" style={{width:'200px'}}>
-                          <input type="text" className="form-input" id="shipname" name="shipname" style={{width:'200px'}} />
-                        </div>
-                        <button type="submit" className="btn btn-primary">add</button>
-                      </div>
-                    </div>
+              <div className="p-2 flex-fill bg-info">
+                <div className="row m-0">
+                  <div className="col col-sm-12 d-flex align-items-baseline mx-2">
+                    <label for="shipname" className="mx-2">Ship Fit name</label>
+                    <input type="text" className="form-input mx-2" id="shipname" name="shipname" style={{width:'200px'}} />
+                    <button type="submit" className="btn btn-primary">add</button>
                   </div>
                 </div>
               </div>

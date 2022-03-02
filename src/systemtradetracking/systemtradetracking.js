@@ -41,6 +41,7 @@ export default function Systemtradetracking(props) {
   const [buytotalremain, setBuytotalremain] = useState(0);
   const [selltotalupdate, setSelltotalupdate] = useState(0);
   const [buytotalupdate, setBuytotalupdate] = useState(0);
+  const [routereloadflag, setRoutereloadflag] = useState(0);
 
   useEffect(async () => {
     await loadlist();
@@ -64,9 +65,13 @@ export default function Systemtradetracking(props) {
       buy_systempk.id = appState.viewtradesystem.buy_systemid;
       let sell_systempk = new Systempk();
       sell_systempk.id = appState.viewtradesystem.sell_systemid;
-      const systemtradelist = await Rsviewtradecombinedsell.get4Tradesystems(sell_systempk, buy_systempk);
+      const systemtradelist = await Rsviewtradecombinedsell.get4Tradesystems(Store.user, sell_systempk, buy_systempk);
       setTradelist(systemtradelist);
     }
+  }
+
+  const triggerrouteupdate = () => {
+    setRoutereloadflag(routereloadflag+1);
   }
 
   const format_price = (p) => {
@@ -250,7 +255,8 @@ export default function Systemtradetracking(props) {
 
       <Routefinderparameters 
         viasystems={compState.viasystems} avoidsystems={compState.avoidsystems} secure={compState.secure}
-        setViasystems={compActions.setViasystems} setAvoidsystems={compActions.setAvoidsystems} setSecure={compActions.setSecure} />
+        setViasystems={compActions.setViasystems} setAvoidsystems={compActions.setAvoidsystems} setSecure={compActions.setSecure}
+        reloadroute={triggerrouteupdate} />
 
       <div className="containercontent container-relative">
         <div className="row h-100">
@@ -261,6 +267,7 @@ export default function Systemtradetracking(props) {
               viasystems={compState.viasystems}
               avoidsystems={compState.avoidsystems}
               secure={compState.secure}
+              reloadflag={routereloadflag}
               />
           </div>
 

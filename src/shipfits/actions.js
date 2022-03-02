@@ -9,7 +9,6 @@ import Shipfitmodule from '../data/eve/table/shipfitmodule.js';
 import { Shipfitorderpk } from '../data/eve/table/super/shipfitordersuper.js';
 //services
 import Store from '../services/store.js';
-import Rsevetype from '../services/eve/rest/table/rsevetype.js';
 import Rsshipfit from '../services/eve/rest/table/rsshipfit.js';
 import Rsshipfitmodule from '../services/eve/rest/table/rsshipfitmodule.js';
 import Rsshipfitorder from '../services/eve/rest/table/rsshipfitorder.js';
@@ -27,18 +26,18 @@ export const setShipfitorder = async (store, shipfitorder) => {
 };
 
 export const loadShipfitmodules = async (store, viewshipfit) => {
-  const result = await Rsviewshipfitmodule.get4shipfit(viewshipfit.username, viewshipfit.shipname);
+  const result = await Rsviewshipfitmodule.get4shipfit(Store.user, viewshipfit.username, viewshipfit.shipname);
   store.setState({ shipfitmodules: result });
 };
 
 export const loadShipfits = async (store) => {
-  const result = await Rsviewshipfit.get4user(Store.user.username);
+  const result = await Rsviewshipfit.get4user(Store.user, Store.user.username);
   result.sort((a, b) => (a.name<b.name) ? -1 : 1);
   store.setState({ shipfitlist: result });
 };
 
 export const loadShipfitorders = async (store) => {
-  const result = await Rsviewshipfitorder.get4user(Store.user.username);
+  const result = await Rsviewshipfitorder.get4user(Store.user, Store.user.username);
   store.setState({ shipfitorderlist: result });
 };
 
@@ -48,7 +47,7 @@ export const addShipfit = async (store, activeship, shipname ) => {
   shipfit.PK.shipname = shipname;
   shipfit.evetypePK = new Evetypepk();
   shipfit.evetypePK.id = activeship.id;
-  const result = await Rsshipfit.insert(shipfit);
+  const result = await Rsshipfit.sec_insert(Store.user, shipfit);
   loadShipfits(store);
 }
 
@@ -58,7 +57,7 @@ export const removeShipfit = async (store, viewshipfit ) => {
   shipfit.PK.shipname = viewshipfit.shipname;
   shipfit.evetypePK = new Evetypepk();
   shipfit.evetypePK.id = viewshipfit.evetype;
-  const result = await Rsshipfit.del(shipfit);
+  const result = await Rsshipfit.sec_del(Store.user, shipfit);
   loadShipfits(store);
 }
 
@@ -66,7 +65,7 @@ export const orderShipfit = async (store, viewshipfit ) => {
   let shipfitpk = new Shipfitpk();
   shipfitpk.username = viewshipfit.username;
   shipfitpk.shipname = viewshipfit.shipname;
-  const result = await Rsshipfit.orderShipfit(shipfitpk);
+  const result = await Rsshipfit.orderShipfit(Store.user, shipfitpk);
   loadShipfitorders(store);
 }
 
@@ -77,7 +76,7 @@ export const addShipmodule = async (store, activemodule, amount ) => {
   shipmodule.PK.shipfitPK.shipname = store.state.viewshipfit.shipname;
   shipmodule.PK.evetypePK.id = activemodule.id;
   shipmodule.amount = amount;
-  const result = await Rsshipfitmodule.insert(shipmodule);
+  const result = await Rsshipfitmodule.sec_insert(Store.user, shipmodule);
   loadShipfitmodules(store, store.state.viewshipfit);
 }
 
@@ -87,7 +86,7 @@ export const removeShipmodule = async (store, viewshipfitmodule ) => {
   shipmodule.PK.shipfitPK.username = viewshipfitmodule.username;
   shipmodule.PK.shipfitPK.shipname = viewshipfitmodule.shipname;
   shipmodule.PK.evetypePK.id = viewshipfitmodule.moduletype;
-  const result = await Rsshipfitmodule.del(shipmodule);
+  const result = await Rsshipfitmodule.sec_del(Store.user, shipmodule);
   loadShipfitmodules(store, store.state.viewshipfit);
 }
 
@@ -98,6 +97,6 @@ export const addstockShipfitorder = async (store, viewshipfitorder, amount ) => 
   shipfitorderpk.shipfitPK.shipname = viewshipfitorder.shipname;
   shipfitorderpk.evetypePK = new Evetypepk();
   shipfitorderpk.evetypePK.id = viewshipfitorder.evetype;
-  const result = await Rsshipfitorder.updateOrderaddstock(shipfitorderpk, amount);
+  const result = await Rsshipfitorder.updateOrderaddstock(Store.user, shipfitorderpk, amount);
   loadShipfitorders(store);
 }

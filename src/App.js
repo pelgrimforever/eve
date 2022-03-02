@@ -15,6 +15,7 @@ import './glyphons.scss';
 //general classes
 import Sitesecurityservice from './services/sitesecurityservice.js';
 import Store from './services/store.js';
+import appstore from './appstore.js';
 
 import Menubar from './menubar/menubar.js';
 import Clock from './utilities/clock.js';
@@ -22,7 +23,8 @@ import Popupmessage from './popups/popupmessage.js';
 
 //app specific classes
 import Eveservice from './services/eveservice.js';
-import Home from './home/home.js';
+import Users from './users/users.js';
+import Trade from './trade/trade.js';
 import Downloadcontracts from './downloadcontracts/downloadcontracts.js';
 import Tradetypes from './tradetypes/tradetypes.js';
 import Universe from './universe/universe.js';
@@ -47,6 +49,8 @@ import Shipfitroute from './shipfitroute/shipfitroute.js';
 import Blueprints from './blueprints/blueprints.js';
 import Materialinput from './materialinput/materialinput.js';
 import Userblueprints from './userblueprints/userblueprints.js';
+import Bpmarketsim from './bpmarketsim/bpmarketsim.js';
+import Blueprintsprofit from './blueprintsprofit/blueprintsprofit.js';
 
 //configured in .env and .env.production
 const {REACT_APP_TEST} = process.env;
@@ -55,59 +59,7 @@ const {REACT_APP_SERVERURL} = process.env;
 
 export default function Page() {
 
-  const [navitems, setNavitems] = useState(
-      [ 
-        { name:'Eve download', link: '/evedownload',
-          navitems: [
-              { name:'Trade download', link: '/home' }, 
-              { name:'Contract download', link: '/contractsdownload' }, 
-              { name:'Market history', link: '/markethistory' },
-              { name:'Trade types', link: '/tradetypes' },
-              { name:'Universe', link: '/universe' },
-              { name:'System jumps', link: '/systemjumps' },
-          ]
-        }, 
-        { name:'Trade tools', link: '/tradetools',
-          navitems: [
-            { name:'Trade', link: '/tradelist' }, 
-            { name:'Trade tracking', link: '/tradetracking' }, 
-            { name:'Combined trade', link: '/combinedtradelist' }, 
-            { name:'Combined trade tracking', link: '/combinedtradetracking' }, 
-            { name:'System trade', link: '/systemtradelist' }, 
-            { name:'System trade tracking', link: '/systemtradetracking' },
-          ]
-        },         
-        { name:'Market tools', link: '/market',
-          navitems: [
-            { name:'Low price', link: '/lowprice' }, 
-            { name:'Contract/profit', link: '/contractswitchprofit' },
-            { name:'Market price', link: '/marketprice' }, 
-            { name:'Type orders', link: '/typeorders' }, 
-            { name:'Sell stock', link: '/sellstock' },
-            { name:'Wish list', link: '/wishlist' },
-          ]
-        },         
-        { name:'Fits', link: '/fits',
-          navitems: [
-              { name:'Ship fits', link: '/shipfits' }, 
-              { name:'Order parts', link: '/orderparts' }, 
-              { name:'Order route', link: '/shipfitroute' }, 
-          ]
-        },         
-        { name:'Industry', link: '/industry',
-          navitems: [
-              { name:'Blueprints', link: '/blueprints' }, 
-              { name:'Material input', link: '/materialinput' }, 
-              { name:'Userblueprints', link: '/userblueprints' }, 
-          ]
-        },         
-        { name:'Routes', link: '/routes',
-          navitems: [
-              { name:'System kills', link: '/systemkills' }, 
-          ]
-        },         
-
-      ]);
+  const [appState, appActions] = appstore();
 
   //set REST service paramaters
   Eveservice.test = REACT_APP_TEST;
@@ -123,22 +75,29 @@ export default function Page() {
   }, []);
 
   useEffect(() => {
+    document.title = "Eve trade/production tools";
+    appActions.initMenu();
     Store.load();
   }, []);
+
+  useEffect(() => {
+    //Store.load();
+  }, [Store.user]);
 
   return (
 <HashRouter>      
 <div className="root fullheight">
 
   <div className="containerheader">
-    <Menubar navitems={navitems} />
+    <Menubar navitems={appState.navitems} />
   </div>
 
   <div className="content containercontent">
     <Route exact path="/">
-      <Redirect to="/home" />
+      <Redirect to="/systemkills" />
     </Route>
-    <Route exact path="/home" component={Home}/>
+    <Route exact path="/users" component={Users}/>
+    <Route exact path="/trade" component={Trade}/>
     <Route exact path="/contractsdownload" component={Downloadcontracts}/>
     <Route exact path="/markethistory" component={Markethistory}/>
     <Route exact path="/tradetypes" component={Tradetypes}/>
@@ -162,7 +121,9 @@ export default function Page() {
     <Route exact path="/blueprints" component={Blueprints}/>
     <Route exact path="/materialinput" component={Materialinput}/>
     <Route exact path="/userblueprints" component={Userblueprints}/>
+    <Route exact path="/bpmarketsim" component={Bpmarketsim}/>
     <Route exact path="/systemkills" component={Systemkills}/>
+    <Route exact path="/blueprintsprofit" component={Blueprintsprofit}/>
   </div>
 
   <div className="containerfooter bg-dark d-flex justify-content-end">

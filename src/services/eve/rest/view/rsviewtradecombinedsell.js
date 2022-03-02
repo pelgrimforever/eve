@@ -15,17 +15,19 @@ class Rsviewtradecombinedsell extends Rsviewtradecombinedsellsuper {
   static SELECT4TRADECOMBINED = 2;
   static SELECT4TRADESYSTEMS = 3;
 
-  static get4Tradecombined = async (tradecombinedpk) => {
+  static get4Tradecombined = async (user, tradecombinedpk) => {
     const postdata = {
-      operation: { type: super.OPERATIONTYPE_SELECT, operation: this.SELECT4TRADECOMBINED },
+      auth: user!=null ? user.auth : null,
+      operation: { type: super.OPERATIONTYPE_SECURESELECT, operation: this.SELECT4TRADECOMBINED },
       tradecombinedpk: TradecombinedJson.PKtoJSON(tradecombinedpk)
     }
     return this.extractDataArray(await super.post(this.restservice, postdata));
   }
 
-  static get4Tradesystems = async (sell_systempk, buy_systempk) => {
+  static get4Tradesystems = async (user, sell_systempk, buy_systempk) => {
     const postdata = {
-      operation: { type: super.OPERATIONTYPE_SELECT, operation: this.SELECT4TRADESYSTEMS },
+      auth: user!=null ? user.auth : null,
+      operation: { type: super.OPERATIONTYPE_SECURESELECT, operation: this.SELECT4TRADESYSTEMS },
       sell_systempk: SystemJson.PKtoJSON(sell_systempk),
       buy_systempk: SystemJson.PKtoJSON(buy_systempk)
     }

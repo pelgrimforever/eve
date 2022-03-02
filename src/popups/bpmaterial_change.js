@@ -15,8 +15,6 @@ import Store from '../services/store.js';
 //data models
 import { Evetypepk } from '../data/eve/table/super/evetypesuper.js';
 import Evetype from '../data/eve/table/evetype.js';
-//services
-import Rsviewevetypes from '../services/eve/rest/view/rsviewevetypes.js';
 
 function Bpmaterial_change(props) {
 
@@ -30,8 +28,6 @@ function Bpmaterial_change(props) {
     const result = await props.onMaterialchange();
   }
 
-  const bodyheight = {height: '10rem'};
-
   const col_name = {width: '15rem'};
   const col_type = {width: '30rem'};
 
@@ -43,41 +39,31 @@ function Bpmaterial_change(props) {
       </ModalHeader>
       <ModalBody>
 
-        <Row m-0="true" style={bodyheight}>
+        <Row m-0="true">
           <div className="col-12 root fullheight">
             <div className="containerheader">
-              <div className="mx-auto bg-light p-1">
-                <div className="d-flex">
-                  <div className="p-2 flex-fill bg-info">
-                    <div className="row m-0">
-                      <div className="col col-sm-12 d-flex">
-                        <span className="mx-2" style={{width:'150px'}}>group</span>
-                        <div className="mx-2" style={{width:'200px'}}>
-                          {props.viewbpmaterial.typegroupname}
-                        </div>
-                      </div>
+              <div className="p-2 flex-fill bg-info">
+                <div className="row m-0">
+                  <div className="col col-sm-12 d-flex align-items-baseline">
+                    <span className="mx-2" style={{width:'150px'}}>group</span>
+                    <div className="mx-2" style={{width:'200px'}}>
+                      {props.viewbpmaterial.typegroupname}
                     </div>
-                    <div className="row m-0">
-                      <div className="col col-sm-12 d-flex">
-                        <span className="mx-2" style={{width:'150px'}}>type</span>
-                        <div className="mx-2" style={{width:'200px'}}>
-                          {props.viewbpmaterial.name}
-                        </div>
-                      </div>
+                  </div>
+                </div>
+                <div className="row m-0">
+                  <div className="col col-sm-12 d-flex align-items-baseline">
+                    <span className="mx-2" style={{width:'150px'}}>type</span>
+                    <div className="mx-2" style={{width:'200px'}}>
+                      {props.viewbpmaterial.name}
                     </div>
-                    <div className="row m-0">
-                      <div className="col col-sm-12 d-flex">
-                        <span className="mx-2" style={{width:'150px'}}>amount</span>
-                        <div className="mx-2" style={{width:'200px'}}>
-                          <Form.Control type="number" id="amount" name="amount" defaultValue={props.viewbpmaterial.amount} style={{width:'150px'}} />  
-                        </div>
-                      </div>
-                    </div>
-                    <div className="row m-0">
-                      <div className="col col-sm-12 d-flex">
-                        <button type="submit" className="btn btn-primary">change</button>
-                      </div>
-                    </div>
+                  </div>
+                </div>
+                <div className="row m-0">
+                  <div className="col col-sm-12 d-flex align-items-baseline">
+                    <span className="mx-2" style={{width:'150px'}}>amount</span>
+                    <Form.Control type="number" id="amount" name="amount" defaultValue={props.viewbpmaterial.amount} className="mx-2" style={{width:'150px'}} />  
+                    <button type="submit" className="btn btn-primary">change</button>
                   </div>
                 </div>
               </div>

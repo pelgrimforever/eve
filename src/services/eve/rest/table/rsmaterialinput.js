@@ -13,9 +13,10 @@ class Rsmaterialinput extends Rsmaterialinputsuper {
 
     static UPDATE_MATERIALUSAGE = 11;
 
-    static usematerial = async (username, evetypepk, amount) => {
+    static usematerial = async (user, username, evetypepk, amount) => {
         const postdata = {
-            operation: { type: super.OPERATIONTYPE_UPDATE, operation: this.UPDATE_MATERIALUSAGE },
+            auth: user!=null ? user.auth : null,
+            operation: { type: super.OPERATIONTYPE_SECUREUPDATE, operation: this.UPDATE_MATERIALUSAGE },
             username: username,
             evetypepk: EvetypeJson.PKtoJSON(evetypepk),
             amount: amount

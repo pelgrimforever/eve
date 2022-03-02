@@ -4,15 +4,14 @@ import Rssystem from '../table/rssystem.js';
 
 class Rsbpproduction extends Eveservice { 
 
-  //static restservice = 'rsloadroute';
   static restservice = 'rsbpproduction';
-  
 
   //OPERATIONS
 
-  static calculateprices = async (viewuserbp) => {
+  static calculateprices = async (user, viewuserbp) => {
     const postdata = {
-      "viewuserbp": ViewuserbpJson.toJSON(viewuserbp)
+      auth: user!=null ? user.auth : null,
+      viewuserbp: ViewuserbpJson.toJSON(viewuserbp)
     }
     const result = await super.post(this.restservice, postdata);
     return result;

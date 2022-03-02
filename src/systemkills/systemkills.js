@@ -8,6 +8,7 @@ import Select from 'react-select';
 import Store from '../services/store.js';
 
 //components
+import Routefinderparameters from '../components/routefinder/routefinderparameters.js';
 //data models
 import { Systempk } from '../data/eve/table/super/systemsuper.js';
 //component state
@@ -29,6 +30,10 @@ export default function Tradetracking(props) {
     return allsystemlist;
   }
 
+  useEffect(async () => {
+    setAllsystems(getallsystemoptions());
+  }, [Store.codetables.allsystemlist]);
+
   const highsec = 0.45;
 
   const [loading, setLoading] = useState(false);
@@ -36,7 +41,7 @@ export default function Tradetracking(props) {
 
   useEffect(async () => {
     await loadupdate();
-  }, []);
+  }, [compState.secure, compState.startsystemid, compState.endsystemid, compState.viasystems, compState.avoidsystems ]);
 
   const setStartsystem = (selection) => { 
     compActions.setStartsystem(selection.system);
@@ -99,90 +104,45 @@ export default function Tradetracking(props) {
       <div className="containerheader">
         <div className="mx-auto bg-light p-1">
 
-          <div className="d-flex">
-
-            <div className="p-2 flex-fill bg-info">
-              <div className="row m-0">
-                <div className="col col-sm-4 input-group-prepend">
-                  <label className="input-group-text">secure</label>
-                </div>
-                <div className="col col-sm-8 input-group-prepend">
-                  <div className="custom-control custom-checkbox cell-center mr-2">
-                    <input type="checkbox" checked={compState.secure} className="form-check-input" onClick={() => compActions.setSecure(!compState.secure)}/>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div className="p-2 flex-fill bg-info">
-              <div className="row m-0">
-                <div className="col col-sm-4 input-group-prepend">
-                  <label className="input-group-text">from</label>
-                </div>
-                <div className="col col-sm-8 input-group-prepend">
-                  <div style={{width:'200px'}}>
-                    <Select options={allsystems} value={allsystems.find(option => option.value === compState.startsystemid)} onChange={setStartsystem}/>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div className="p-2 flex-fill bg-info">
-              <div className="row m-0">
-                <div className="col col-sm-4 input-group-prepend">
-                  <label className="input-group-text">to</label>
-                </div>
-                <div className="col col-sm-8 input-group-prepend">
-                  <div style={{width:'200px'}}>
-                    <Select options={allsystems} value={allsystems.find(option => option.value === compState.endsystemid)} onChange={setEndsystem}/>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div className="p-2 flex-fill bg-info">
-              <div className="row m-0">
-                <button type="button" className="btn btn-sm btn-primary m-1" onClick={loadupdate}>search</button>
-              </div>
-            </div>
-
-
-          </div>
-
-        </div>
-      </div>
-
-      <div className="containerheader">
-        <div className="mx-auto bg-light p-1">
           <div className="row m-0">
-            <div className="col col-sm-10 d-flex">
-              <label className="input-group-text bg-light mr-2">via</label>
-    {compState.viasystems.map((viasystem, index) => (
-              <>
-              <label className="input-group-text">{viasystem.label}</label>
-              <button type="button" className="btn btn-sm btn-secondary mr-2" onClick={() => removeSystem(viasystem)}>X</button>
-              </>
-    ))}
-              <label className="input-group-text bg-light">add</label>
-              <div style={{width:'200px'}}>
-                <Select options={allsystems} onChange={addSystem}/>
+            <div className="col col-2">
+
+              <div className="p-1 flex-fill bg-info">
+                <div className="row m-0">
+                  <div className="col col-sm-4">
+                    <label className="input-group-text">from</label>
+                  </div>
+                  <div className="col col-sm-8">
+                    <div style={{width:'200px'}}>
+                      <Select options={allsystems} value={allsystems.find(option => option.value === compState.startsystemid)} onChange={setStartsystem}/>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div className="p-1 flex-fill bg-info">
+                <div className="row m-0">
+                  <div className="col col-sm-4 input-group-prepend">
+                    <label className="input-group-text">to</label>
+                  </div>
+                  <div className="col col-sm-8 input-group-prepend">
+                    <div style={{width:'200px'}}>
+                      <Select options={allsystems} value={allsystems.find(option => option.value === compState.endsystemid)} onChange={setEndsystem}/>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
-          </div>
-          <div className="row m-0">
-            <div className="col col-sm-10 d-flex">
-              <label className="input-group-text bg-light mr-2">avoid</label>
-    {compState.avoidsystems.map((avoidsystem, index) => (
-              <>
-              <label className="input-group-text">{avoidsystem.label}</label>
-              <button type="button" className="btn btn-sm btn-secondary mr-2" onClick={() => removeAvoidsystem(avoidsystem)}>X</button>
-              </>
-    ))}
-              <label className="input-group-text bg-light">add</label>
-              <div style={{width:'200px'}}>
-                <Select options={allsystems} onChange={addAvoidsystem}/>
-              </div>
+
+            <div className="col col-10">
+
+              <Routefinderparameters 
+                viasystems={compState.viasystems} avoidsystems={compState.avoidsystems} secure={compState.secure}
+                setViasystems={compActions.setViasystems} setAvoidsystems={compActions.setAvoidsystems} setSecure={compActions.setSecure} 
+                reloadroute={loadupdate} />
+
             </div>
+
           </div>
         </div>
       </div>

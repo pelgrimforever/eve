@@ -6,7 +6,8 @@
     Author     : Franky Laseure
 */
 
-import Rsviewevetypessuper from './super/rsviewevetypessuper';
+import Rsviewevetypessuper from './super/rsviewevetypessuper.js';
+import ViewevetypesJson from './conversion/viewevetypesjson.js';
 
 class Rsviewevetypes extends Rsviewevetypessuper {
 
@@ -18,59 +19,107 @@ class Rsviewevetypes extends Rsviewevetypessuper {
     static SELECT_MINERALS = 7;
     static SELECT_SALVAGED = 8;
     static SELECT_BLEUPRINT = 9;
+    static SELECT_BLEUPRINTRESULT = 10;
+    static SELECT_COMMODITY = 11;
+    static SELECT_MATERIAL = 12;
+    static SELECT_PLANETARYCOMMODITY = 13;
 
-    static getships = async () => {
+    static getships = async (user) => {
         const postdata = {
-          operation: { type: super.OPERATIONTYPE_SELECT, operation: this.SELECT_SHIPS }
+          auth: user!=null ? user.auth : null,
+          operation: { type: super.OPERATIONTYPE_SECURESELECT, operation: this.SELECT_SHIPS }
         }
         return super.extractDataArray(await super.post(this.restservice, postdata));
     }
 
-    static getmodules = async () => {
+    static getmodules = async (user) => {
         const postdata = {
-          operation: { type: super.OPERATIONTYPE_SELECT, operation: this.SELECT_MODULES }
+          auth: user!=null ? user.auth : null,
+          operation: { type: super.OPERATIONTYPE_SECURESELECT, operation: this.SELECT_MODULES }
         }
         return super.extractDataArray(await super.post(this.restservice, postdata));
     }
 
-    static getcharges = async () => {
+    static getcharges = async (user) => {
         const postdata = {
-          operation: { type: super.OPERATIONTYPE_SELECT, operation: this.SELECT_CHARGES }
+          auth: user!=null ? user.auth : null,
+          operation: { type: super.OPERATIONTYPE_SECURESELECT, operation: this.SELECT_CHARGES }
         }
         return super.extractDataArray(await super.post(this.restservice, postdata));
     }
 
-    static getdrones = async () => {
+    static getdrones = async (user) => {
         const postdata = {
-          operation: { type: super.OPERATIONTYPE_SELECT, operation: this.SELECT_DRONES }
+          auth: user!=null ? user.auth : null,
+          operation: { type: super.OPERATIONTYPE_SECURESELECT, operation: this.SELECT_DRONES }
         }
         return super.extractDataArray(await super.post(this.restservice, postdata));
     }
 
-    static getdeployables = async () => {
+    static getdeployables = async (user) => {
         const postdata = {
-          operation: { type: super.OPERATIONTYPE_SELECT, operation: this.SELECT_DEPLOYABLES }
+          auth: user!=null ? user.auth : null,
+          operation: { type: super.OPERATIONTYPE_SECURESELECT, operation: this.SELECT_DEPLOYABLES }
         }
         return super.extractDataArray(await super.post(this.restservice, postdata));
     }
 
-    static getminerals = async () => {
+    static getminerals = async (user) => {
         const postdata = {
-          operation: { type: super.OPERATIONTYPE_SELECT, operation: this.SELECT_MINERALS }
+          auth: user!=null ? user.auth : null,
+          operation: { type: super.OPERATIONTYPE_SECURESELECT, operation: this.SELECT_MINERALS }
         }
         return super.extractDataArray(await super.post(this.restservice, postdata));
     }
 
-    static getsalvagedmaterials = async () => {
+    static getsalvagedmaterials = async (user) => {
         const postdata = {
-          operation: { type: super.OPERATIONTYPE_SELECT, operation: this.SELECT_SALVAGED }
+          auth: user!=null ? user.auth : null,
+          operation: { type: super.OPERATIONTYPE_SECURESELECT, operation: this.SELECT_SALVAGED }
         }
         return super.extractDataArray(await super.post(this.restservice, postdata));
     }
 
-    static getblueprints = async (searchstring) => {
+    static getblueprints = async (user, searchstring) => {
         const postdata = {
-          operation: { type: super.OPERATIONTYPE_SELECT, operation: this.SELECT_BLEUPRINT },
+          auth: user!=null ? user.auth : null,
+          operation: { type: super.OPERATIONTYPE_SECURESELECT, operation: this.SELECT_BLEUPRINT },
+          searchstring: searchstring
+        }
+        return super.extractDataArray(await super.post(this.restservice, postdata));
+    }
+
+    static getblueprintresult = async (user, viewblueprint) => {
+        const postdata = {
+          auth: user!=null ? user.auth : null,
+          operation: { type: super.OPERATIONTYPE_SECURESELECT, operation: this.SELECT_BLEUPRINTRESULT },
+          viewblueprint: ViewevetypesJson.fromJSON(viewblueprint)
+        }
+        return super.extractDataObject(await super.post(this.restservice, postdata));
+    }
+
+    static getcommodities = async (user, searchstring) => {
+        const postdata = {
+          auth: user!=null ? user.auth : null,
+          operation: { type: super.OPERATIONTYPE_SECURESELECT, operation: this.SELECT_COMMODITY },
+          searchstring: searchstring
+        }
+        return super.extractDataArray(await super.post(this.restservice, postdata));
+    }
+
+    static getmaterials = async (user, searchstring) => {
+        const postdata = {
+          auth: user!=null ? user.auth : null,
+          operation: { type: super.OPERATIONTYPE_SECURESELECT, operation: this.SELECT_MATERIAL },
+          searchstring: searchstring
+        }
+        return super.extractDataArray(await super.post(this.restservice, postdata));
+    }
+
+    static getplanetarycommodities = async (user, searchstring) => {
+        const postdata = {
+          auth: user!=null ? user.auth : null,
+          operation: { type: super.OPERATIONTYPE_SECURESELECT, operation: this.SELECT_PLANETARYCOMMODITY },
           searchstring: searchstring
         }
         return super.extractDataArray(await super.post(this.restservice, postdata));

@@ -19,7 +19,7 @@ export const setSearchstring = (store, searchstring) => {
 export const loadSettings = async (store) => {
   try {
     if(Store.user.loggedin) {
-      let settings = await Rsusersettings.loadUsersettingss4user(Store.user.username);
+      let settings = await Rsusersettings.loadUsersettingss4user(Store.user, Store.user.username);
       settings.map(setting => {
         if(setting.PK.getName()=="stocksystemid") {
           store.setState({ "stocksystemid": setting.value });
@@ -36,7 +36,7 @@ export const loadTypes = async (store, searchstring) => {
     let searcher = new Evetypesearcher();
     searcher.addnames([searchstring + ':*:']);
     searcher.name.compareoperator = searcher.name.STRING_LIKE;
-    const result = await Rsevetype.search(searcher);
+    const result = await Rsevetype.sec_search(Store.user, searcher);
     result.sort((a, b) => (a.name<b.name) ? -1 : 1);
     store.setState({ typelist: result });
   }
@@ -49,7 +49,7 @@ export const setStocksystem = async (store, stocksystemid) => {
   usersetting.PK.settingsPK.name = "stocksystemid";
   usersetting.value = stocksystemid;
   //always update for usersettings, server business logic assures these settings exist
-  await Rsusersettings.save(usersetting);
+  await Rsusersettings.sec_save(Store.user, usersetting);
   store.setState({ 
     stocksystemid: stocksystemid
   });
@@ -57,13 +57,13 @@ export const setStocksystem = async (store, stocksystemid) => {
 };
 
 export const loadStocklist = async (store) => {
-  const result = await Rsviewstock.get4user(Store.user.username);
+  const result = await Rsviewstock.get4user(Store.user, Store.user.username);
   result.sort((a, b) => (a.name<b.name) ? -1 : 1);
   store.setState({ stocklist: result });
 };
 
 export const loadStocktradesystems = async (store) => {
-  const result = await Rsviewstocktradesystem.get4user(Store.user.username);
+  const result = await Rsviewstocktradesystem.get4user(Store.user, Store.user.username);
   store.setState({ stocktradesystems: result });
 };
 
@@ -72,7 +72,7 @@ export const addStock = async (store, evetype, volume ) => {
   stock.PK.evetypePK = evetype.PK;
   stock.PK.username = Store.user.username;
   stock.amount = volume;
-  const result = await Rsstock.addstock(stock);
+  const result = await Rsstock.addstock(Store.user, stock);
   loadStocklist(store);
 }
 
@@ -81,7 +81,7 @@ export const removeStock = async (store, evetype, volume ) => {
   stock.PK.evetypePK = evetype.PK;
   stock.PK.username = Store.user.username;
   stock.amount = volume;
-  const result = await Rsstock.removestock(stock);
+  const result = await Rsstock.removestock(Store.user, stock);
   loadStocklist(store);
 }
 
@@ -93,13 +93,13 @@ export const sellStocktrade = async (store, viewstocktrade) => {
   stocktrade.PK.stockPK.username = viewstocktrade.username;
   stocktrade.PK.orderid = viewstocktrade.orderid;
   stocktrade.sellamount = viewstocktrade.sellamount;
-  const result = await Rsstock.remove4Stocktrade(stocktrade);
+  const result = await Rsstock.remove4Stocktrade(Store.user, stocktrade);
   loadStocklist(store);
   loadStocktradesystems(store);
 }
 
 export const removeStocktradesystem = async (store, viewstocktradesystem) => {
-  const result = await Rsstock.remove4system(viewstocktradesystem.username, viewstocktradesystem.id);
+  const result = await Rsstock.remove4system(Store.user, viewstocktradesystem.username, viewstocktradesystem.id);
   loadStocklist(store);
   loadStocktradesystems(store);
 }

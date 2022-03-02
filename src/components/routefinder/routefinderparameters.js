@@ -23,6 +23,10 @@ export default function Routefinderparameters(props) {
     return allsystemlist;
   }
 
+  useEffect(async () => {
+    setAllsystems(getallsystemoptions());
+  }, [Store.codetables.allsystemlist]);
+
   const [loading, setLoading] = useState(false);
   const [allsystems, setAllsystems] = useState(getallsystemoptions());
   const [list, setList] = useState([]);
@@ -54,8 +58,9 @@ export default function Routefinderparameters(props) {
   return (
       <div className="containerheader">
         <div className="mx-auto bg-light p-1">
-          <div className="row m-0">
+          <div className="row m-1">
             <div className="d-flex">
+              <button type="button" className="btn btn-primary mr-2" onClick={() => props.reloadroute()}>reload</button>
               <label className="input-group-text bg-light">secure</label>
               <div className="custom-control custom-checkbox cell-center mr-2">
                 <input type="checkbox" checked={props.secure} className="form-check-input" onClick={() => setSecure()}/>
@@ -73,7 +78,7 @@ export default function Routefinderparameters(props) {
               </div>
             </div>
           </div>
-          <div className="row m-0">
+          <div className="row m-1">
             <div className="col col-sm-10 d-flex">
               <label className="input-group-text bg-light mr-2">avoid</label>
     {props.avoidsystems.map((avoidsystem, index) => (

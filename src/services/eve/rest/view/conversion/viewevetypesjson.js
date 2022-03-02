@@ -2,7 +2,7 @@
 //don't change things here, it will be overwritten
 /* 
     Created on : Dec 16, 2018, 18:32:01
-    Generated on 31.0.2022 17:49
+    Generated on 22.1.2022 10:55
     Author     : Franky Laseure
 */
 
@@ -17,6 +17,7 @@ class ViewevetypesJson {
 			"typegroupname": viewevetypes.typegroupname,
 			"id": "" + viewevetypes.id,
 			"name": viewevetypes.name,
+			"configuredbp": viewevetypes.configuredbp,
 		};
 		return jsonobj;
 	}
@@ -28,6 +29,7 @@ class ViewevetypesJson {
 		model.typegroupname = jsonobj.typegroupname;
 		model.id = "" + jsonobj.id;
 		model.name = jsonobj.name;
+		model.configuredbp = jsonobj.configuredbp;
 		return model;
 	}
 }

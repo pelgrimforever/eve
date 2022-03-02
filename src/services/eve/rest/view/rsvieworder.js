@@ -7,6 +7,10 @@
 */
 
 import Rsviewordersuper from './super/rsviewordersuper';
+import OrdersJson from '../table/conversion/ordersjson.js';
+import EvetypeJson from '../table/conversion/evetypejson.js';
+import SystemJson from '../table/conversion/systemjson.js';
+import RegionJson from '../table/conversion/regionjson.js';
 import VieworderJson from './conversion/vieworderjson.js';
 import { Orderspk } from '../../../../data/eve/table/super/orderssuper.js';
 
@@ -17,37 +21,42 @@ class Rsvieworder extends Rsviewordersuper {
   static SELECT_EVETYPE_BUY = 4;
   static SELECT_LOWPRICE_SELL = 5;
   static SELECT_Wishlistorders = 7;
+  static SELECT_EVETYPE_REGION_SELL = 8;
 
-  static getone = async (orderid) => {
+  static getone = async (user, orderid) => {
     let orderpk = new Orderspk();
     orderpk.id = orderid;
     const postdata = {
-      operation: { type: super.OPERATIONTYPE_SELECT, operation: this.SELECT_ONE },
-      "orderpk": orderpk
+      auth: user!=null ? user.auth : null,
+      operation: { type: super.OPERATIONTYPE_SECURESELECT, operation: this.SELECT_ONE },
+      orderpk: OrdersJson.PKtoJSON(orderpk)
     }
     return VieworderJson.fromJSON(await super.post(this.restservice, postdata));
   }
 
-  static getevetypesell = async (evetypepk) => {
+  static getevetypesell = async (user, evetypepk) => {
     const postdata = {
-      operation: { type: super.OPERATIONTYPE_SELECT, operation: this.SELECT_EVETYPE_SELL },
-      evetypepk: evetypepk
+      auth: user!=null ? user.auth : null,
+      operation: { type: super.OPERATIONTYPE_SECURESELECT, operation: this.SELECT_EVETYPE_SELL },
+      evetypepk: EvetypeJson.PKtoJSON(evetypepk)
     }
     return super.extractDataArray(await super.post(this.restservice, postdata));
   }
 
-  static getevetypebuy = async (evetypepk) => {
+  static getevetypebuy = async (user, evetypepk) => {
     const postdata = {
-      operation: { type: super.OPERATIONTYPE_SELECT, operation: this.SELECT_EVETYPE_BUY },
-      evetypepk: evetypepk
+      auth: user!=null ? user.auth : null,
+      operation: { type: super.OPERATIONTYPE_SECURESELECT, operation: this.SELECT_EVETYPE_BUY },
+      evetypepk: EvetypeJson.PKtoJSON(evetypepk)
     }
     return super.extractDataArray(await super.post(this.restservice, postdata));
   }
 
-  static getevetypebuy = async (evetypepk) => {
+  static getevetypebuy = async (user, evetypepk) => {
     const postdata = {
-      operation: { type: super.OPERATIONTYPE_SELECT, operation: this.SELECT_EVETYPE_BUY },
-      evetypepk: evetypepk
+      auth: user!=null ? user.auth : null,
+      operation: { type: super.OPERATIONTYPE_SECURESELECT, operation: this.SELECT_EVETYPE_BUY },
+      evetypepk: EvetypeJson.PKtoJSON(evetypepk)
     }
     return super.extractDataArray(await super.post(this.restservice, postdata));
   }
@@ -55,16 +64,27 @@ class Rsvieworder extends Rsviewordersuper {
   static getordersselllowprice = async (user, systempk) => {
     const postdata = {
       auth: user!=null ? user.auth : null,
-      operation: { type: super.OPERATIONTYPE_SELECT, operation: this.SELECT_LOWPRICE_SELL },
-      systempk: systempk
+      operation: { type: super.OPERATIONTYPE_SECURESELECT, operation: this.SELECT_LOWPRICE_SELL },
+      systempk: SystemJson.PKtoJSON(systempk)
     }
     return this.extractDataArray_startsystem(await super.post(this.restservice, postdata));
   }
 
-  static getorders4wishlist = async (username) => {
+  static getorders4wishlist = async (user, username) => {
     const postdata = {
-      operation: { type: super.OPERATIONTYPE_SELECT, operation: this.SELECT_Wishlistorders },
+      auth: user!=null ? user.auth : null,
+      operation: { type: super.OPERATIONTYPE_SECURESELECT, operation: this.SELECT_Wishlistorders },
       username: username
+    }
+    return super.extractDataArray(await super.post(this.restservice, postdata));
+  }
+
+  static getevetyperegionsell = async (user, evetypepk, regionpk) => {
+    const postdata = {
+      auth: user!=null ? user.auth : null,
+      operation: { type: super.OPERATIONTYPE_SECURESELECT, operation: this.SELECT_EVETYPE_REGION_SELL },
+      evetypepk: EvetypeJson.PKtoJSON(evetypepk),
+      regionpk: RegionJson.PKtoJSON(regionpk)
     }
     return super.extractDataArray(await super.post(this.restservice, postdata));
   }

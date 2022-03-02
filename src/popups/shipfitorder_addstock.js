@@ -10,8 +10,6 @@ import Moment from 'moment';
 
 import Store from '../services/store.js';
 
-import Evetype from '../data/eve/table/evetype.js';
-
 function Shipfitorder_addstock(props) {
 
   const addstock = async (event) => {
@@ -22,7 +20,7 @@ function Shipfitorder_addstock(props) {
   }
 
   return (
-    <Modal show={props.show} size="xl" id="tradelinemodal" centered>
+    <Modal show={props.show} id="tradelinemodal" centered>
         <Form onSubmit={addstock}>
       <ModalHeader className="bg-dark">
         <ModalTitle className="text-light">Remove Shipfit order</ModalTitle>
@@ -32,7 +30,7 @@ function Shipfitorder_addstock(props) {
           <div className="d-flex">
 
             <div className="p-2 flex-fill bg-info">
-              <div className="row m-0">
+              <div className="row m-1">
                 <div className="col col-sm-4 input-group-prepend">
                   <label className="input-group-text">type</label>
                 </div>
@@ -40,7 +38,7 @@ function Shipfitorder_addstock(props) {
                   <label className="input-group-text">{props.shipfitorder.evetypename}</label>
                 </div>
               </div>
-              <div className="row m-0">
+              <div className="row m-1">
                 <div className="col col-sm-4 input-group-prepend">
                   <label className="input-group-text">volume</label>
                 </div>
@@ -48,7 +46,7 @@ function Shipfitorder_addstock(props) {
                   <Form.Control type="number" id="amount" name="amount" defaultValue={props.shipfitorder.amountwanted} />                  
                 </div>
               </div>
-              <div className="row m-0">
+              <div className="row m-1">
                 <div className="col col-sm-4 input-group-prepend">
                   
                 </div>

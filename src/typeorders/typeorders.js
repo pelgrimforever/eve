@@ -39,8 +39,8 @@ export default function Typeorders(props) {
   const open = async (item) => {
     setLoading(true);
     setEvetype(item);
-    const result_sellorders = await Rsvieworder.getevetypesell(item.PK);
-    const result_buyorders = await Rsvieworder.getevetypebuy(item.PK);
+    const result_sellorders = await Rsvieworder.getevetypesell(Store.user, item.PK);
+    const result_buyorders = await Rsvieworder.getevetypebuy(Store.user, item.PK);
     setSellorders(result_sellorders);
     setBuyorders(result_buyorders);
     setLoading(false);

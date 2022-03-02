@@ -12,8 +12,6 @@ import NumericInput from 'react-numeric-input';
 import Store from '../services/store.js';
 
 //data models
-import { Evetypepk } from '../data/eve/table/super/evetypesuper.js';
-import Evetype from '../data/eve/table/evetype.js';
 //services
 import Rsviewevetypes from '../services/eve/rest/view/rsviewevetypes.js';
 
@@ -29,7 +27,7 @@ function Blueprint_add(props) {
   }, []);
 
   const filterTypes = async (searchstring) => {
-    const result = await Rsviewevetypes.getblueprints(searchstring + ':*:');
+    const result = await Rsviewevetypes.getblueprints(Store.user, searchstring + ':*:');
     setDisplaylist(result);
   };
 

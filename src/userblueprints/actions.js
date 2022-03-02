@@ -6,10 +6,8 @@ import { Userbppk } from '../data/eve/table/super/userbpsuper.js';
 import Userbp from '../data/eve/table/userbp.js';
 //services
 import Store from '../services/store.js';
-import Rsevetype from '../services/eve/rest/table/rsevetype.js';
 import Rsuserbp from '../services/eve/rest/table/rsuserbp.js';
 import Rsviewuserbp from '../services/eve/rest/view/rsviewuserbp.js';
-import Rsviewevetypes from '../services/eve/rest/view/rsviewevetypes.js';
 import Rsbpproduction from '../services/eve/rest/custom/rsbpproduction.js';
 
 export const setSearchstring = (store, searchstring) => {
@@ -17,7 +15,7 @@ export const setSearchstring = (store, searchstring) => {
 };
 
 export const loadUserblueprints = async (store) => {
-  const result = await Rsviewuserbp.get4user(Store.user.username);
+  const result = await Rsviewuserbp.get4user(Store.user, Store.user.username);
   store.setState({ userblueprintlist: result });
 };
 
@@ -27,7 +25,7 @@ export const setBlueprint = async (store, viewblueprint) => {
 };
 
 export const loadPrices = async (store, viewblueprint) => {
-  const result = await Rsbpproduction.calculateprices(viewblueprint);
+  const result = await Rsbpproduction.calculateprices(Store.user, viewblueprint);
   store.setState({ bpprices: result });
 }
 
@@ -37,10 +35,11 @@ export const addBlueprint = async (store, blueprint, original, amount, bpprice, 
   userbp.PK.evetypePK.id = blueprint.id;
   userbp.PK.username = Store.user.username;
   userbp.original = original;
+  userbp.totalamount = amount;
   userbp.bpprice = bpprice;
   userbp.researchcost = researchcost;
   userbp.stationfee = stationfee;
-  const result = await Rsuserbp.addbp(userbp);
+  const result = await Rsuserbp.addbp(Store.user, userbp);
   loadUserblueprints(store);
 }
 
@@ -53,7 +52,7 @@ export const changeUserbp = async (store, amountproduced, efficiency, researchco
   userbp.amountproduced = amountproduced;
   userbp.materialefficiency = efficiency;
   userbp.researchcost = researchcost;
-  const result = await Rsuserbp.updateproperties(userbp);
+  const result = await Rsuserbp.updateproperties(Store.user, userbp);
   loadUserblueprints(store);
 }
 
@@ -63,7 +62,16 @@ export const removeBlueprint = async (store, blueprint) => {
   userbp.PK.evetypePK.id = blueprint.bp;
   userbp.PK.username = blueprint.username;
   userbp.PK.serialnumber = blueprint.serialnumber;
-  const result = await Rsuserbp.del(userbp);
+  const result = await Rsuserbp.sec_del(Store.user, userbp);
   loadUserblueprints(store);
 }
 
+export const runUserbp = async (store, amount) => {
+  const userbppk = new Userbppk();
+  userbppk.init();
+  userbppk.evetypePK.id = store.state.userblueprint.bp;
+  userbppk.serialnumber = store.state.userblueprint.serialnumber;
+  userbppk.username = Store.user.username;
+  const result = await Rsuserbp.runbp(Store.user, userbppk, amount);
+  loadUserblueprints(store);
+}

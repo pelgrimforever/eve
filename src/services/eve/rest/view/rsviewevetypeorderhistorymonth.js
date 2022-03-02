@@ -7,17 +7,31 @@
 */
 
 import Rsviewevetypeorderhistorymonthsuper from './super/rsviewevetypeorderhistorymonthsuper';
+import EvetypeJson from '../table/conversion/evetypejson.js';
 
 class Rsviewevetypeorderhistorymonth extends Rsviewevetypeorderhistorymonthsuper {
 
     static SELECT_EVETYPE = 2;
-    static get4evetype = async (evetypepk) => {
+    static SELECT_EVETYPEYM = 3;
+
+    static get4evetype = async (user, evetypepk) => {
       const postdata = {
-        operation: { type: super.OPERATIONTYPE_SELECT, operation: this.SELECT_EVETYPE },
-        evetypepk: evetypepk
+        auth: user!=null ? user.auth : null,
+        operation: { type: super.OPERATIONTYPE_SECURESELECT, operation: this.SELECT_EVETYPE },
+        evetypepk: EvetypeJson.PKtoJSON(evetypepk)
       }
       return super.extractDataArray(await super.post(super.restservice, postdata));
     }
+
+    static get4evetype4lastmonth = async (user, evetypepk) => {
+      const postdata = {
+        auth: user!=null ? user.auth : null,
+        operation: { type: super.OPERATIONTYPE_SECURESELECT, operation: this.SELECT_EVETYPEYM },
+        evetypepk: EvetypeJson.PKtoJSON(evetypepk)
+      }
+      return super.extractDataArray(await super.post(super.restservice, postdata));
+    }
+
 }
 
 export default Rsviewevetypeorderhistorymonth;

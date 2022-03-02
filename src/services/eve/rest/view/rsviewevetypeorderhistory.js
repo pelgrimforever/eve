@@ -7,6 +7,7 @@
 */
 
 import Rsviewevetypeorderhistorysuper from './super/rsviewevetypeorderhistorysuper';
+import EvetypeJson from '../table/conversion/evetypejson.js';
 
 class Rsviewevetypeorderhistory extends Rsviewevetypeorderhistorysuper {
 
@@ -15,7 +16,7 @@ class Rsviewevetypeorderhistory extends Rsviewevetypeorderhistorysuper {
     static get4evetype = async (evetypepk) => {
       const postdata = {
         operation: { type: super.OPERATIONTYPE_SELECT, operation: this.SELECT_EVETYPE },
-        evetypepk: evetypepk
+        evetypepk: EvetypeJson.PKtoJSON(evetypepk)
       }
       return super.extractDataArray(await super.post(super.restservice, postdata));
     }

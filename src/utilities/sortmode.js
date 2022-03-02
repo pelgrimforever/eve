@@ -18,7 +18,7 @@ export default function Sortmode(props) {
   };
 
   let modebuttons = props.modes.map((item, index) =>
-  <button key={item.name} className={getClass("btn btn-primary", item)} onClick={() => clickmode(item, index)}>
+  <button key={item.name} className={getClass("btn btn-primary", item)} onClick={(event) => { event.preventDefault(); clickmode(item, index); } } >
     {item.text}
   </button>
     );

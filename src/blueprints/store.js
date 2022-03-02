@@ -11,6 +11,7 @@ const initialState = {
   blueprintlist: [],
   blueprint: new Viewevetypes(),
   bpmateriallist: [],
+  sellorders: [],
 };
 
 const storeBlueprints = globalHook(React, initialState, actions);

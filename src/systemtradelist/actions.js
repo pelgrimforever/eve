@@ -1,11 +1,17 @@
 //component state
+import Store from '../services/store.js';
 import appstore from '../appstore.js';
+//services
+import Rsviewtradesystem from '../services/eve/rest/view/rsviewtradesystem.js';
+//models
+import { Systempk } from '../data/eve/table/super/systemsuper.js';
 
-export const setSystem = (store, startsystemid, startsystemname) => {
+export const setSystem = async (store, startsystemid, startsystemname) => {
   store.setState({ 
     startsystemid: startsystemid,
     startsystemname: startsystemname 
   });
+  const dummy = await loadTradelist(store);
 };
 
 export const setFiltersortfield = (store, filtersortfield) => {
@@ -26,4 +32,21 @@ export const setFiltercargo = (store, filtercargo) => {
 
 export const setPaginationconfig = (store, paginationconfig) => {
   store.setState({ paginationconfig: paginationconfig });
+};
+
+export const setUnfilteredtradelist = (store, unfilteredtradelist) => {
+  store.setState({ unfilteredtradelist: unfilteredtradelist });
+}
+
+export const loadTradelist = async (store) => {
+  try {
+    if(store.state.startsystemid!=null) {
+      let systempk = new Systempk();
+      systempk.id = store.state.startsystemid;
+      const result = await Rsviewtradesystem.getall_startsystem(Store.user, systempk);
+      setUnfilteredtradelist(store, result);
+    }
+  } catch (e) {
+    console.log("loadTradelist failed");
+  }
 };

@@ -22,50 +22,60 @@ function Material_usage(props) {
 
   const [minerals, setMinerals] = useState([]);
   const [salvagedminerals, setSalvagedminerals] = useState([]);
-//  const [shipdrones, setShipdrones] = useState([]);
-//  const [shipdeployables, setShipdeployables] = useState([]);
+  const [commodities, setCommodities] = useState([]);
+  const [materials, setMaterials] = useState([]);
+  const [plancommodities, setPlancommodities] = useState([]);
   const [material, setMaterial] = useState(null);
   const [displaylist, setDisplaylist] = useState([]);
   const [searchstring, setSearchstring] = useState('');
   const sort_mineral = 'mineral';
   const sort_salvage = 'salvage';
-  const sort_drone = 'drone';
-  const sort_deploy = 'deployable';
+  const sort_commodity = 'commodity';
+  const sort_material = 'material';
+  const sort_planetarycommodities = 'plancommodity';
   const materialtypes = [ 
     { name:sort_mineral, text: 'minerals' }, 
     { name:sort_salvage, text: 'salvaged mat.' }, 
-//    { name:sort_drone, text: 'drone' }, 
-//    { name:sort_deploy, text: 'deployable' }, 
+    { name:sort_commodity, text: 'commodity' }, 
+    { name:sort_material, text: 'material' }, 
+    { name:sort_planetarycommodities, text: 'plan. commodity' }, 
   ];
   const [activematerial, setActivematerial] = useState(materialtypes[0]);
 
   useEffect(async () => {
-    const minerals = await Rsviewevetypes.getminerals();
+    const minerals = await Rsviewevetypes.getminerals(Store.user);
     setMinerals(minerals);
     setDisplaylist(minerals);
-    const salvagedmineralslist = await Rsviewevetypes.getsalvagedmaterials();
+    const salvagedmineralslist = await Rsviewevetypes.getsalvagedmaterials(Store.user);
     setSalvagedminerals(salvagedmineralslist);
-/*    const shipdroneslist = await Rsviewevetypes.getdrones();
-    setShipdrones(shipdroneslist);
-    const shipdeployableslist = await Rsviewevetypes.getdeployables();
-    setShipdeployables(shipdeployableslist);*/
+    const materialslist = await Rsviewevetypes.getmaterials(Store.user);
+    setMaterials(materialslist);
+    const planetarycommoditieslist = await Rsviewevetypes.getplanetarycommodities(Store.user);
+    setPlancommodities(planetarycommoditieslist);
   }, []);
 
   const filterTypes = async (selectedmaterial, searchstring) => {
     let activelist = [];
     if(selectedmaterial.name==sort_mineral) {
-      activelist = minerals;
+      activelist = minerals.filter(obj => {
+        return obj.name.includes(searchstring);
+      });
     } else if(selectedmaterial.name==sort_salvage) {
-      activelist = salvagedminerals;
-/*    } else if(selectedmaterial.name==sort_drone) {
-      activelist = shipdrones;
-    } else if(selectedmaterial.name==sort_deploy) {
-      activelist = shipdeployables;*/
+      activelist = salvagedminerals.filter(obj => {
+        return obj.name.includes(searchstring);
+      });
+    } else if(selectedmaterial.name==sort_commodity && searchstring.length>2) {
+      activelist = await Rsviewevetypes.getcommodities(Store.user, searchstring + ":*:");
+    } else if(selectedmaterial.name==sort_material) {
+      activelist = materials.filter(obj => {
+        return obj.name.includes(searchstring);
+      });
+    } else if(selectedmaterial.name==sort_planetarycommodities) {
+      activelist = plancommodities.filter(obj => {
+        return obj.name.includes(searchstring);
+      });
     }
-    let result = activelist.filter(obj => {
-      return obj.name.includes(searchstring);
-    });
-    setDisplaylist(result);
+    setDisplaylist(activelist);
   };
 
   const searchtextChange = (searchtextevent) => {

@@ -33,10 +33,10 @@ export default function Routefinderlist(props) {
 
   useEffect(async () => {
     await loadroute();
-  }, [props.startsystemid, props.endsystemid, props.viasystems, props.avoidsystems, props.secure]);
+  }, [props.startsystemid, props.endsystemid, props.viasystems, props.avoidsystems, props.secure, props.reloadflag]);
 
   const loadroute = async (event) => {
-    if(props.startsystemid!=null && props.endsystemid!=null) {
+    if(props.startsystemid!=null && props.endsystemid!=null && props.startsystemid!="" && props.endsystemid!="") {
       setLoading(true);
       const resultroute = await Rsloadroute.getroute(props.startsystemid, props.endsystemid, props.viasystems, props.avoidsystems, props.secure);
       setList(resultroute);

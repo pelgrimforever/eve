@@ -20,7 +20,7 @@ function Shipfirorder_confirm(props) {
   }
 
   return (
-    <Modal show={props.show} size="xl" id="confirmbuy" centered>
+    <Modal show={props.show} size="lg" id="confirmbuy" centered>
         <Form onSubmit={confirm}>
       <ModalHeader className="bg-dark">
         <ModalTitle className="text-light">Confirm buy</ModalTitle>
@@ -46,7 +46,7 @@ function Shipfirorder_confirm(props) {
                   <Form.Control type="number" id="volume" name="volume" defaultValue={props.viewshipfitorderselected.amountneeded} />                  
                 </div>
               </div>
-              <div className="row m-0">
+              <div className="row m-0 mt-2">
                 <div className="col col-sm-4 input-group-prepend">
                   
                 </div>

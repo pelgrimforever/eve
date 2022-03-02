@@ -10,11 +10,12 @@ import { Systempk } from '../data/eve/table/super/systemsuper.js';
 import { Orderspk } from '../data/eve/table/super/orderssuper.js';
 import { Tradepk } from '../data/eve/table/super/tradesuper.js';
 
-export const setSystem = (store, startsystemid, startsystemname) => {
+export const setSystem = async (store, startsystemid, startsystemname) => {
   store.setState({ 
     startsystemid: startsystemid,
     startsystemname: startsystemname 
   });
+  const dummy = await loadTradelist(store);
 };
 
 export const setFiltersortfield = (store, filtersortfield) => {
@@ -72,7 +73,8 @@ export const updateTrade = async (store, sell_id, buy_id, volume) => {
   tradepk.ordersSellorderidPK.id = sell_id;
   tradepk.ordersBuyorderidPK = new Orderspk();
   tradepk.ordersBuyorderidPK.id = buy_id;
-  const traderesult = await Rstrade.executetrade(tradepk, volume);
+  const traderesult = await Rstrade.executetrade(Store.user, tradepk, volume);
+  const result = await loadTradelist(store);
 };
 
 export const filtertradelist = (store, list) => {

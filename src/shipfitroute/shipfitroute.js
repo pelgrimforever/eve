@@ -23,6 +23,7 @@ export default function Shipfitroute(props) {
   const [appState] = appstore();
   //variables with component scope
   const [compState, compActions] = storeShipfitroute();
+  const [routereloadflag, setRoutereloadflag] = useState(0);
 
   const getsystemoptions = () => {
     let systemlist = [];
@@ -84,6 +85,10 @@ export default function Shipfitroute(props) {
 
   const oncancelordereditem = () => {
     setShowconfirmform(false);
+  }
+
+  const triggerrouteupdate = () => {
+    setRoutereloadflag(routereloadflag+1);
   }
 
   const format_2digits = (n) => {
@@ -200,7 +205,8 @@ export default function Shipfitroute(props) {
 
       <Routefinderparameters 
         viasystems={compState.viasystems} avoidsystems={compState.avoidsystems} secure={compState.secure}
-        setViasystems={compActions.setViasystems} setAvoidsystems={compActions.setAvoidsystems} setSecure={compActions.setSecure} />
+        setViasystems={compActions.setViasystems} setAvoidsystems={compActions.setAvoidsystems} setSecure={compActions.setSecure}
+        reloadroute={triggerrouteupdate} />
 
       <div className="containercontent container-relative">
         <div className="root halfheight">
@@ -211,6 +217,7 @@ export default function Shipfitroute(props) {
               viasystems={compState.viasystems}
               avoidsystems={compState.avoidsystems}
               secure={compState.secure}
+              reloadflag={routereloadflag}
               />
 }
         </div>

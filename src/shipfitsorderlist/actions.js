@@ -12,9 +12,9 @@ import Rsviewshipfitorderselected from '../services/eve/rest/view/rsviewshipfito
 import Rsvieworder from '../services/eve/rest/view/rsvieworder.js';
 
 export const loadShipfitorders = async (store) => {
-  const result = await Rsviewshipfitorder.get4user(Store.user.username);
+  const result = await Rsviewshipfitorder.get4user(Store.user, Store.user.username);
   store.setState({ shipfitorderlist: result });
-  const result2 = await Rsviewshipfitorderselected.get4user(Store.user.username);
+  const result2 = await Rsviewshipfitorderselected.get4user(Store.user, Store.user.username);
   store.setState({ shipfitorderselectedlist: result2});
 };
 
@@ -22,7 +22,7 @@ export const setShipfitorder = async (store, shipfitorder) => {
   store.setState({ shipfitorder: shipfitorder });
   const evetypepk = new Evetypepk();
   evetypepk.id = shipfitorder.evetype;
-  const result = await Rsvieworder.getevetypesell(evetypepk);
+  const result = await Rsvieworder.getevetypesell(Store.user, evetypepk);
   store.setState({ orders: result});
 };
 
@@ -34,7 +34,7 @@ export const addShipfitorderlist = async (store, vieworder) => {
   shipfitorderpk.evetypePK.id = store.state.shipfitorder.evetype;
   const orderspk = new Orderspk();
   orderspk.id = vieworder.id;
-  const result = await Rsshipfitorderselected.addOrder2Shipfitorder(shipfitorderpk, orderspk);
+  const result = await Rsshipfitorderselected.addOrder2Shipfitorder(Store.user, shipfitorderpk, orderspk);
   loadShipfitorders(store);
 }
 
@@ -48,7 +48,7 @@ export const deleteShipfitorderlist = async (store, viewshipfitorderselected) =>
   shipfitorderselectedpk.ordersPK.id = viewshipfitorderselected.id;
   const shipfitorderselected = new Shipfitorderselected();
   shipfitorderselected.PK = shipfitorderselectedpk;
-  const result = await Rsshipfitorderselected.del(shipfitorderselected);
+  const result = await Rsshipfitorderselected.sec_del(Store.user, shipfitorderselected);
   loadShipfitorders(store);
 }
 
@@ -64,6 +64,6 @@ export const confirmShipfitorder = async (store, amount) => {
   shipfitorderselectedpk.shipfitorderPK.shipfitPK.shipname = store.state.viewshipfitorderselected.shipname;
   shipfitorderselectedpk.shipfitorderPK.evetypePK.id = store.state.viewshipfitorderselected.evetype;
   shipfitorderselectedpk.ordersPK.id = store.state.viewshipfitorderselected.id;
-  const result = await Rsshipfitorderselected.confirmShipfitorder(shipfitorderselectedpk, amount);
+  const result = await Rsshipfitorderselected.confirmShipfitorder(Store.user, shipfitorderselectedpk, amount);
   loadShipfitorders(store);
 }

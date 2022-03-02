@@ -70,10 +70,12 @@ export default function Tradelist(props) {
     showpage_(pagenr, false);
   }
 
-  const changeSystem = (selection) => { 
+  const changeSystem = async (selection) => { 
+    setLoading(true);
     const selectedsystemid = selection.value;
     const name = selection.label;
-    compActions.setSystem(selectedsystemid, name);
+    const dummy = await compActions.setSystem(selectedsystemid, name);
+    setLoading(false);
   };
 
   const changeStartsystem = (selection) => { 
@@ -132,13 +134,6 @@ export default function Tradelist(props) {
   useEffect(() => {
     setSystems(getsystemoptions());
   }, [Store.codetables.systemlist]);
-
-  //update trade list when startsystemid is updated
-  useEffect(() => {
-    if(compState.startsystemid !== null) {
-      loadlist();
-    }
-  }, [compState.startsystemid]);
 
   //filter list
   useEffect(() => {
@@ -215,7 +210,6 @@ export default function Tradelist(props) {
   const onUpdatetrade = async (volume) => {
     const dummy = await compActions.updateTrade(appState.viewtrade.sell_id, appState.viewtrade.buy_id, volume);
     setShowtradeline(false);
-    const dummy2 = await loadlist();
   }
 
   const onSortfieldselected = (sortfield) => {

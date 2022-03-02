@@ -13,17 +13,19 @@ class Rsviewshipfitorderselected extends Rsviewshipfitorderselectedsuper {
     static SELECT_4USER = 2;
     static SELECT_4USERSYSTEM = 3;
 
-    static get4user = async (username) => {
+    static get4user = async (user, username) => {
         const postdata = {
-          operation: { type: super.OPERATIONTYPE_SELECT, operation: this.SELECT_4USER },
+          auth: user!=null ? user.auth : null,
+          operation: { type: super.OPERATIONTYPE_SECURESELECT, operation: this.SELECT_4USER },
           username: username
         }
         return super.extractDataArray(await super.post(this.restservice, postdata));
     }
 
-    static get4usersystem = async (username, systemid) => {
+    static get4usersystem = async (user, username, systemid) => {
         const postdata = {
-          operation: { type: super.OPERATIONTYPE_SELECT, operation: this.SELECT_4USERSYSTEM },
+          auth: user!=null ? user.auth : null,
+          operation: { type: super.OPERATIONTYPE_SECURESELECT, operation: this.SELECT_4USERSYSTEM },
           username: username,
           systemid: systemid
         }

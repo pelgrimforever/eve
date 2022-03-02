@@ -32,6 +32,7 @@ const paginationdefault = {
     };
 
 const initialState = {
+  unfilteredtradelist: [],
   startsystemid: null,
   startsystemname: null,
   filtersortfield: sortmodes[sortmode_default],

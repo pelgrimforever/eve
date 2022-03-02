@@ -51,16 +51,20 @@ export default function Home() {
   const askUpdate = async () => {
     try {
         const result = await Rsdownloadmarkettypes.getUpdate();
-        setTotalmarketgroups(result.market_groups.totalmarketgroups);
-        setMarketgroups(result.market_groups.marketgroups);
-        setTotalcategories(result.categories.totalcategories);
-        setCategories(result.categories.categories);
-        setTotaltypegroups(result.categories.totaltypegroups);
-        setTypegroups(result.categories.typegroups);
-        setTotaltypes(result.categories.totaltypes);
-        setTypes(result.categories.types);
-        setMessages(result.messages);
-        setDownloaddone(result.done);
+        if(result.status=="OK") {
+          setTotalmarketgroups(result.market_groups.totalmarketgroups);
+          setMarketgroups(result.market_groups.marketgroups);
+          setTotalcategories(result.categories.totalcategories);
+          setCategories(result.categories.categories);
+          setTotaltypegroups(result.categories.totaltypegroups);
+          setTypegroups(result.categories.typegroups);
+          setTotaltypes(result.categories.totaltypes);
+          setTypes(result.categories.types);
+          setMessages(result.messages);
+          setDownloaddone(result.done);
+        } else {
+          console.log(result.status);
+        }
         if(result.done) {
           setTimeractive(false);
         }

@@ -14,10 +14,11 @@ class Rsshipfit extends Rsshipfitsuper {
 
     static SELECT_ADDORDERShipfit = 50;
 
-    static orderShipfit = async (shipfitpk: Shipfitpk) => {
+    static orderShipfit = async (user, shipfitpk: Shipfitpk) => {
         const postdata = {
-          operation: { type: super.OPERATIONTYPE_SELECT, operation: this.SELECT_ADDORDERShipfit },
-          "shipfitpk": ShipfitJson.PKtoJSON(shipfitpk)
+          auth: user!=null ? user.auth : null,
+          operation: { type: super.OPERATIONTYPE_SECURESELECT, operation: this.SELECT_ADDORDERShipfit },
+          shipfitpk: ShipfitJson.PKtoJSON(shipfitpk)
         }
         return await super.post(this.restservice, postdata);
     }

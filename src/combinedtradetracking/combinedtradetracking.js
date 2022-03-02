@@ -13,7 +13,6 @@ import Routefinderparameters from '../components/routefinder/routefinderparamete
 import Routefinderlist from '../components/routefinder/routefinderlist.js';
 //services
 import Rsviewtradecombinedsell from '../services/eve/rest/view/rsviewtradecombinedsell.js';
-import Rsloadorderupdate from '../services/eve/rest/custom/rsloadorderupdate.js';
 import Rsvieworder from '../services/eve/rest/view/rsvieworder.js';
 import Rsviewtradesystem from '../services/eve/rest/view/rsviewtradesystem.js';
 //data models
@@ -47,6 +46,7 @@ export default function Combinedtradetracking(props) {
   const [buytotalremain, setBuytotalremain] = useState(0);
   const [selltotalupdate, setSelltotalupdate] = useState(0);
   const [buytotalupdate, setBuytotalupdate] = useState(0);
+  const [routereloadflag, setRoutereloadflag] = useState(0);
 
   useEffect(async () => {
     await loadlist();
@@ -71,7 +71,7 @@ export default function Combinedtradetracking(props) {
       tradecombinedpk.evetypePK.id = appState.viewtradecombined.evetype_id;
       tradecombinedpk.systemBuysystemPK.id = appState.viewtradecombined.buy_systemid;
       tradecombinedpk.systemSellsystemPK.id = appState.viewtradecombined.sell_systemid;
-      const tradecombinedlist = await Rsviewtradecombinedsell.get4Tradecombined(tradecombinedpk);
+      const tradecombinedlist = await Rsviewtradecombinedsell.get4Tradecombined(Store.user, tradecombinedpk);
       setTradelist(tradecombinedlist);
       //count updated sell/buy
       let sumsellremain = 0;
@@ -98,7 +98,7 @@ export default function Combinedtradetracking(props) {
       buy_systempk.id = appState.viewtradecombined.buy_systemid;
       let sell_systempk = new Systempk();
       sell_systempk.id = appState.viewtradecombined.sell_systemid;
-      const viewsystemtrade = await Rsviewtradesystem.getviewtradesellbuysystem(sell_systempk, buy_systempk);
+      const viewsystemtrade = await Rsviewtradesystem.getviewtradesellbuysystem(Store.user, sell_systempk, buy_systempk);
       appActions.setActivetradesystem(viewsystemtrade);
       appActions.setActivemenu('Trade tools', 'System trade tracking');
     }
@@ -107,10 +107,14 @@ export default function Combinedtradetracking(props) {
   const load4evetype = async () => {
     const evetypepk = new Evetypepk();
     evetypepk.id = appState.viewtradecombined.evetype_id;
-    const result_sellorders = await Rsvieworder.getevetypesell(evetypepk);
-    const result_buyorders = await Rsvieworder.getevetypebuy(evetypepk);
+    const result_sellorders = await Rsvieworder.getevetypesell(Store.user, evetypepk);
+    const result_buyorders = await Rsvieworder.getevetypebuy(Store.user, evetypepk);
     setSellorders(result_sellorders);
     setBuyorders(result_buyorders);
+  }
+
+  const triggerrouteupdate = () => {
+    setRoutereloadflag(routereloadflag+1);
   }
 
   const format_price = (p) => {
@@ -365,7 +369,8 @@ export default function Combinedtradetracking(props) {
 
       <Routefinderparameters 
         viasystems={compState.viasystems} avoidsystems={compState.avoidsystems} secure={compState.secure}
-        setViasystems={compActions.setViasystems} setAvoidsystems={compActions.setAvoidsystems} setSecure={compActions.setSecure} />
+        setViasystems={compActions.setViasystems} setAvoidsystems={compActions.setAvoidsystems} setSecure={compActions.setSecure} 
+        reloadroute={triggerrouteupdate} />
 
       <div className="containercontent container-relative">
         <div className="row h-100">
@@ -376,6 +381,7 @@ export default function Combinedtradetracking(props) {
               viasystems={compState.viasystems}
               avoidsystems={compState.avoidsystems}
               secure={compState.secure}
+              reloadflag={routereloadflag}
               />
           </div>
 

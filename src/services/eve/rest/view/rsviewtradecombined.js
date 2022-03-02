@@ -21,7 +21,7 @@ class Rsviewtradecombined extends Rsviewtradecombinedsuper {
   static getall_startsystem = async (user, systempk: Systempk) => {
     const postdata = {
       auth: user!=null ? user.auth : null,
-      operation: { type: super.OPERATIONTYPE_SELECT, operation: this.SELECT_ALL_STARTSYSTEM },
+      operation: { type: super.OPERATIONTYPE_SECURESELECT, operation: this.SELECT_ALL_STARTSYSTEM },
       systempk: SystemJson.PKtoJSON(systempk)
     }
     return this.extractDataArray_startsystem(await super.post(this.restservice, postdata));
@@ -41,9 +41,10 @@ class Rsviewtradecombined extends Rsviewtradecombinedsuper {
     return viewtradecombinedlist;
   }
 
-  static getViewtradecombined = async (tradecombinedpk: Tradecombinedpk) => {
+  static getViewtradecombined = async (user, tradecombinedpk: Tradecombinedpk) => {
     const postdata = {
-      operation: { type: super.OPERATIONTYPE_SELECT, operation: this.SELECT4TRADECOMBINED },
+      auth: user!=null ? user.auth : null,
+      operation: { type: super.OPERATIONTYPE_SECURESELECT, operation: this.SELECT4TRADECOMBINED },
       tradecombinedpk: TradecombinedJson.PKtoJSON(tradecombinedpk)
     }
     const data = await super.post(this.restservice, postdata);

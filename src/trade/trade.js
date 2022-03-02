@@ -3,14 +3,14 @@ import Spinner from 'react-bootstrap/Spinner'
 import ProgressBar from 'react-bootstrap/ProgressBar'
 
 import Store from '../services/store.js';
-import './home.scss';
+import './trade.scss';
 
 //components
 //services
 import Rsdownloadswagger from '../services/eve/rest/custom/rsdownloadswagger.js';
 //data models
 
-export default function Home() {
+export default function Trade() {
 
   const [loggedin, setLoggedin] = useState(Store.user.loggedin);
   const [loading, setLoading] = useState(false);

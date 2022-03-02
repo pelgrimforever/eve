@@ -13,10 +13,7 @@ import Sortmode from '../utilities/sortmode.js';
 import Store from '../services/store.js';
 
 //data models
-import { Evetypepk } from '../data/eve/table/super/evetypesuper.js';
-import Evetype from '../data/eve/table/evetype.js';
 //services
-import Rsviewevetypes from '../services/eve/rest/view/rsviewevetypes.js';
 
 function Material_change(props) {
 

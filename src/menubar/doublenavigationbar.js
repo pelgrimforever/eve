@@ -53,7 +53,7 @@ export default function DoubleNavigationbar(props) {
   const navbuttons2 = () => { 
     return props.navitems[activepill1].navitems.map((item, index) =>
   <li key={item.name} className="nav-item" >
-    <NavLink className='nav-link' data-toggle="pill" to={item.link}>{item.name}</NavLink>
+    <NavLink className={item.auth ? 'nav-link' : 'nav-link disabled'} data-toggle="pill" to={item.link}>{item.name}</NavLink>
   </li>
     )
   }

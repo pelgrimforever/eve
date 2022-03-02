@@ -2,7 +2,7 @@
 //don't change things here, it will be overwritten
 /* 
     Created on : Nov 16, 2018, 17:04:01 PM
-    Generated on 31.0.2022 17:49
+    Generated on 22.1.2022 10:55
     Author     : Franky Laseure
 */
 
@@ -67,6 +67,8 @@ class Evetypesuper {
 	highest: number = 0;
 	lowest: number = 0;
 	order_count: string = '';
+	configuredbp: boolean = false;
+	estimatedproductioncost: number = 0;
 }
 
 export class Evetypesearcher extends Tablesearch {
@@ -93,6 +95,8 @@ export class Evetypesearcher extends Tablesearch {
 		this.addFieldsearcher(this.highest);
 		this.addFieldsearcher(this.lowest);
 		this.addFieldsearcher(this.order_count);
+		this.addFieldsearcher(this.configuredbp);
+		this.addFieldsearcher(this.estimatedproductioncost);
         this.addKeysearcher(this.marketgroupsearcher);
         this.addKeysearcher(this.typegroupsearcher);
         this.addKeysearcher(this.graphicsearcher);
@@ -137,6 +141,8 @@ export class Evetypesearcher extends Tablesearch {
     highest: Numbersearcher = new Numbersearcher("evetype.highest");
     lowest: Numbersearcher = new Numbersearcher("evetype.lowest");
     order_count: Numbersearcher = new Numbersearcher("evetype.order_count");
+    configuredbp: Booleansearcher = new Booleansearcher("evetype.configuredbp");
+    estimatedproductioncost: Numbersearcher = new Numbersearcher("evetype.estimatedproductioncost");
     marketgroupsearcher: Foreignkeysearcher = new Foreignkeysearcher();
     typegroupsearcher: Foreignkeysearcher = new Foreignkeysearcher();
     graphicsearcher: Foreignkeysearcher = new Foreignkeysearcher();
@@ -328,6 +334,18 @@ export class Evetypesearcher extends Tablesearch {
 		  }
     	this.order_count.values = this.order_count.values.concat(numvalues);
     	this.order_count.operators = this.order_count.operators.concat(operators);
+    }
+    addconfiguredbp = (value) => {
+    	this.configuredbp.values = [value];
+    }
+    addestimatedproductioncosts = (values, operators) => {
+		  let numvalues = [values.length];
+		  let i=0;
+		  for(i=0; i<values.length; i++) {
+		    numvalues[i] = parseFloat(values[i]);
+		  }
+    	this.estimatedproductioncost.values = this.estimatedproductioncost.values.concat(numvalues);
+    	this.estimatedproductioncost.operators = this.estimatedproductioncost.operators.concat(operators);
     }
     setmarketgroup = (marketgroupsearch) => {
         this.marketgroupsearcher.setTablesearch(marketgroupsearch);

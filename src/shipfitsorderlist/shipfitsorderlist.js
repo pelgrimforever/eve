@@ -8,9 +8,6 @@ import Select from 'react-select';
 import Store from '../services/store.js';
 
 //components
-import Shipfit_add from '../popups/shipfit_add.js';
-import Shipmodule_add from '../popups/shipmodule_add.js';
-import Shipfitorder_addstock from '../popups/shipfitorder_addstock.js';
 import Shipfirorder_confirm from '../popups/shipfirorder_confirm.js';
 //data models
 //component state

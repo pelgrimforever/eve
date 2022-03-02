@@ -12,6 +12,7 @@ import Viewbpmaterial from '../data/eve/view/viewbpmaterial.js';
 //components
 import Blueprint_add from '../popups/blueprint_add.js';
 import Blueprint_change from '../popups/blueprint_change.js';
+import Blueprint_run from '../popups/blueprint_run.js';
 //data models
 //component state
 import appstore from '../appstore.js';
@@ -27,6 +28,7 @@ export default function Userblueprints(props) {
   const [loading, setLoading] = useState(false);
   const [blueprintadd, setBlueprintadd] = useState(false);
   const [blueprintchange, setBlueprintchange] = useState(false);
+  const [blueprintrun, setBlueprintrun] = useState(false);
   const [bpmaterial, setBpmaterial] = useState(new Viewbpmaterial());
   const [totalprice, setTotalprice] = useState(0);
 
@@ -77,6 +79,20 @@ export default function Userblueprints(props) {
     compActions.removeBlueprint(item);
   }
 
+  const openrunBlueprint = (item) => {
+    compActions.setBlueprint(item);
+    setBlueprintrun(true);
+  }
+
+  const onUserbprun = async (amount) => {
+    const result = await compActions.runUserbp(amount);
+    setBlueprintrun(false);
+  }
+
+  const openrunBlueprintCancel = () => {
+    setBlueprintrun(false);
+  }
+
   const format_price = (p) => {
     const rounded = Math.round(p);
     return "" + rounded;
@@ -102,7 +118,7 @@ export default function Userblueprints(props) {
     <div className="root fullheight">
       <div className="containercontent container-relative">
         <div className="row h-100">
-          <div className="col-4">
+          <div className="col-5">
             <div className="root fullheight">
 
       <div className="containerheader">
@@ -158,7 +174,8 @@ export default function Userblueprints(props) {
                         <td style={col_amount}><span className='float-right'>{item.amountproduced}</span></td>
                         <td>
                           <button type="button" className="btn btn-sm small btn-primary mx-1" onClick={() => openBlueprintchange(item)}>**</button>
-                          <button type="button" className="btn btn-sm small btn-primary" onClick={() => removeBlueprint(item)}>-</button>
+                          <button type="button" className="btn btn-sm small btn-primary mx-1" onClick={() => removeBlueprint(item)}>-</button>
+                          <button type="button" className="btn btn-sm small btn-primary mx-1" onClick={() => openrunBlueprint(item)}>run bp</button>
                         </td>
                       </tr>  
     ))}
@@ -175,7 +192,7 @@ export default function Userblueprints(props) {
             </div>
           </div>
 
-          <div className="col-8 root fullheight">
+          <div className="col-7 root fullheight">
 
       <div className="containerheader">
         <div className="mx-auto bg-light p-1">
@@ -208,7 +225,7 @@ export default function Userblueprints(props) {
       <div className="containercontent container-relative">
         <div className="row h-100">
 
-          <div className="col-6">
+          <div className="col-12">
             <div className="root fullheight">
               <div className="containercontent container-relative">
                 <div className="table-container container-fluid p-0">
@@ -265,6 +282,12 @@ export default function Userblueprints(props) {
         viewuserbp={compState.userblueprint}
         onUserbpchange={onUserbpchange}
         onCancel={onUserbpchangeCancel} 
+        />
+      <Blueprint_run
+        show={blueprintrun} 
+        viewuserbp={compState.userblueprint}
+        onUserbprun={onUserbprun}
+        onCancel={openrunBlueprintCancel} 
         />
 
     </div>

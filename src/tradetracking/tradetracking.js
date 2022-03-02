@@ -12,7 +12,6 @@ import './tradetracking.scss';
 import Routefinderparameters from '../components/routefinder/routefinderparameters.js';
 import Routefinderlist from '../components/routefinder/routefinderlist.js';
 //services
-import Rsviewtrade from '../services/eve/rest/view/rsviewtrade.js';
 import Rsloadorderupdate from '../services/eve/rest/custom/rsloadorderupdate.js';
 import Rsvieworder from '../services/eve/rest/view/rsvieworder.js';
 import Rsviewtradecombined from '../services/eve/rest/view/rsviewtradecombined.js';
@@ -43,6 +42,7 @@ export default function Tradetracking(props) {
   const [buyremain, setBuyremain] = useState('?');
   const [sellorders, setSellorders] = useState([]);
   const [buyorders, setBuyorders] = useState([]);
+  const [routereloadflag, setRoutereloadflag] = useState(0);
 
   useEffect(async () => {
     await loadlist();
@@ -52,9 +52,9 @@ export default function Tradetracking(props) {
   const loadlist = async () => {
     try {
         if(appState.viewtrade.sell_id!=null) {
-          let result1 = await Rsvieworder.getone(appState.viewtrade.sell_id);
+          let result1 = await Rsvieworder.getone(Store.user, appState.viewtrade.sell_id);
           setSellvieworder(result1);
-          let result2 = await Rsvieworder.getone(appState.viewtrade.buy_id);
+          let result2 = await Rsvieworder.getone(Store.user, appState.viewtrade.buy_id);
           setBuyvieworder(result2);
           loadupdate();
           const dummy = await load4evetype();
@@ -67,7 +67,7 @@ export default function Tradetracking(props) {
 
   const loadupdate = async (event) => {
     if(appState.viewtrade.sell_id!=null) {
-      const result = await Rsloadorderupdate.getorderupdate(appState.viewtrade.sell_id, appState.viewtrade.buy_id);
+      const result = await Rsloadorderupdate.getorderupdate(Store.user, appState.viewtrade.sell_id, appState.viewtrade.buy_id);
       setSellremain(result.sellamount);
       setBuyremain(result.buyamount);
       const dummy = await load4evetype();
@@ -81,7 +81,7 @@ export default function Tradetracking(props) {
       tradecombinedpk.evetypePK.id = appState.viewtrade.evetype_id;
       tradecombinedpk.systemBuysystemPK.id = appState.viewtrade.buy_systemid;
       tradecombinedpk.systemSellsystemPK.id = appState.viewtrade.sell_systemid;
-      let tradecombined = await Rsviewtradecombined.getViewtradecombined(tradecombinedpk);
+      let tradecombined = await Rsviewtradecombined.getViewtradecombined(Store.user, tradecombinedpk);
       appActions.setActivetradecombined(tradecombined);
       appActions.setActivemenu('Trade tools', 'Combined trade tracking');    
     }    
@@ -93,7 +93,7 @@ export default function Tradetracking(props) {
       buy_systempk.id = appState.viewtrade.buy_systemid;
       let sell_systempk = new Systempk();
       sell_systempk.id = appState.viewtrade.sell_systemid;
-      const viewsystemtrade = await Rsviewtradesystem.getviewtradesellbuysystem(sell_systempk, buy_systempk);
+      const viewsystemtrade = await Rsviewtradesystem.getviewtradesellbuysystem(Store.user, sell_systempk, buy_systempk);
       appActions.setActivetradesystem(viewsystemtrade);
       appActions.setActivemenu('Trade tools', 'System trade tracking');
     }    
@@ -102,10 +102,14 @@ export default function Tradetracking(props) {
   const load4evetype = async () => {
     const evetypepk = new Evetypepk();
     evetypepk.id = appState.viewtrade.evetype_id;
-    const result_sellorders = await Rsvieworder.getevetypesell(evetypepk);
-    const result_buyorders = await Rsvieworder.getevetypebuy(evetypepk);
+    const result_sellorders = await Rsvieworder.getevetypesell(Store.user, evetypepk);
+    const result_buyorders = await Rsvieworder.getevetypebuy(Store.user, evetypepk);
     setSellorders(result_sellorders);
     setBuyorders(result_buyorders);
+  }
+
+  const triggerrouteupdate = () => {
+    setRoutereloadflag(routereloadflag+1);
   }
 
   const format_price = (p) => {
@@ -119,6 +123,12 @@ export default function Tradetracking(props) {
 
   const totalvolume = (trade) => {
     return format_2digits(trade.total_volume * trade.packaged_volume);
+  };
+
+  const copyToClipboard = (str) => {
+    if (navigator && navigator.clipboard && navigator.clipboard.writeText)
+      return navigator.clipboard.writeText(str);
+    return Promise.reject('The Clipboard API is not available.');
   };
 
   const rendergatekills = (system) => {
@@ -152,7 +162,7 @@ export default function Tradetracking(props) {
                   <label className="input-group-text">type</label>
                 </div>
                 <div className="col col-sm-8 input-group-prepend">
-                  <label className="input-group-text">{sellvieworder.evetypename}</label>
+                  <label className="input-group-text"><button type="button" className="badge badge-pill btn-secondary btn-block tiny mr-1" onClick={copyToClipboard(sellvieworder.evetypename)}>C</button>{sellvieworder.evetypename}</label>
                 </div>
               </div>
               <div className="row m-0">
@@ -246,10 +256,10 @@ export default function Tradetracking(props) {
                   <label className="input-group-text">°</label>
               </div>
               <div className="row m-0">
-                  <label className="input-group-text">- {sellvieworder.stationname}</label>
+                  <label className="input-group-text"><button type="button" className="badge badge-pill btn-secondary btn-block tiny mr-1" onClick={copyToClipboard(sellvieworder.stationname)}>C</button>{sellvieworder.stationname}</label>
               </div>
               <div className="row m-0">
-                  <label className="input-group-text">- {sellvieworder.locationname}</label>
+                  <label className="input-group-text"><button type="button" className="badge badge-pill btn-secondary btn-block tiny mr-1" onClick={copyToClipboard(sellvieworder.locationname)}>C</button>{sellvieworder.locationname}</label>
               </div>
             </div>
 
@@ -332,7 +342,10 @@ export default function Tradetracking(props) {
                   <label className="input-group-text">updated</label>
                 </div>
                 <div className="col col-sm-8 input-group-prepend">
-                  <label className={buyvieworder.volume_remain>buyremain ? "input-group-text bg-warning" : "input-group-text"}>{buyremain}</label>
+                  <label className={buyvieworder.volume_remain>buyremain ? "input-group-text bg-warning" : "input-group-text"}>
+                    <button type="button" className="badge badge-pill btn-secondary btn-block tiny mr-1" onClick={copyToClipboard(buyremain)}>C</button>
+                    {buyremain}
+                  </label>
                 </div>
               </div>
               <div className="row m-0">
@@ -360,10 +373,10 @@ export default function Tradetracking(props) {
                 </div>
               </div>
               <div className="row m-0">
-                <label className="input-group-text">- {buyvieworder.stationname}</label>
+                <label className="input-group-text"><button type="button" className="badge badge-pill btn-secondary btn-block tiny mr-1" onClick={copyToClipboard(buyvieworder.stationname)}>C</button>{buyvieworder.stationname}</label>
               </div>
               <div className="row m-0">
-                <label className="input-group-text">- {buyvieworder.locationname}</label>
+                <label className="input-group-text"><button type="button" className="badge badge-pill btn-secondary btn-block tiny mr-1" onClick={copyToClipboard(buyvieworder.locationname)}>C</button>{buyvieworder.locationname}</label>
               </div>
             </div>
 
@@ -374,7 +387,8 @@ export default function Tradetracking(props) {
 
       <Routefinderparameters 
         viasystems={compState.viasystems} avoidsystems={compState.avoidsystems} secure={compState.secure}
-        setViasystems={compActions.setViasystems} setAvoidsystems={compActions.setAvoidsystems} setSecure={compActions.setSecure} />
+        setViasystems={compActions.setViasystems} setAvoidsystems={compActions.setAvoidsystems} setSecure={compActions.setSecure}
+        reloadroute={triggerrouteupdate} />
 
       <div className="containercontent container-relative">
         <div className="row h-100">
@@ -385,6 +399,7 @@ export default function Tradetracking(props) {
               viasystems={compState.viasystems}
               avoidsystems={compState.avoidsystems}
               secure={compState.secure}
+              reloadflag={routereloadflag}
               />
           </div>
 

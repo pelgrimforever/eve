@@ -11,11 +11,23 @@ import Rsviewuserbpsuper from './super/rsviewuserbpsuper';
 class Rsviewuserbp extends Rsviewuserbpsuper {
 
     static SELECT4USER = 2;
+    static SELECT4USERBP = 3;
 
-    static get4user = async (username) => {
+    static get4user = async (user, username) => {
         const postdata = {
-            operation: { type: super.OPERATIONTYPE_SELECT, operation: this.SELECT4USER },
+            auth: user!=null ? user.auth : null,
+            operation: { type: super.OPERATIONTYPE_SECURESELECT, operation: this.SELECT4USER },
             username: username
+        }
+        return this.extractDataArray(await super.post(this.restservice, postdata));
+    }
+
+    static get4userbp = async (user, username, bp) => {
+        const postdata = {
+            auth: user!=null ? user.auth : null,
+            operation: { type: super.OPERATIONTYPE_SECURESELECT, operation: this.SELECT4USERBP },
+            username: username,
+            bp: bp
         }
         return this.extractDataArray(await super.post(this.restservice, postdata));
     }

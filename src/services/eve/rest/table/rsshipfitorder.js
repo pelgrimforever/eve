@@ -14,9 +14,10 @@ class Rsshipfitorder extends Rsshipfitordersuper {
 
     static UPDATE_ORDERAMOUNT = 11;
 
-    static updateOrderaddstock = async (shipfitorderpk, amount) => {
+    static updateOrderaddstock = async (user, shipfitorderpk, amount) => {
         const postdata = {
-          operation: { type: super.OPERATIONTYPE_UPDATE, operation: this.UPDATE_ORDERAMOUNT },
+          auth: user!=null ? user.auth : null,
+          operation: { type: super.OPERATIONTYPE_SECUREUPDATE, operation: this.UPDATE_ORDERAMOUNT },
           shipfitorderpk: ShipfitorderJson.PKtoJSON(shipfitorderpk),
           amount: amount
         }

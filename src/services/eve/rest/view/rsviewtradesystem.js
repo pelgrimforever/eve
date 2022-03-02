@@ -17,9 +17,10 @@ class Rsviewtradesystem extends Rsviewtradesystemsuper {
   static SELECT4SELLBUYSYSTEM = 3;
 
 
-  static getall_startsystem = async (systempk: Systempk) => {
+  static getall_startsystem = async (user, systempk: Systempk) => {
     const postdata = {
-      operation: { type: super.OPERATIONTYPE_SELECT, operation: this.SELECT_ALL_STARTSYSTEM },
+      auth: user!=null ? user.auth : null,
+      operation: { type: super.OPERATIONTYPE_SECURESELECT, operation: this.SELECT_ALL_STARTSYSTEM },
       systempk: SystemJson.PKtoJSON(systempk)
     }
     return this.extractDataArray_startsystem(await super.post(this.restservice, postdata));
@@ -39,9 +40,10 @@ class Rsviewtradesystem extends Rsviewtradesystemsuper {
     return viewtradesystemlist;
   }
 
-  static getviewtradesellbuysystem = async (sell_systempk: Systempk, buy_systempk: Systempk) => {
+  static getviewtradesellbuysystem = async (user, sell_systempk: Systempk, buy_systempk: Systempk) => {
     const postdata = {
-      operation: { type: super.OPERATIONTYPE_SELECT, operation: this.SELECT4SELLBUYSYSTEM },
+      auth: user!=null ? user.auth : null,
+      operation: { type: super.OPERATIONTYPE_SECURESELECT, operation: this.SELECT4SELLBUYSYSTEM },
       sell_systempk: SystemJson.PKtoJSON(sell_systempk),
       buy_systempk: SystemJson.PKtoJSON(buy_systempk)
     }

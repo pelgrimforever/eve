@@ -14,7 +14,6 @@ import { AppContext } from "../App.js";
 import Sortmode from '../utilities/sortmode.js';
 import Pagecomponent from '../utilities/pagecomponent.js';
 //services
-import Rsviewtradesystem from '../services/eve/rest/view/rsviewtradesystem.js';
 //data models
 import { Systempk } from '../data/eve/table/super/systemsuper.js';
 import { Orderspk } from '../data/eve/table/super/orderssuper.js';
@@ -40,7 +39,6 @@ export default function Systemtradelist(props) {
   const [loading, setLoading] = useState(false);
   const [list, setList] = useState([]);
   const [systems, setSystems] = useState(getsystemoptions());
-  const [unfilteredtradelist, setUnfilteredtradelist] = useState([]);
   const [tradelist, setTradelist] = useState([]);
   const [showtradeline, setShowtradeline] = useState(false);
   const [pagelength, setPagelength] = useState(compState.paginationconfig.pageLength);
@@ -71,10 +69,12 @@ export default function Systemtradelist(props) {
     showpage_(pagenr, false);
   }
 
-  const changeSystem = (selection) => { 
+  const changeSystem = async (selection) => { 
+    setLoading(true);
     const selectedsystemid = selection.value;
     const name = Store.codetables.findSystem(selectedsystemid).name;
-    compActions.setSystem(selectedsystemid, name);
+    const dummy = await compActions.setSystem(selectedsystemid, name);
+    setLoading(false);
   };
 
   const changeStartsystem = (selection) => { 
@@ -110,19 +110,12 @@ export default function Systemtradelist(props) {
     setSystems(getsystemoptions());
   }, [Store.codetables.systemlist]);
 
-  //update trade list when startsystemid is updated
-  useEffect(() => {
-    if(compState.startsystemid !== null) {
-      loadlist();
-    }
-  }, [compState.startsystemid]);
-
   //filter list
   useEffect(() => {
-      let result = filtertradelist(unfilteredtradelist);
+      let result = filtertradelist(compState.unfilteredtradelist);
       sorttradelist(result);
       setTradelist(result);
-  }, [unfilteredtradelist, compState.filterstartsystemid, compState.filterendsystemid, compState.filtercargo]);
+  }, [compState.unfilteredtradelist, compState.filterstartsystemid, compState.filterendsystemid, compState.filtercargo]);
 
   //update page properties after updating the tradelist
   useEffect(() => {
@@ -142,19 +135,9 @@ export default function Systemtradelist(props) {
 
   //construct trade list data
   const loadlist = async () => {
-    try {
-        if(compState.startsystemid!=null) {
-          setLoading(true);
-          let systempk = new Systempk();
-          systempk.id = compState.startsystemid;
-          const result = await Rsviewtradesystem.getall_startsystem(systempk);
-          setUnfilteredtradelist(result);
-          setLoading(false);
-        }
-    } catch (e) {
-      console.log("loadlist failed");
-      setLoading(false);
-    }
+    setLoading(true);
+    const dummy = await compActions.loadTradelist();
+    setLoading(false);
   };
 
   const filtertradelist = (list) => {

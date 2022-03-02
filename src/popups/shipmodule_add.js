@@ -12,8 +12,6 @@ import Sortmode from '../utilities/sortmode.js';
 import Store from '../services/store.js';
 
 //data models
-import { Evetypepk } from '../data/eve/table/super/evetypesuper.js';
-import Evetype from '../data/eve/table/evetype.js';
 //services
 import Rsviewevetypes from '../services/eve/rest/view/rsviewevetypes.js';
 
@@ -39,14 +37,14 @@ function Shipmodule_add(props) {
   const [activemodule, setActivemodule] = useState(moduletypes[0]);
 
   useEffect(async () => {
-    const modules = await Rsviewevetypes.getmodules();
+    const modules = await Rsviewevetypes.getmodules(Store.user);
     setShipmodules(modules);
     setDisplaylist(modules);
-    const shipchargeslist = await Rsviewevetypes.getcharges();
+    const shipchargeslist = await Rsviewevetypes.getcharges(Store.user);
     setShipcharges(shipchargeslist);
-    const shipdroneslist = await Rsviewevetypes.getdrones();
+    const shipdroneslist = await Rsviewevetypes.getdrones(Store.user);
     setShipdrones(shipdroneslist);
-    const shipdeployableslist = await Rsviewevetypes.getdeployables();
+    const shipdeployableslist = await Rsviewevetypes.getdeployables(Store.user);
     setShipdeployables(shipdeployableslist);
   }, []);
 
@@ -106,22 +104,14 @@ function Shipmodule_add(props) {
         <Row m-0="true" style={bodyheight}>
           <div className="col-12 root fullheight">
             <div className="containerheader">
-              <div className="mx-auto bg-light p-1">
-                <div className="d-flex">
-                  <div className="p-2 flex-fill bg-info">
-                    <div className="row m-0">
-                      <div className="col col-sm-12 d-flex">
-                        <span className="mx-2">name filter</span>
-                        <div style={{width:'400px'}}>
-                          <input type="text" className="form-input" style={{width:'200px'}} onChange={searchtextChange} defaultValue={searchstring} />
-                        </div>
-                      </div>
-                      <div className="col col-sm-12 d-flex mt-2">
-                        <div style={{width:'100%'}}>
-                          <Sortmode modes={moduletypes} sortmode={activemodule} onModeselected={changeActivemodule} />
-                        </div>
-                      </div>
-                    </div>
+              <div className="p-2 flex-fill bg-info">
+                <div className="row m-0">
+                  <div className="col col-sm-12 d-flex align-items-baseline mx-2">
+                    <label for="searchtext" className="mx-2">name filter</label>
+                    <input type="text" id="searchtext" className="form-input" style={{width:'200px'}} onChange={searchtextChange} defaultValue={searchstring} />
+                  </div>
+                  <div className="mt-2">
+                    <Sortmode modes={moduletypes} sortmode={activemodule} onModeselected={changeActivemodule} />
                   </div>
                 </div>
               </div>
@@ -159,18 +149,12 @@ function Shipmodule_add(props) {
               </div>
             </div>
             <div className="containerheader">
-              <div className="mx-auto bg-light p-1">
-                <div className="d-flex">
-                  <div className="p-2 flex-fill bg-info">
-                    <div className="row m-0">
-                      <div className="col col-sm-12 d-flex">
-                        <span className="mx-2">amount</span>
-                        <div className="mx-2" style={{width:'200px'}}>
-                          <Form.Control type="number" id="amount" name="amount" defaultValue={1} style={{width:'100px'}} />  
-                        </div>
-                        <button type="submit" className="btn btn-primary">add</button>
-                      </div>
-                    </div>
+              <div className="p-2 flex-fill bg-info">
+                <div className="row m-0">
+                  <div className="col col-sm-12 d-flex align-items-baseline mx-2">
+                    <label for="amount" className="mx-2">amount</label>
+                    <Form.Control type="number" id="amount" name="amount" defaultValue={1} style={{width:'100px'}} />  
+                    <button type="submit" className="btn btn-primary mx-2">add</button>
                   </div>
                 </div>
               </div>

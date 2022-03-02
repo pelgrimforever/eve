@@ -14,6 +14,6 @@ export const setContract = async (store, item) => {
   store.setState({ viewcontract: item });
   const contractpk = new Contractpk();
   contractpk.id = item.id;
-  const result = await Rsviewcontractitem.getcontract(contractpk);
+  const result = await Rsviewcontractitem.getcontract(Store.user, contractpk);
   store.setState({ viewcontractitems: result});
 };

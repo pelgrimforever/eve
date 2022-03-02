@@ -12,9 +12,10 @@ class Rsviewshipfitmodule extends Rsviewshipfitmodulesuper {
 
     static SELECT4Shipfit = 2;
 
-    static get4shipfit = async (username, shipname) => {
+    static get4shipfit = async (user, username, shipname) => {
         const postdata = {
-          operation: { type: super.OPERATIONTYPE_SELECT, operation: this.SELECT4Shipfit },
+          auth: user!=null ? user.auth : null,
+          operation: { type: super.OPERATIONTYPE_SECURESELECT, operation: this.SELECT4Shipfit },
           username: username,
           shipname: shipname
         }

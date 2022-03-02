@@ -20,7 +20,7 @@ export const loadTypes = async (store, searchstring) => {
     let searcher = new Evetypesearcher();
     searcher.addnames([searchstring + ':*:']);
     searcher.name.compareoperator = searcher.name.STRING_LIKE;
-    const result = await Rsevetype.search(searcher);
+    const result = await Rsevetype.sec_search(Store.user, searcher);
     result.sort((a, b) => (a.name<b.name) ? -1 : 1);
     store.setState({ typelist: result });
   }

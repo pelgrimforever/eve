@@ -2,7 +2,7 @@
 //don't change things here, it will be overwritten
 /* 
     Created on : Dec 16, 2018, 18:32:01
-    Generated on 31.0.2022 17:49
+    Generated on 22.1.2022 10:55
     Author     : Franky Laseure
 */
 
@@ -12,6 +12,8 @@ import Moment from 'moment';
 class ViewuserbpmaterialJson {
 	static toJSON = (viewuserbpmaterial) => {
 		var jsonobj = {
+			"username": viewuserbpmaterial.username,
+			"serialnumber": viewuserbpmaterial.serialnumber,
 			"bp": "" + viewuserbpmaterial.bp,
 			"material": "" + viewuserbpmaterial.material,
 			"amount": "" + viewuserbpmaterial.amount,
@@ -20,7 +22,6 @@ class ViewuserbpmaterialJson {
 			"typegroupname": viewuserbpmaterial.typegroupname,
 			"name": viewuserbpmaterial.name,
 			"marketaverage": "" + viewuserbpmaterial.marketaverage,
-			"username": viewuserbpmaterial.username,
 			"materialinputaverage": "" + viewuserbpmaterial.materialinputaverage,
 		};
 		return jsonobj;
@@ -28,6 +29,8 @@ class ViewuserbpmaterialJson {
 
 	static fromJSON = (jsonobj): Viewuserbpmaterial => {
 		let model = new Viewuserbpmaterial();
+		model.username = jsonobj.username;
+		model.serialnumber = jsonobj.serialnumber;
 		model.bp = "" + jsonobj.bp;
 		model.material = "" + jsonobj.material;
 		model.amount = "" + jsonobj.amount;
@@ -36,7 +39,6 @@ class ViewuserbpmaterialJson {
 		model.typegroupname = jsonobj.typegroupname;
 		model.name = jsonobj.name;
 		model.marketaverage = parseFloat(jsonobj.marketaverage);
-		model.username = jsonobj.username;
 		model.materialinputaverage = parseFloat(jsonobj.materialinputaverage);
 		return model;
 	}

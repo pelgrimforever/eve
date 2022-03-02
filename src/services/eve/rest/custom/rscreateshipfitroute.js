@@ -9,11 +9,12 @@ class Rscreateshipfitroute extends Eveservice {
 
   //OPERATIONS
 
-  static getroute = async (origin, destination, username) => {
+  static getroute = async (user, origin, destination, username) => {
     const postdata = {
-      "origin": origin,
-      "destination": destination,
-      "username": username
+      auth: user!=null ? user.auth : null,
+      origin: origin,
+      destination: destination,
+      username: username
     }
     const result = await super.post(this.restservice, postdata);
     return Rsviewsystem.extractDataArray(result);

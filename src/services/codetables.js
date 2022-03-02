@@ -14,7 +14,7 @@ class Codetables {
   loadAll = async () => {
     this.loadSystemlist();
     this.loadAllsystemlist();
-    this.loadTypelist();
+    //this.loadTypelist();
   }
   
   loadSystemlist = async () => {

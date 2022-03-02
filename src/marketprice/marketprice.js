@@ -48,12 +48,12 @@ export default function Marketprice(props) {
 
   const open = async (item) => {
     setEvetype(item);
-    const result_sellorders = await Rsvieworder.getevetypesell(item.PK);
-    const result_buyorders = await Rsvieworder.getevetypebuy(item.PK);
+    const result_sellorders = await Rsvieworder.getevetypesell(Store.user, item.PK);
+    const result_buyorders = await Rsvieworder.getevetypebuy(Store.user, item.PK);
     setSellorders(result_sellorders);
     setBuyorders(result_buyorders);
     setLoading(true);
-    const orderhistorylist = await Rsviewevetypeorderhistorymonth.get4evetype(item.PK);
+    const orderhistorylist = await Rsviewevetypeorderhistorymonth.get4evetype(Store.user, item.PK);
     let orderhistorychart = [
               [{ type: 'date', label: 'Day' }, 'avg', 'min', 'max'],
             ];
