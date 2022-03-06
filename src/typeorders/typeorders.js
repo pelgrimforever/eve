@@ -14,7 +14,6 @@ import { Evetypepk } from '../data/eve/table/super/evetypesuper.js';
 import Evetype from '../data/eve/table/evetype.js';
 //component state
 import storeTypeorders from './store.js';
-import './typeorders.scss';
 //services
 import Rsvieworder from '../services/eve/rest/view/rsvieworder.js';
 

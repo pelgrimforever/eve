@@ -3,7 +3,6 @@ import Spinner from 'react-bootstrap/Spinner'
 import ProgressBar from 'react-bootstrap/ProgressBar'
 
 import Store from '../services/store.js';
-import './downloadcontracts.scss';
 
 //components
 //services

@@ -6,12 +6,12 @@ import FormControl from "react-bootstrap/FormControl";
 import Select from 'react-select';
 
 import Store from '../services/store.js';
-import './sellorderslowprice.scss';
 
 //components
 import Sortmode from '../utilities/sortmode.js';
 import Tradeline from '../popups/tradeline.js';
 import Pagecomponent from '../utilities/pagecomponent.js';
+import Copytoclipboard from '../components/copytoclipboard/copytoclipboard.js';
 //data models
 import { Systempk } from '../data/eve/table/super/systemsuper.js';
 import { Orderspk } from '../data/eve/table/super/orderssuper.js';
@@ -166,9 +166,9 @@ export default function Sellorderslowprice(props) {
   const colstart_low_jumps = {width: '2rem'};
   const colstart_null_jumps = {width: '2rem'};
   const colsell_regionname = {width: '6rem' };
-  const colsell_systemname = {width: '5rem'};
-  const colsell_stationname = {width: '20rem'};
-  const colevetype_name = {width: '15rem'};
+  const colsell_systemname = {width: '6rem'};
+  const colsell_stationname = {width: '22rem'};
+  const colevetype_name = {width: '18rem'};
   const colpackaged_volume = {width: '3rem'};
   const colsell_volume_remain = {width: '3rem'};
   const colsell_price = {width: '3rem'};
@@ -237,9 +237,18 @@ export default function Sellorderslowprice(props) {
                     <td style={colstart_low_jumps}><span className={trade.startsystem_jumpslowsec>0 ? "bg-danger empty_fill" : "empty_fill"}>{trade.startsystem_jumpslowsec}</span></td>
                     <td style={colstart_null_jumps}><span className={trade.startsystem_jumpsnullsec>0 ? "bg-danger empty_fill" : "empty_fill"}>{trade.startsystem_jumpsnullsec}</span></td>
                     <td style={colsell_regionname}>{trade.regionname}</td>
-                    <td style={colsell_systemname}>{trade.systemname}</td>
-                    <td style={colsell_stationname}>{trade.stationname}</td>
-                    <td style={colevetype_name}>{trade.evetypename}</td>
+                    <td style={colsell_systemname}>
+                      <Copytoclipboard copytext={trade.systemname}/>
+                      {trade.systemname}
+                    </td>
+                    <td style={colsell_stationname}>
+                      <Copytoclipboard copytext={trade.stationname}/>
+                      {trade.stationname}
+                    </td>
+                    <td style={colevetype_name}>
+                      <Copytoclipboard copytext={trade.evetypename}/>
+                      {trade.evetypename}
+                    </td>
                     <td style={colpackaged_volume}><span className='float-right'>{trade.packaged_volume}</span></td>
                     <td style={colsell_volume_remain}><span className='float-right'>{trade.volume_remain}</span></td>
                     <td style={colsell_price}><span className='float-right'>{trade.price}</span></td>
@@ -270,7 +279,6 @@ export default function Sellorderslowprice(props) {
           changePagelength={changePagelength}
           />
       </div>
-
 
     </div>
 

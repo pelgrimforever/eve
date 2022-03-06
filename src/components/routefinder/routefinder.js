@@ -4,8 +4,6 @@ import { Col, Row, Form } from "react-bootstrap";
 import FormControl from "react-bootstrap/FormControl";
 import Select from 'react-select';
 
-import './routefinder.scss';
-
 //components
 //services
 import Store from '../../services/store.js';

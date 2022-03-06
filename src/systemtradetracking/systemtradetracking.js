@@ -6,11 +6,11 @@ import FormControl from "react-bootstrap/FormControl";
 import Select from 'react-select';
 
 import Store from '../services/store.js';
-import './systemtradetracking.scss';
 
 //components
 import Routefinderparameters from '../components/routefinder/routefinderparameters.js';
 import Routefinderlist from '../components/routefinder/routefinderlist.js';
+import Copytoclipboard from '../components/copytoclipboard/copytoclipboard.js';
 //services
 import Rsviewtradecombinedsell from '../services/eve/rest/view/rsviewtradecombinedsell.js';
 import Rsloadorderupdate from '../services/eve/rest/custom/rsloadorderupdate.js';
@@ -42,6 +42,13 @@ export default function Systemtradetracking(props) {
   const [selltotalupdate, setSelltotalupdate] = useState(0);
   const [buytotalupdate, setBuytotalupdate] = useState(0);
   const [routereloadflag, setRoutereloadflag] = useState(0);
+
+  //for performance reason, and to make copytoclipboard work, this var is copied local
+  const [viewtradesystem, setViewtradesystem] = useState(appState.viewtradecombined);
+
+  useEffect(async () => {
+    setViewtradesystem(appState.viewtradesystem);
+  }, [appState.viewtradesystem]);
 
   useEffect(async () => {
     await loadlist();
@@ -158,23 +165,32 @@ export default function Systemtradetracking(props) {
 
     {tradelist.map((trade, index) => (
                   <tr className="table-info" key={index}>
-                    <td style={otcolsell_stationname}>{trade.sell_stationname}</td>
-                    <td style={otcolsell_evetype}>{trade.evetype_name}</td>
+                    <td style={otcolsell_stationname}>
+                      <Copytoclipboard copytext={trade.sell_stationname}/>
+                      {trade.sell_stationname}
+                    </td>
+                    <td style={otcolsell_evetype}>
+                      <Copytoclipboard copytext={trade.evetype_name}/>
+                      {trade.evetype_name}
+                    </td>
                     <td style={otcolsell_volume_total}><span className='float-right'>{trade.sell_volume_total}</span></td>
                     <td style={otcolsell_volume_remain}><span className='float-right'>{trade.sell_volume_remain}</span></td>
                     <td className={trade.sell_volume_min>1 ? "bg-danger" : ""}
                       style={otcolsell_volume_min}><span className='float-right'>{trade.sell_min_volume}</span></td>
                     <td className={trade.sell_volume_remain>trade.sell_updated ? "bg-warning" : ""}
                       style={otcolsell_volume_update}><span className='float-right'>{trade.sell_updated}</span></td>
-                    <td style={otcolsell_price}><span className='float-right'>{trade.sell_price}</span></td>
+                    <td style={otcolsell_price} className="bg-primary"><span className='float-right'>{trade.sell_price}</span></td>
                     <td style={otcolbuy_volume_total}><span className='float-right'>{trade.buy_volume_total}</span></td>
                     <td style={otcolbuy_volume_remain}><span className='float-right'>{trade.buy_volume_remain}</span></td>
                     <td className={trade.buy_volume_min>1 ? "bg-danger" : ""}
                       style={otcolbuy_volume_min}><span className='float-right'>{trade.buy_min_volume}</span></td>
                     <td className={trade.buy_volume_remain>trade.buy_updated ? "bg-warning" : ""}
                       style={otcolbuy_volume_update}><span className='float-right'>{trade.buy_updated}</span></td>
-                    <td style={otcolbuy_price}><span className='float-right'>{trade.buy_price}</span></td>
-                    <td style={otcolbuy_stationname}>{trade.buy_stationname}</td>
+                    <td style={otcolbuy_price} className="bg-primary"><span className='float-right'>{trade.buy_price}</span></td>
+                    <td style={otcolbuy_stationname}>
+                      <Copytoclipboard copytext={trade.buy_stationname}/>
+                      {trade.buy_stationname}
+                    </td>
                     <td style={otcoltotal_volume}><span className='float-right'>{trade.orderamount}</span></td>
                     <td style={otcoltotal_m3}><span className='float-right'>{ottotalvolume(trade)}</span></td>
                     <td style={otcolsell_total}><span className='float-right'>{format_price(trade.sell_price)}</span></td>
@@ -205,7 +221,10 @@ export default function Systemtradetracking(props) {
                 </div>
               </div>
               <div className="row m-0">
-                <label className="input-group-text">{appState.viewtradesystem.sell_systemname}</label>
+                <label className="input-group-text">
+                  <Copytoclipboard copytext={viewtradesystem.sell_systemname}/>
+                  {viewtradesystem.sell_systemname}
+                </label>
               </div>
             </div>
 
@@ -225,7 +244,10 @@ export default function Systemtradetracking(props) {
 
             <div className="p-2 flex-fill bg-info">
               <div className="row m-0">
-                <label className="input-group-text">{appState.viewtradesystem.buy_systemname}</label>
+                <label className="input-group-text">
+                  <Copytoclipboard copytext={viewtradesystem.buy_systemname}/>
+                  {appState.viewtradesystem.buy_systemname}
+                </label>
               </div>
             </div>
 

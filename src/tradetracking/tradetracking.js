@@ -6,11 +6,11 @@ import FormControl from "react-bootstrap/FormControl";
 import Select from 'react-select';
 
 import Store from '../services/store.js';
-import './tradetracking.scss';
 
 //components
 import Routefinderparameters from '../components/routefinder/routefinderparameters.js';
 import Routefinderlist from '../components/routefinder/routefinderlist.js';
+import Copytoclipboard from '../components/copytoclipboard/copytoclipboard.js';
 //services
 import Rsloadorderupdate from '../services/eve/rest/custom/rsloadorderupdate.js';
 import Rsvieworder from '../services/eve/rest/view/rsvieworder.js';
@@ -125,12 +125,6 @@ export default function Tradetracking(props) {
     return format_2digits(trade.total_volume * trade.packaged_volume);
   };
 
-  const copyToClipboard = (str) => {
-    if (navigator && navigator.clipboard && navigator.clipboard.writeText)
-      return navigator.clipboard.writeText(str);
-    return Promise.reject('The Clipboard API is not available.');
-  };
-
   const rendergatekills = (system) => {
     let gatearray = [];
     if(system.killmailgatecount>0) {
@@ -162,7 +156,10 @@ export default function Tradetracking(props) {
                   <label className="input-group-text">type</label>
                 </div>
                 <div className="col col-sm-8 input-group-prepend">
-                  <label className="input-group-text"><button type="button" className="badge badge-pill btn-secondary btn-block tiny mr-1" onClick={copyToClipboard(sellvieworder.evetypename)}>C</button>{sellvieworder.evetypename}</label>
+                  <label className="input-group-text">
+                    <Copytoclipboard copytext={sellvieworder.evetypename}/>
+                    {sellvieworder.evetypename}
+                  </label>
                 </div>
               </div>
               <div className="row m-0">
@@ -214,7 +211,10 @@ export default function Tradetracking(props) {
                 </div>
               </div>
               <div className="row m-0">
-                <label className="input-group-text">{sellvieworder.systemname}</label>
+                <label className="input-group-text">
+                  <Copytoclipboard copytext={sellvieworder.systemname}/>
+                  {sellvieworder.systemname}
+                </label>
               </div>
             </div>
 
@@ -256,10 +256,16 @@ export default function Tradetracking(props) {
                   <label className="input-group-text">°</label>
               </div>
               <div className="row m-0">
-                  <label className="input-group-text"><button type="button" className="badge badge-pill btn-secondary btn-block tiny mr-1" onClick={copyToClipboard(sellvieworder.stationname)}>C</button>{sellvieworder.stationname}</label>
+                  <label className="input-group-text">
+                    <Copytoclipboard copytext={sellvieworder.stationname}/>
+                    {sellvieworder.stationname}
+                  </label>
               </div>
               <div className="row m-0">
-                  <label className="input-group-text"><button type="button" className="badge badge-pill btn-secondary btn-block tiny mr-1" onClick={copyToClipboard(sellvieworder.locationname)}>C</button>{sellvieworder.locationname}</label>
+                  <label className="input-group-text">
+                    <Copytoclipboard copytext={sellvieworder.locationname}/>
+                    {sellvieworder.locationname}
+                  </label>
               </div>
             </div>
 
@@ -321,7 +327,10 @@ export default function Tradetracking(props) {
                 </div>
               </div>
               <div className="row m-0">
-                <label className="input-group-text">{buyvieworder.systemname}</label>
+                <label className="input-group-text">
+                  <Copytoclipboard copytext={buyvieworder.systemname}/>
+                  {buyvieworder.systemname}
+                </label>
               </div>
             </div>
 
@@ -343,7 +352,7 @@ export default function Tradetracking(props) {
                 </div>
                 <div className="col col-sm-8 input-group-prepend">
                   <label className={buyvieworder.volume_remain>buyremain ? "input-group-text bg-warning" : "input-group-text"}>
-                    <button type="button" className="badge badge-pill btn-secondary btn-block tiny mr-1" onClick={copyToClipboard(buyremain)}>C</button>
+                    <Copytoclipboard copytext={buyremain}/>
                     {buyremain}
                   </label>
                 </div>
@@ -373,10 +382,16 @@ export default function Tradetracking(props) {
                 </div>
               </div>
               <div className="row m-0">
-                <label className="input-group-text"><button type="button" className="badge badge-pill btn-secondary btn-block tiny mr-1" onClick={copyToClipboard(buyvieworder.stationname)}>C</button>{buyvieworder.stationname}</label>
+                <label className="input-group-text">
+                  <Copytoclipboard copytext={buyvieworder.stationname}/>
+                  {buyvieworder.stationname}
+                </label>
               </div>
               <div className="row m-0">
-                <label className="input-group-text"><button type="button" className="badge badge-pill btn-secondary btn-block tiny mr-1" onClick={copyToClipboard(buyvieworder.locationname)}>C</button>{buyvieworder.locationname}</label>
+                <label className="input-group-text">
+                  <Copytoclipboard copytext={buyvieworder.locationname}/>
+                  {buyvieworder.locationname}
+                </label>
               </div>
             </div>
 

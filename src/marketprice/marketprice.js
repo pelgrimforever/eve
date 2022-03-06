@@ -9,13 +9,13 @@ import Chart from "react-google-charts"
 import Store from '../services/store.js';
 
 //components
+import Copytoclipboard from '../components/copytoclipboard/copytoclipboard.js';
 //data models
 import { Evetypepk } from '../data/eve/table/super/evetypesuper.js';
 import Evetype from '../data/eve/table/evetype.js';
 //component state
 import appstore from '../appstore.js';
 import storeMarketprice from './store.js';
-import './marketprice.scss';
 //services
 import Rsvieworder from '../services/eve/rest/view/rsvieworder.js';
 import Rsviewevetypeorderhistorymonth from '../services/eve/rest/view/rsviewevetypeorderhistorymonth.js';

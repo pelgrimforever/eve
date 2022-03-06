@@ -6,7 +6,6 @@ import FormControl from "react-bootstrap/FormControl";
 import Select from 'react-select';
 
 import Store from '../services/store.js';
-import './wishlist.scss';
 
 //components
 import Wishlist_add from '../popups/wishlist_add.js';

@@ -6,7 +6,6 @@ import FormControl from "react-bootstrap/FormControl";
 import Select from 'react-select';
 
 import Store from '../services/store.js';
-import './combinedtradelist.scss';
 
 //context
 import { AppContext } from "../App.js";

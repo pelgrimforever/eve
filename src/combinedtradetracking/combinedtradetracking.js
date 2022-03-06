@@ -6,9 +6,9 @@ import FormControl from "react-bootstrap/FormControl";
 import Select from 'react-select';
 
 import Store from '../services/store.js';
-import './combinedtradetracking.scss';
 
 //components
+import Copytoclipboard from '../components/copytoclipboard/copytoclipboard.js';
 import Routefinderparameters from '../components/routefinder/routefinderparameters.js';
 import Routefinderlist from '../components/routefinder/routefinderlist.js';
 //services
@@ -47,6 +47,13 @@ export default function Combinedtradetracking(props) {
   const [selltotalupdate, setSelltotalupdate] = useState(0);
   const [buytotalupdate, setBuytotalupdate] = useState(0);
   const [routereloadflag, setRoutereloadflag] = useState(0);
+
+  //for performance reason, and to make copytoclipboard work, this var is copied local
+  const [viewtradecombined, setViewtradecombined] = useState(appState.viewtradecombined);
+
+  useEffect(async () => {
+    setViewtradecombined(appState.viewtradecombined);
+  }, [appState.viewtradecombined]);
 
   useEffect(async () => {
     await loadlist();
@@ -196,22 +203,28 @@ export default function Combinedtradetracking(props) {
 
     {tradelist.map((trade, index) => (
                   <tr className="table-info" key={index}>
-                    <td style={otcolsell_stationname}>{trade.sell_stationname}</td>
+                    <td style={otcolsell_stationname}>
+                      <Copytoclipboard copytext={trade.sell_stationname}/>
+                      {trade.sell_stationname}
+                    </td>
                     <td style={otcolsell_volume_total}><span className='float-right'>{trade.sell_volume_total}</span></td>
                     <td style={otcolsell_volume_remain}><span className='float-right'>{trade.sell_volume_remain}</span></td>
                     <td className={trade.sell_volume_min>1 ? "bg-danger" : ""}
                       style={otcolsell_volume_min}><span className='float-right'>{trade.sell_min_volume}</span></td>
                     <td className={trade.sell_volume_remain>trade.sell_updated ? "bg-warning" : ""}
                       style={otcolsell_volume_update}><span className='float-right'>{trade.sell_updated}</span></td>
-                    <td style={otcolsell_price}><span className='float-right'>{trade.sell_price}</span></td>
+                    <td style={otcolsell_price} className="bg-primary"><span className='float-right'>{trade.sell_price}</span></td>
                     <td style={otcolbuy_volume_total}><span className='float-right'>{trade.buy_volume_total}</span></td>
                     <td style={otcolbuy_volume_remain}><span className='float-right'>{trade.buy_volume_remain}</span></td>
                     <td className={trade.buy_volume_min>1 ? "bg-danger" : ""}
                       style={otcolbuy_volume_min}><span className='float-right'>{trade.buy_min_volume}</span></td>
                     <td className={trade.buy_volume_remain>trade.buy_updated ? "bg-warning" : ""}
                       style={otcolbuy_volume_update}><span className='float-right'>{trade.buy_updated}</span></td>
-                    <td style={otcolbuy_price}><span className='float-right'>{trade.buy_price}</span></td>
-                    <td style={otcolbuy_stationname}>{trade.buy_stationname}</td>
+                    <td style={otcolbuy_price} className="bg-primary"><span className='float-right'>{trade.buy_price}</span></td>
+                    <td style={otcolbuy_stationname}>
+                      <Copytoclipboard copytext={trade.buy_stationname}/>
+                      {trade.buy_stationname}
+                    </td>
                     <td style={otcoltotal_volume}><span className='float-right'>{trade.orderamount}</span></td>
                     <td style={otcoltotal_m3}><span className='float-right'>{ottotalvolume(trade)}</span></td>
                     <td style={otcolsell_total}><span className='float-right'>{format_price(trade.sell_price)}</span></td>
@@ -238,7 +251,10 @@ export default function Combinedtradetracking(props) {
                   <label className="input-group-text">type</label>
                 </div>
                 <div className="col col-sm-8 input-group-prepend">
-                  <label className="input-group-text">{appState.viewtradecombined.evetype_name}</label>
+                  <label className="input-group-text">
+                    <Copytoclipboard copytext={viewtradecombined.evetype_name}/>
+                    {viewtradecombined.evetype_name}
+                  </label>
                 </div>
               </div>
               <div className="row m-0">
@@ -254,7 +270,7 @@ export default function Combinedtradetracking(props) {
                   <label className="input-group-text">sell total</label>
                 </div>
                 <div className="col col-sm-8 input-group-prepend">
-                  <label className="input-group-text">{appState.viewtradecombined.totalamount}</label>
+                  <label className="input-group-text">{viewtradecombined.totalamount}</label>
                 </div>
               </div>
               <div className="row m-0">
@@ -262,7 +278,10 @@ export default function Combinedtradetracking(props) {
                   <label className="input-group-text">location</label>
                 </div>
                 <div className="col col-sm-8 input-group-prepend">
-                  <label className="input-group-text">{appState.viewtradecombined.sell_regionname}</label>
+                  <label className="input-group-text">
+                    <Copytoclipboard copytext={viewtradecombined.sell_regionname}/>
+                    {viewtradecombined.sell_regionname}
+                  </label>
                 </div>
               </div>
             </div>
@@ -289,11 +308,14 @@ export default function Combinedtradetracking(props) {
                   <label className="input-group-text">total</label>
                 </div>
                 <div className="col col-sm-8 input-group-prepend">
-                  <label className="input-group-text">{format_price(appState.viewtradecombined.sell_order_total)}</label>
+                  <label className="input-group-text">{format_price(viewtradecombined.sell_order_total)}</label>
                 </div>
               </div>
               <div className="row m-0">
-                <label className="input-group-text">{appState.viewtradecombined.sell_systemname}</label>
+                <label className="input-group-text">
+                  <Copytoclipboard copytext={viewtradecombined.sell_systemname}/>
+                  {viewtradecombined.sell_systemname}
+                </label>
               </div>
             </div>
 
@@ -303,7 +325,7 @@ export default function Combinedtradetracking(props) {
                   <label className="input-group-text">volume (m3)</label>
                 </div>
                 <div className="col col-sm-8 input-group-prepend">
-                  <label className="input-group-text">{appState.viewtradecombined.packaged_volume}</label>
+                  <label className="input-group-text">{viewtradecombined.packaged_volume}</label>
                 </div>
               </div>
               <div className="row m-0">
@@ -319,11 +341,14 @@ export default function Combinedtradetracking(props) {
                   <label className="input-group-text">buy total</label>
                 </div>
                 <div className="col col-sm-8 input-group-prepend">
-                  <label className="input-group-text">{appState.viewtradecombined.totalamount}</label>
+                  <label className="input-group-text">{viewtradecombined.totalamount}</label>
                 </div>
               </div>
               <div className="row m-0">
-                <label className="input-group-text">{appState.viewtradecombined.buy_systemname}</label>
+                <label className="input-group-text">
+                  <Copytoclipboard copytext={viewtradecombined.buy_systemname}/>
+                  {viewtradecombined.buy_systemname}
+                </label>
               </div>
             </div>
 
@@ -333,7 +358,7 @@ export default function Combinedtradetracking(props) {
                   <label className="input-group-text">total (m3)</label>
                 </div>
                 <div className="col col-sm-8 input-group-prepend">
-                  <label className="input-group-text">{totalvolume(appState.viewtradecombined)}</label>
+                  <label className="input-group-text">{totalvolume(viewtradecombined)}</label>
                 </div>
               </div>
               <div className="row m-0">
@@ -349,7 +374,7 @@ export default function Combinedtradetracking(props) {
                   <label className="input-group-text">to buy ISK</label>
                 </div>
                 <div className="col col-sm-8 input-group-prepend">
-                  <label className="input-group-text">{format_price(appState.viewtradecombined.buy_order_total)}</label>
+                  <label className="input-group-text">{format_price(viewtradecombined.buy_order_total)}</label>
                 </div>
               </div>
               <div className="row m-0">
@@ -357,7 +382,7 @@ export default function Combinedtradetracking(props) {
                   <label className="input-group-text">profit</label>
                 </div>
                 <div className="col col-sm-8 input-group-prepend">
-                  <label className="input-group-text">{format_price(appState.viewtradecombined.totalprofit)}</label>
+                  <label className="input-group-text">{format_price(viewtradecombined.totalprofit)}</label>
                 </div>
               </div>
             </div>
@@ -376,8 +401,8 @@ export default function Combinedtradetracking(props) {
         <div className="row h-100">
           <div className="col-6">
             <Routefinderlist 
-              startsystemid={appState.viewtradecombined.sell_systemid} 
-              endsystemid={appState.viewtradecombined.buy_systemid} 
+              startsystemid={viewtradecombined.sell_systemid} 
+              endsystemid={viewtradecombined.buy_systemid} 
               viasystems={compState.viasystems}
               avoidsystems={compState.avoidsystems}
               secure={compState.secure}

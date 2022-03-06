@@ -71,79 +71,6 @@ export default function Blueprintsprofit(props) {
           <div className="col-12">
             <div className="root fullheight">
 
-      <div className="containerheader">
-        <div className="mx-auto bg-light p-1">
-
-          <div className="d-flex">
-
-            <div className="p-2 flex-fill bg-info">
-              <div className="row m-0">
-                <div className="col col-sm-12 d-flex">
-                  <span className="mx-2">BP</span>
-                  <div style={{width:'200px'}}>
-                    <button type="button" className="btn btn-sm small btn-primary mx-1" onClick={() => calculateprices()}>recalculate prices</button>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-          </div>
-
-        </div>
-      </div>
-
-      <div className="containercontent container-relative">
-        <div className="root fullheight">
-          <div className="containercontent container-relative">
-            <div className="row h-100">
-              <div className="col-9">
-                <div className="root fullheight">
-
-{ loading && 
-              <div className="d-flex justify-content-center">
-                <Spinner animation="border" role="status" />
-              </div>
-}
-              <table className="table small table-dark table-bordered table-hover fillparent">
-                <thead>
-                  <tr>
-                    <th style={col_groupname}>group</th>
-                    <th style={col_name}>blueprint</th>
-                    <th style={col_price}><span className='float-right'>est. productioncost</span></th>
-                    <th style={col_name}>region</th>
-                    <th style={col_percprofit}><span className='float-right'>perc. profit</span></th>
-                    <th style={col_price}><span className='float-right'>region avg. price</span></th>
-                    <th style={col_amount}><span className='float-right'>order count</span></th>
-                    <th style={col_volume}><span className='float-right'># order units</span></th>
-                    <th></th>
-                    <th className="dummyscroll"></th>
-                  </tr>
-                </thead>
-                <tbody className="overflow text-body">
-
-{compState.bpcostlist.map((item, index) => (
-                  <tr className={item.region===compState.viewbpprofitperregion.region && item.id===compState.viewbpprofitperregion.id ? "table-active" : "table-info"}  key={index} onClick={() => { compActions.setviewbpprofitperregion(item); } }>
-                    <td style={col_groupname}>{item.typegroupname}</td>
-                    <td style={col_name}>{item.name}</td>
-                    <td style={col_price}><span className='float-right'>{format_price(item.estimatedproductioncost)}</span></td>
-                    <td style={col_name}>{item.regionname}</td>
-                    <td style={col_percprofit}><span className='float-right'>{format_2digits(item.percprofit)}</span></td>
-                    <td style={col_price}><span className='float-right'>{format_price(item.average)}</span></td>
-                    <td style={col_amount}><span className='float-right'>{item.ordercount}</span></td>
-                    <td style={col_volume}><span className='float-right'>{item.volume}</span></td>
-                    <td>
-                    </td>
-                  </tr>  
-))}
-
-                </tbody>
-              </table>
-
-                </div>
-              </div>
-
-          <div className="col-3">
-            <div className="root fullheight">
               <div className="containerheader">
                 <div className="mx-auto bg-light p-1">
 
@@ -151,19 +78,11 @@ export default function Blueprintsprofit(props) {
 
                     <div className="p-2 flex-fill bg-info">
                       <div className="row m-0">
-                        <div className="col col-sm-6 input-group-prepend">
-                          <label className="input-group-text">type</label>
-                        </div>
-                        <div className="col col-sm-6 input-group-prepend">
-                          <label className="input-group-text">{compState.viewbpprofitperregion.name}</label>
-                        </div>
-                      </div>
-                      <div className="row m-0">
-                        <div className="col col-sm-6 input-group-prepend">
-                          <label className="input-group-text">region</label>
-                        </div>
-                        <div className="col col-sm-6 input-group-prepend">
-                          <label className="input-group-text">{compState.viewbpprofitperregion.regionname}</label>
+                        <div className="col col-sm-12 d-flex">
+                          <span className="mx-2">BP</span>
+                          <div style={{width:'200px'}}>
+                            <button type="button" className="btn btn-sm small btn-primary mx-1" onClick={() => calculateprices()}>recalculate prices</button>
+                          </div>
                         </div>
                       </div>
                     </div>
@@ -172,52 +91,137 @@ export default function Blueprintsprofit(props) {
 
                 </div>
               </div>
+
               <div className="containercontent container-relative">
-                <div className="table-container container-fluid p-0">
+                <div className="root fullheight">
+                  <div className="containercontent container-relative">
+                    <div className="row h-100">
+                      <div className="col-9">
+                        <div className="root fullheight">
+                          <div className="containercontent container-relative">
+                            <div className="table-container container-fluid p-0">
 
 { loading && 
-                  <div className="d-flex justify-content-center">
-                    <Spinner animation="border" role="status" />
-                  </div>
+                              <div className="d-flex justify-content-center">
+                                <Spinner animation="border" role="status" />
+                              </div>
 }
-                  <table className="table small table-dark table-bordered table-hover fillparent">
-                    <thead>
-                      <tr>
-                        <th style={colorder_systemname}>system</th>
-                        <th style={col_systemsec}>sec</th>
-                        <th style={colorder_volume_remain}># rem</th>
-                        <th style={colorder_volume_min}># min</th>
-                        <th style={colorder_price}>sell</th>
-                        <th></th>
-                        <th className="dummyscroll"></th>
-                      </tr>
-                    </thead>
-                    <tbody className="overflow text-body">
+                              <table className="table small table-dark table-bordered table-hover fillparent">
+                                <thead>
+                                  <tr>
+                                    <th style={col_groupname}>group</th>
+                                    <th style={col_name}>blueprint</th>
+                                    <th style={col_price}><span className='float-right'>est. productioncost</span></th>
+                                    <th style={col_name}>region</th>
+                                    <th style={col_percprofit}><span className='float-right'>perc. profit</span></th>
+                                    <th style={col_price}><span className='float-right'>region avg. price</span></th>
+                                    <th style={col_amount}><span className='float-right'>order count</span></th>
+                                    <th style={col_volume}><span className='float-right'># order units</span></th>
+                                    <th></th>
+                                    <th className="dummyscroll"></th>
+                                  </tr>
+                                </thead>
+                                <tbody className="overflow text-body">
 
-    {compState.sellorders.map((item, index) => (
-                      <tr className={item.ship_kills>0 ? "table-danger" : "table-info"} key={index}>
-                        <td style={colorder_systemname}>{item.systemname}</td>
-                        <td className={item.security_status<highsec ? "bg-danger" : ""} style={col_systemsec}>{format_2digits(item.security_status)}</td>
-                        <td style={colorder_volume_remain}>{item.volume_remain}</td>
-                        <td className={item.min_volume>1 ? "bg-danger" : ""} style={colorder_volume_min}>{item.min_volume}</td>
-                        <td style={colorder_price}><span className='float-right'>{item.price}</span></td>
-                        <td>
-                        </td>
-                      </tr>  
-    ))}
+{compState.bpcostlist.map((item, index) => (
+                                  <tr className={item.region===compState.viewbpprofitperregion.region && item.id===compState.viewbpprofitperregion.id ? "table-active" : "table-info"}  key={index} onClick={() => { compActions.setviewbpprofitperregion(item); } }>
+                                    <td style={col_groupname}>{item.typegroupname}</td>
+                                    <td style={col_name}>{item.name}</td>
+                                    <td style={col_price}><span className='float-right'>{format_price(item.estimatedproductioncost)}</span></td>
+                                    <td style={col_name}>{item.regionname}</td>
+                                    <td style={col_percprofit}><span className='float-right'>{format_2digits(item.percprofit)}</span></td>
+                                    <td style={col_price}><span className='float-right'>{format_price(item.average)}</span></td>
+                                    <td style={col_amount}><span className='float-right'>{item.ordercount}</span></td>
+                                    <td style={col_volume}><span className='float-right'>{item.volume}</span></td>
+                                    <td>
+                                    </td>
+                                  </tr>  
+))}
 
-                    </tbody>
-                  </table>
+                                </tbody>
+                              </table>
+
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div className="col-3">
+                        <div className="root fullheight">
+                          <div className="containerheader">
+                            <div className="mx-auto bg-light p-1">
+
+                              <div className="d-flex">
+
+                                <div className="p-2 flex-fill bg-info">
+                                  <div className="row m-0">
+                                    <div className="col col-sm-6 input-group-prepend">
+                                      <label className="input-group-text">type</label>
+                                    </div>
+                                    <div className="col col-sm-6 input-group-prepend">
+                                      <label className="input-group-text">{compState.viewbpprofitperregion.name}</label>
+                                    </div>
+                                  </div>
+                                  <div className="row m-0">
+                                    <div className="col col-sm-6 input-group-prepend">
+                                      <label className="input-group-text">region</label>
+                                    </div>
+                                    <div className="col col-sm-6 input-group-prepend">
+                                      <label className="input-group-text">{compState.viewbpprofitperregion.regionname}</label>
+                                    </div>
+                                  </div>
+                                </div>
+
+                              </div>
+
+                            </div>
+                          </div>
+                          <div className="containercontent container-relative">
+                            <div className="table-container container-fluid p-0">
+
+{ loading && 
+                              <div className="d-flex justify-content-center">
+                                <Spinner animation="border" role="status" />
+                              </div>
+}
+                              <table className="table small table-dark table-bordered table-hover fillparent">
+                                <thead>
+                                  <tr>
+                                    <th style={colorder_systemname}>system</th>
+                                    <th style={col_systemsec}>sec</th>
+                                    <th style={colorder_volume_remain}># rem</th>
+                                    <th style={colorder_volume_min}># min</th>
+                                    <th style={colorder_price}>sell</th>
+                                    <th></th>
+                                    <th className="dummyscroll"></th>
+                                  </tr>
+                                </thead>
+                                <tbody className="overflow text-body">
+
+{compState.sellorders.map((item, index) => (
+                                  <tr className={item.ship_kills>0 ? "table-danger" : "table-info"} key={index}>
+                                    <td style={colorder_systemname}>{item.systemname}</td>
+                                    <td className={item.security_status<highsec ? "bg-danger" : ""} style={col_systemsec}>{format_2digits(item.security_status)}</td>
+                                    <td style={colorder_volume_remain}>{item.volume_remain}</td>
+                                    <td className={item.min_volume>1 ? "bg-danger" : ""} style={colorder_volume_min}>{item.min_volume}</td>
+                                    <td style={colorder_price}><span className='float-right'>{item.price}</span></td>
+                                    <td>
+                                    </td>
+                                  </tr>  
+))}
+
+                                </tbody>
+                              </table>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+                    </div>
+                  </div>
                 </div>
+
               </div>
-            </div>
-          </div>
-
-            </div>
-          </div>
-        </div>
-
-      </div>
 
             </div>
           </div>

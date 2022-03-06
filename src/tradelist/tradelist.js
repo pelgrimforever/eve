@@ -6,7 +6,6 @@ import FormControl from "react-bootstrap/FormControl";
 import Select from 'react-select';
 
 import Store from '../services/store.js';
-import './tradelist.scss';
 
 //components
 import Sortmode from '../utilities/sortmode.js';
