@@ -9,6 +9,7 @@ import Store from '../services/store.js';
 
 //components
 import Shipfirorder_confirm from '../popups/shipfirorder_confirm.js';
+import Copytoclipboard from '../components/copytoclipboard/copytoclipboard.js';
 //data models
 //component state
 import appstore from '../appstore.js';
@@ -147,7 +148,7 @@ export default function Shipfitsorderlist(props) {
             <div className="root fullheight">
               <div className="containerheader">
                 <div className="d-flex">
-                  Sell orders
+                  Sell orders - {compState.shipfitorder.shipname} - {compState.shipfitorder.evetypename}
                 </div>
               </div>
               <div className="containercontent container-relative">
@@ -234,7 +235,10 @@ export default function Shipfitsorderlist(props) {
                         <td style={colorder_systemname}>{item.systemname}</td>
                         <td className={item.security_status<highsec ? "bg-danger" : ""} style={colorder_systemsec}>{format_2digits(item.security_status)}</td>
                         <td style={colorder_volume_needed}><span className='float-right'>{item.amountneeded}</span></td>
-                        <td style={colorder_typename}>{item.evetypename}</td>
+                        <td style={colorder_typename}>
+                          <Copytoclipboard copytext={item.evetypename}/>
+                          {item.evetypename}
+                        </td>
                         <td>
                           <button type="button" className="mx-2 btn btn-sm small btn-primary" onClick={() => removeordereditem(item)}>-</button>
                           <button type="button" className="mx-2 btn btn-sm small btn-primary" onClick={() => confirmordereditem(item)}>v</button>

@@ -10,6 +10,7 @@ import Store from '../services/store.js';
 //components
 import Routefinderparameters from '../components/routefinder/routefinderparameters.js';
 import Routefinderlist from '../components/routefinder/routefinderlist.js';
+import Copytoclipboard from '../components/copytoclipboard/copytoclipboard.js';
 import Shipfirorder_confirm from '../popups/shipfirorder_confirm.js';
 //data models
 //services
@@ -248,10 +249,16 @@ export default function Shipfitroute(props) {
     {compState.shipfitorderselectedlist.map((item, index) => (
                       <tr className={item.ship_kills>0 ? "table-danger" : "table-info"} key={index}>
                         <td style={colorder_regionname}>{item.regionname}</td>
-                        <td style={colorder_systemname}>{item.systemname}</td>
+                        <td style={colorder_systemname}>
+                          <Copytoclipboard copytext={item.systemname}/>
+                          {item.systemname}
+                        </td>
                         <td className={item.security_status<highsec ? "bg-danger" : ""} style={colorder_systemsec}>{format_2digits(item.security_status)}</td>
                         <td style={colorder_volume_needed}><span className='float-right'>{item.amountneeded}</span></td>
-                        <td style={colorder_typename}>{item.evetypename}</td>
+                        <td style={colorder_typename}>
+                          <Copytoclipboard copytext={item.evetypename}/>
+                          {item.evetypename}
+                        </td>
                         <td>
                           <button type="button" className="mx-2 btn btn-sm small btn-primary" onClick={() => removeordereditem(item)}>-</button>
                           <button type="button" className="mx-2 btn btn-sm small btn-primary" onClick={() => confirmordereditem(item)}>v</button>

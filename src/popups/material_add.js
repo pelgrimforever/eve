@@ -184,7 +184,7 @@ function Material_add(props) {
                       <div className="col col-sm-12 d-flex">
                         <span className="mx-2" style={{width:'150px'}}>unit price</span>
                         <div className="mx-2" style={{width:'200px'}}>
-                          <NumericInput id="unitprice" name="unitprice" className="form-control" defaultValue={1} style={{width:'150px'}}/>
+                          <NumericInput id="unitprice" name="unitprice" precision={2} defaultValue={0.1} className="form-control" style={{width:'150px'}}/>
                         </div>
                       </div>
                     </div>

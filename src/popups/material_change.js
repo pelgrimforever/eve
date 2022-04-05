@@ -75,7 +75,7 @@ function Material_change(props) {
                       <div className="col col-sm-12 d-flex">
                         <span className="mx-2" style={{width:'150px'}}>unit price</span>
                         <div className="mx-2" style={{width:'200px'}}>
-                          <NumericInput id="unitprice" name="unitprice" className="form-control" defaultValue={props.viewmaterialinput.unitprice} style={{width:'150px'}}/>
+                          <NumericInput id="unitprice" name="unitprice" className="form-control" precision={2} defaultValue={props.viewmaterialinput.unitprice} style={{width:'150px'}}/>
                         </div>
                       </div>
                     </div>

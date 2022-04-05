@@ -10,7 +10,7 @@ import Viewshipfitorderselected from '../data/eve/view/viewshipfitorderselected.
 
 const initialState = {
   shipfitorderlist: [],
-  shipfitorder: null,
+  shipfitorder: new Viewshipfitorder(),
   orders: [],
   shipfitorderselectedlist: [],
   viewshipfitorderselected: new Viewshipfitorderselected(),

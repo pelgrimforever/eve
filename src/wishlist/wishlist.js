@@ -8,6 +8,7 @@ import Select from 'react-select';
 import Store from '../services/store.js';
 
 //components
+import Copytoclipboard from '../components/copytoclipboard/copytoclipboard.js';
 import Wishlist_add from '../popups/wishlist_add.js';
 import Wishlist_change from '../popups/wishlist_change.js';
 //data models
@@ -237,9 +238,15 @@ export default function Wishlist(props) {
 
     {compState.sellorders.map((item, index) => (
                       <tr className={item.ship_kills>0 ? "table-danger" : "table-info"} key={index}>
-                        <td style={colorder_typename}>{item.evetypename}</td>
+                        <td style={colorder_typename}>
+                          <Copytoclipboard copytext={item.evetypename}/>
+                          {item.evetypename}
+                        </td>
                         <td style={colorder_regionname}>{item.regionname}</td>
-                        <td style={colorder_systemname}>{item.systemname}</td>
+                        <td style={colorder_systemname}>
+                          <Copytoclipboard copytext={item.systemname}/>
+                          {item.systemname}
+                        </td>
                         <td className={item.security_status<sec_highsec ? "bg-danger" : ""} style={colorder_systemsec}>{format_2digits(item.security_status)}</td>
                         <td style={colorder_volume_remain}>{item.volume_remain}</td>
                         <td className={item.min_volume>1 ? "bg-danger" : ""} style={colorder_volume_min}>{item.min_volume}</td>
