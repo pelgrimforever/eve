@@ -2,7 +2,7 @@
 //don't change things here, it will be overwritten
 /* 
     Created on : Dec 16, 2018, 18:24:01
-    Generated on 22.1.2022 10:55
+    Generated on 20.4.2022 10:3
     Author     : Franky Laseure
 */
 
@@ -12,6 +12,7 @@ import ViewmaterialinputJson from '../conversion/viewmaterialinputjson.js';
 
 class Rsviewmaterialinputsuper extends Eveservice {
 
+	static restserviceselect = 'rsview_materialinput_select';
 	static restservice = 'rsview_materialinput';
 
 	static extractDataArray = (jsonarray): Viewmaterialinput[] => {
@@ -29,9 +30,9 @@ class Rsviewmaterialinputsuper extends Eveservice {
   static getall = async (user) => {
     const postdata = {
     	auth: user!=null ? user.auth : null,
-      operation: { type: super.OPERATIONTYPE_SELECT, operation: super.SELECT_ALL }
+      operation: super.SELECT_ALL
     }
-    return this.extractDataArray(await super.post(this.restservice, postdata));
+    return this.extractDataArray(await super.post(this.restserviceselect, postdata));
   }
 
 }

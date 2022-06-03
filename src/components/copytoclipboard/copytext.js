@@ -14,7 +14,9 @@ function Copytext(props) {
   const copytextElement = useRef(null);
 
   useEffect(() => {
+    console.log("useeffect");
     if (copytextElement.current) {
+      console.log("copytextElement.current");
       copytextElement.current.focus();
       document.execCommand("copy");
       //props.onCancel();

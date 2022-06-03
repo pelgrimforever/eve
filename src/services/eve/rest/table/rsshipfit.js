@@ -12,15 +12,15 @@ import ShipfitJson from './conversion/shipfitjson.js';
 
 class Rsshipfit extends Rsshipfitsuper {
 
-    static SELECT_ADDORDERShipfit = 50;
+    static INSERT_ADDORDERShipfit = 21;
 
     static orderShipfit = async (user, shipfitpk: Shipfitpk) => {
         const postdata = {
           auth: user!=null ? user.auth : null,
-          operation: { type: super.OPERATIONTYPE_SECURESELECT, operation: this.SELECT_ADDORDERShipfit },
+          operation: this.INSERT_ADDORDERShipfit,
           shipfitpk: ShipfitJson.PKtoJSON(shipfitpk)
         }
-        return await super.post(this.restservice, postdata);
+        return await super.post(this.restserviceinsert, postdata);
     }
 }
 

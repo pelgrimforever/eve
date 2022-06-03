@@ -66,8 +66,8 @@ export default function Userblueprints(props) {
     setBlueprintchange(true);
   }
 
-  const onUserbpchange = async (amountproduced, efficiency, researchcost) => {
-    const result = await compActions.changeUserbp(amountproduced, efficiency, researchcost);
+  const onUserbpchange = async (totalamount, amountproduced, efficiency, researchcost) => {
+    const result = await compActions.changeUserbp(totalamount, amountproduced, efficiency, researchcost);
     setBlueprintchange(false);
   }
 

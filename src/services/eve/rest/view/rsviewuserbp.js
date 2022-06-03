@@ -16,20 +16,20 @@ class Rsviewuserbp extends Rsviewuserbpsuper {
     static get4user = async (user, username) => {
         const postdata = {
             auth: user!=null ? user.auth : null,
-            operation: { type: super.OPERATIONTYPE_SECURESELECT, operation: this.SELECT4USER },
+            operation: this.SELECT4USER,
             username: username
         }
-        return this.extractDataArray(await super.post(this.restservice, postdata));
+        return this.extractDataArray(await super.post(this.restserviceselect, postdata));
     }
 
     static get4userbp = async (user, username, bp) => {
         const postdata = {
             auth: user!=null ? user.auth : null,
-            operation: { type: super.OPERATIONTYPE_SECURESELECT, operation: this.SELECT4USERBP },
+            operation: this.SELECT4USERBP,
             username: username,
             bp: bp
         }
-        return this.extractDataArray(await super.post(this.restservice, postdata));
+        return this.extractDataArray(await super.post(this.restserviceselect, postdata));
     }
 
 }

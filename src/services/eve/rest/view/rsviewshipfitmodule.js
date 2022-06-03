@@ -15,11 +15,11 @@ class Rsviewshipfitmodule extends Rsviewshipfitmodulesuper {
     static get4shipfit = async (user, username, shipname) => {
         const postdata = {
           auth: user!=null ? user.auth : null,
-          operation: { type: super.OPERATIONTYPE_SECURESELECT, operation: this.SELECT4Shipfit },
+          operation: this.SELECT4Shipfit,
           username: username,
           shipname: shipname
         }
-        return super.extractDataArray(await super.post(this.restservice, postdata));
+        return super.extractDataArray(await super.post(this.restserviceselect, postdata));
     }
 
 }

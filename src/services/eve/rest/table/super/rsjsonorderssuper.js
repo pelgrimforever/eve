@@ -2,7 +2,7 @@
 //don't change things here, it will be overwritten
 /* 
     Created on : Nov 20, 2018, 10:39:01 AM
-    Generated on 22.1.2022 10:55
+    Generated on 20.4.2022 10:3
     Author     : Franky Laseure
 */
 
@@ -14,168 +14,105 @@ import JsonordersJson from '../conversion/jsonordersjson.js';
 
 class Rsjsonorderssuper extends Eveservice {	
 
-	static restservice = 'rsjson_orders';
+  static restserviceselect = 'rsjson_orders_select';
+  static restserviceinsert = 'rsjson_orders_insert';
+  static restserviceupdate = 'rsjson_orders_update';
+  static restservicedelete = 'rsjson_orders_delete';
 
-	//SELECT OPERATIONS
-	static SELECT_JSONORDERS = 2;
-	static SELECT_Siteusergroup = 100 + 0;
+  //SELECT OPERATIONS
+  static SELECT_JSONORDERS = 2;
+  static SELECT_Siteusergroup = 100 + 0;
 
-	//UPDATE OPERATIONS
-	static UPDATE_JSONORDERS = 10;
+  //UPDATE OPERATIONS
+  static UPDATE_JSONORDERS = 10;
 
-	//INSERT OPERATIONS
-	static INSERT_JSONORDERS = 20;
+  //INSERT OPERATIONS
+  static INSERT_JSONORDERS = 20;
 
-	//DELETE OPERATIONS
-	static DELETE_JSONORDERS = 30;
+  //DELETE OPERATIONS
+  static DELETE_JSONORDERS = 30;
 
-	static extractDataArray = (jsonarray): Jsonorders[] => {
-		let jsonorderss: [] = [];
-		for(let i = 0; i < jsonarray.length; i++) {
-			jsonorderss.push(JsonordersJson.fromJSON(jsonarray[i]));
-		}
-   	return jsonorderss;
-	}
+  static extractDataArray = (jsonarray): Jsonorders[] => {
+    let jsonorderss: [] = [];
+    for(let i = 0; i < jsonarray.length; i++) {
+      jsonorderss.push(JsonordersJson.fromJSON(jsonarray[i]));
+    }
+    return jsonorderss;
+  }
 
-	static extractDataObject = (jsonobject): Jsonorders => {
+  static extractDataObject = (jsonobject): Jsonorders => {
     return JsonordersJson.fromJSON(jsonobject);
-	}
-
-	static getcount = async () => {
-    const postdata = {
-      operation: { type: super.OPERATIONTYPE_SELECT, operation: super.SELECT_COUNT }
-    }
-    return this.extractDataCount(await super.post(this.restservice, postdata));
-	}
-
-  static getall = async () => {
-    const postdata = {
-      operation: { type: super.OPERATIONTYPE_SELECT, operation: super.SELECT_ALL }
-    }
-    return this.extractDataArray(await super.post(this.restservice, postdata));
   }
 
-	static getOne = async (jsonorderspk: Jsonorderspk): Jsonorders => {
+  static getcount = async (user) => {
     const postdata = {
-      operation: { type: super.OPERATIONTYPE_SELECT, operation: this.SELECT_JSONORDERS },
+      auth: user===null ? null : user.auth,
+      operation: super.SELECT_COUNT
+    }
+    return this.extractDataCount(await super.post(this.restserviceselect, postdata));
+  }
+
+  static getall = async (user) => {
+    const postdata = {
+      auth: user===null ? null : user.auth,
+      operation: super.SELECT_ALL
+    }
+    return this.extractDataArray(await super.post(this.restserviceselect, postdata));
+  }
+
+  static getOne = async (user, jsonorderspk: Jsonorderspk): Jsonorders => {
+    const postdata = {
+      auth: user===null ? null : user.auth,
+      operation: this.SELECT_JSONORDERS,
       "json_orderspk": JsonordersJson.PKtoJSON(jsonorderspk)
     }
-    return this.extractDataObject(await super.post(this.restservice, postdata));
-	}
-
-	static search = async (jsonorderssearcher) => {
-    const postdata = {
-      operation: { type: super.OPERATIONTYPE_SELECT, operation: this.SELECT_SEARCH },
-     	"search": jsonorderssearcher.toJSON()
-    }
-    return this.extractDataArray(await super.post(this.restservice, postdata));
+    return this.extractDataObject(await super.post(this.restserviceselect, postdata));
   }
 
-	static searchcount = async (jsonorderssearcher) => {
+  static search = async (user, jsonorderssearcher) => {
     const postdata = {
-      operation: { type: super.OPERATIONTYPE_SELECT, operation: this.SELECT_SEARCHCOUNT },
-     	"search": jsonorderssearcher.toJSON()
+      auth: user===null ? null : user.auth,
+      operation: this.SELECT_SEARCH,
+      "search": jsonorderssearcher.toJSON()
     }
-    return this.extractDataCount(await super.post(this.restservice, postdata));
-	}
-
-	static insert = async (jsonorders: Jsonorders) => {
-    const postdata = {
-      operation: { type: super.OPERATIONTYPE_INSERT, operation: this.INSERT_JSONORDERS },
-     	"jsonorders": JsonordersJson.toJSON(jsonorders)
-    }
-    return await super.post(this.restservice, postdata);
-	}
-
-	static save = async (jsonorders: Jsonorders) => {
-    const postdata = {
-      operation: { type: super.OPERATIONTYPE_UPDATE, operation: this.UPDATE_JSONORDERS },
-     	"json_orders": JsonordersJson.toJSON(jsonorders)
-    }
-    return await super.post(this.restservice, postdata);
-	}
-
-	static del = async (jsonorders: Jsonorders) => {
-    const postdata = {
-      operation: { type: super.OPERATIONTYPE_DELETE, operation: this.DELETE_JSONORDERS },
-     	"json_orders": JsonordersJson.toJSON(jsonorders)
-    }
-    return await super.post(this.restservice, postdata);
-	}
-
-//SECURE SECTION START
-
-	static sec_getcount = async (user) => {
-    const postdata = {
-    	auth: user===null ? null : user.auth,
-      operation: { type: super.OPERATIONTYPE_SECURESELECT, operation: super.SELECT_COUNT }
-    }
-    return this.extractDataCount(await super.post(this.restservice, postdata));
-	}
-
-  static sec_getall = async (user) => {
-    const postdata = {
-    	auth: user===null ? null : user.auth,
-      operation: { type: super.OPERATIONTYPE_SECURESELECT, operation: super.SELECT_ALL }
-    }
-    return this.extractDataArray(await super.post(this.restservice, postdata));
+    return this.extractDataArray(await super.post(this.restserviceselect, postdata));
   }
 
-	static sec_getOne = async (user, jsonorderspk: Jsonorderspk): Jsonorders => {
+  static searchcount = async (user, jsonorderssearcher) => {
     const postdata = {
-    	auth: user===null ? null : user.auth,
-      operation: { type: super.OPERATIONTYPE_SECURESELECT, operation: this.SELECT_JSONORDERS },
-      "json_orderspk": JsonordersJson.PKtoJSON(jsonorderspk)
+      auth: user===null ? null : user.auth,
+      operation: this.SELECT_SEARCHCOUNT,
+      "search": jsonorderssearcher.toJSON()
     }
-    return this.extractDataObject(await super.post(this.restservice, postdata));
-	}
-
-	static sec_search = async (user, jsonorderssearcher) => {
-    const postdata = {
-    	auth: user===null ? null : user.auth,
-      operation: { type: super.OPERATIONTYPE_SECURESELECT, operation: this.SELECT_SEARCH },
-     	"search": jsonorderssearcher.toJSON()
-    }
-    return this.extractDataArray(await super.post(this.restservice, postdata));
+    return this.extractDataCount(await super.post(this.restserviceselect, postdata));
   }
 
-	static sec_searchcount = async (user, jsonorderssearcher) => {
+  static insert = async (user, jsonorders: Jsonorders) => {
     const postdata = {
-    	auth: user===null ? null : user.auth,
-      operation: { type: super.OPERATIONTYPE_SECURESELECT, operation: this.SELECT_SEARCHCOUNT },
-     	"search": jsonorderssearcher.toJSON()
+      auth: user===null ? null : user.auth,
+      operation: this.INSERT_JSONORDERS,
+      "json_orders": JsonordersJson.toJSON(jsonorders)
     }
-    return this.extractDataCount(await super.post(this.restservice, postdata));
-	}
+    return await super.post(this.restserviceinsert, postdata);
+  }
 
-	static sec_insert = async (user, jsonorders: Jsonorders) => {
+  static save = async (user, jsonorders: Jsonorders) => {
     const postdata = {
-    	auth: user===null ? null : user.auth,
-      operation: { type: super.OPERATIONTYPE_SECUREINSERT, operation: this.INSERT_JSONORDERS },
-     	"json_orders": JsonordersJson.toJSON(jsonorders)
+      auth: user===null ? null : user.auth,
+      operation: this.UPDATE_JSONORDERS,
+      "json_orders": JsonordersJson.toJSON(jsonorders)
     }
-    return await super.post(this.restservice, postdata);
-	}
+    return await super.post(this.restserviceupdate, postdata);
+  }
 
-	static sec_save = async (user, jsonorders: Jsonorders) => {
+  static del = async (user, jsonorders: Jsonorders) => {
     const postdata = {
-    	auth: user===null ? null : user.auth,
-      operation: { type: super.OPERATIONTYPE_SECUREUPDATE, operation: this.UPDATE_JSONORDERS },
-     	"json_orders": JsonordersJson.toJSON(jsonorders)
+      auth: user===null ? null : user.auth,
+      operation: this.DELETE_JSONORDERS,
+      "json_orders": JsonordersJson.toJSON(jsonorders)
     }
-    return await super.post(this.restservice, postdata);
-	}
-
-	static sec_del = async (user, jsonorders: Jsonorders) => {
-    const postdata = {
-    	auth: user===null ? null : user.auth,
-      operation: { type: super.OPERATIONTYPE_SECUREDELETE, operation: this.DELETE_JSONORDERS },
-     	"json_orders": JsonordersJson.toJSON(jsonorders)
-    }
-    return await super.post(this.restservice, postdata);
-	}
-
-//SECURE SECTION END
+    return await super.post(this.restservicedelete, postdata);
+  }
 
 }
 

@@ -16,10 +16,10 @@ class Rsviewevetypeorderhistoryregionmonth extends Rsviewevetypeorderhistoryregi
   static get4evetype4lastmonth = async (user, evetypepk) => {
     const postdata = {
       auth: user!=null ? user.auth : null,
-      operation: { type: super.OPERATIONTYPE_SECURESELECT, operation: this.SELECT_EVETYPEYM },
+      operation: this.SELECT_EVETYPEYM,
       evetypepk: EvetypeJson.PKtoJSON(evetypepk)
     }
-    return this.extractDataArray(await super.post(this.restservice, postdata));
+    return this.extractDataArray(await super.post(this.restserviceselect, postdata));
   }
 
 }

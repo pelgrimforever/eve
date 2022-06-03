@@ -17,11 +17,11 @@ class Rstrade extends Rstradesuper {
     static executetrade = async (user, tradepk: Tradepk, volume) => {
         const postdata = {
           auth: user!=null ? user.auth : null,
-          operation: { type: super.OPERATIONTYPE_SECUREUPDATE, operation: this.UPDATE_TRADING },
+          operation: this.UPDATE_TRADING,
           tradepk: TradeJson.PKtoJSON(tradepk),
           volume: volume,
         }
-        return await super.post(this.restservice, postdata);
+        return await super.post(this.restserviceupdate, postdata);
     }
 }
 

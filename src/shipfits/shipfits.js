@@ -11,6 +11,7 @@ import Store from '../services/store.js';
 import Shipfit_add from '../popups/shipfit_add.js';
 import Shipmodule_add from '../popups/shipmodule_add.js';
 import Shipfitorder_addstock from '../popups/shipfitorder_addstock.js';
+import Copytoclipboard from '../components/copytoclipboard/copytoclipboard.js';
 //data models
 //component state
 import appstore from '../appstore.js';
@@ -100,7 +101,8 @@ export default function Shipfits(props) {
 
   const colsmall_name = {width: '10rem'};
   const colsmall_type = {width: '12rem'};
-  const colsmall_amount = {width: '5rem'};
+  const colsmall_amountwanted = {width: '3rem'};
+  const colsmall_amountinstock = {width: '3rem'};
   const colsmall_pvolume = {width: '6rem'};
 
   return (
@@ -248,9 +250,9 @@ export default function Shipfits(props) {
                     <thead>
                       <tr>
                         <th style={colsmall_name}>ship name</th>
-                        <th style={colsmall_name}>type</th>
-                        <th style={colsmall_amount}><span className='float-right'>needed</span></th>
-                        <th style={colsmall_amount}><span className='float-right'>in stock</span></th>
+                        <th style={colsmall_type}>type</th>
+                        <th style={colsmall_amountwanted}><span className='float-right'>needed</span></th>
+                        <th style={colsmall_amountinstock}><span className='float-right'>in stock</span></th>
                         <th style={colsmall_pvolume}><span className='float-right'>pack. vol</span></th>
                         <th></th>
                         <th className="dummyscroll"></th>
@@ -260,9 +262,12 @@ export default function Shipfits(props) {
     {compState.shipfitorderlist.map((item, index) => (
                       <tr className="table-info" key={index}>
                         <td style={colsmall_name}>{item.shipname}</td>
-                        <td style={colsmall_name}>{item.evetypename}</td>
-                        <td style={colsmall_amount}><span className='float-right'>{item.amountwanted}</span></td>
-                        <td style={colsmall_amount}><span className='float-right'>{item.amountinstock}</span></td>
+                        <td style={colsmall_type}>
+                          <Copytoclipboard copytext={item.evetypename}/>
+                          {item.evetypename}
+                        </td>
+                        <td style={colsmall_amountwanted}><span className='float-right'>{item.amountwanted}</span></td>
+                        <td style={colsmall_amountinstock}><span className='float-right'>{item.amountinstock}</span></td>
                         <td style={colsmall_pvolume}><span className='float-right'>{item.packaged_volume}</span></td>
                         <td>
                           <button type="button" className="btn btn-sm small btn-primary" onClick={() => addstockShiporder(item)}>*</button>

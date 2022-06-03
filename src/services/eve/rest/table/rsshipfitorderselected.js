@@ -20,21 +20,21 @@ class Rsshipfitorderselected extends Rsshipfitorderselectedsuper {
     static addOrder2Shipfitorder = async (user, shipfitorderpk, orderpk) => {
         const postdata = {
             auth: user!=null ? user.auth : null,
-            operation: { type: super.OPERATIONTYPE_SECUREINSERT, operation: this.INSERT_ORDERID },
+            operation: this.INSERT_ORDERID,
             shipfitorderpk: ShipfitorderJson.PKtoJSON(shipfitorderpk),
             orderspk: OrdersJson.PKtoJSON(orderpk)
         }
-        return await super.post(this.restservice, postdata);
+        return await super.post(this.restserviceinsert, postdata);
     }
 
     static confirmShipfitorder = async (user, shipfitorderselectedpk, amount) => {
         const postdata = {
             auth: user!=null ? user.auth : null,
-            operation: { type: super.OPERATIONTYPE_SECUREUPDATE, operation: this.UPDATE_CONFIRMORDER },
+            operation: this.UPDATE_CONFIRMORDER,
             shipfitorderselectedpk: ShipfitorderselectedJson.PKtoJSON(shipfitorderselectedpk),
             amount: amount
         }
-        return await super.post(this.restservice, postdata);
+        return await super.post(this.restserviceupdate, postdata);
     }
 }
 

@@ -27,7 +27,7 @@ export const loadBlueprints = async (store) => {
 export const toggleConfiguredbp = async (store, viewblueprint) => {
   const evetypepk = new Evetypepk();
   evetypepk.id = viewblueprint.id;
-  const result = await Rsevetype.sec_toggleconfiguredbp(Store.user, evetypepk);
+  const result = await Rsevetype.toggleconfiguredbp(Store.user, evetypepk);
   const dummy = await loadBlueprints(store);
 }
 
@@ -52,7 +52,7 @@ export const addMaterial = async (store, material, amount) => {
   mat.PK.evetypeBpPK.id = store.state.blueprint.id;
   mat.PK.evetypeMaterialPK.id = material.id;
   mat.amount = amount;
-  const result = await Rsbpmaterial.sec_insert(Store.user, mat);
+  const result = await Rsbpmaterial.insert(Store.user, mat);
   loadBlueprints(store);
   loadBlueprintmaterials(store, store.state.blueprint);
 }
@@ -63,7 +63,7 @@ export const changeMaterial = async (store, viewbpmaterial) => {
   mat.PK.evetypeBpPK.id = store.state.blueprint.id;
   mat.PK.evetypeMaterialPK.id = viewbpmaterial.material;
   mat.amount = viewbpmaterial.amount;
-  const result = await Rsbpmaterial.sec_save(Store.user, mat);
+  const result = await Rsbpmaterial.save(Store.user, mat);
   loadBlueprints(store);
   loadBlueprintmaterials(store, store.state.blueprint);
 }
@@ -74,7 +74,7 @@ export const delMaterial = async (store, viewbpmaterial) => {
   mat.PK.evetypeBpPK.id = store.state.blueprint.id;
   mat.PK.evetypeMaterialPK.id = viewbpmaterial.material;
   mat.amount = viewbpmaterial.amount;
-  const result = await Rsbpmaterial.sec_del(Store.user, mat);
+  const result = await Rsbpmaterial.del(Store.user, mat);
   loadBlueprints(store);
   loadBlueprintmaterials(store, store.state.blueprint);
 }

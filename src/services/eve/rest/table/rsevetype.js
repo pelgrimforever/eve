@@ -14,21 +14,21 @@ class Rsevetype extends Rsevetypesuper {
     static UPDATE_TOGGLE_CONFIGUREDBP = 11;
     static CALCULATE_ESTIMATEDPRODUCTIONCOSTS = 12;
 
-    static sec_toggleconfiguredbp = async (user, evetypepk) => {
-        const postdata = {
-            auth: user===null ? null : user.auth,
-          operation: { type: super.OPERATIONTYPE_SECUREUPDATE, operation: this.UPDATE_TOGGLE_CONFIGUREDBP },
-            evetypepk: EvetypeJson.PKtoJSON(evetypepk)
-        }
-        return await super.post(this.restservice, postdata);
-    }
-
-    static sec_calculateestimatedproductioncost = async (user) => {
+    static toggleconfiguredbp = async (user, evetypepk) => {
         const postdata = {
           auth: user===null ? null : user.auth,
-          operation: { type: super.OPERATIONTYPE_SECUREUPDATE, operation: this.CALCULATE_ESTIMATEDPRODUCTIONCOSTS }
+          operation: this.UPDATE_TOGGLE_CONFIGUREDBP,
+          evetypepk: EvetypeJson.PKtoJSON(evetypepk)
         }
-        return await super.post(this.restservice, postdata);
+        return await super.post(this.restserviceupdate, postdata);
+    }
+
+    static calculateestimatedproductioncost = async (user) => {
+        const postdata = {
+          auth: user===null ? null : user.auth,
+          operation: this.CALCULATE_ESTIMATEDPRODUCTIONCOSTS
+        }
+        return await super.post(this.restserviceupdate, postdata);
     }
 
 }

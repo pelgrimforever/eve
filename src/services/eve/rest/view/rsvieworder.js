@@ -28,65 +28,65 @@ class Rsvieworder extends Rsviewordersuper {
     orderpk.id = orderid;
     const postdata = {
       auth: user!=null ? user.auth : null,
-      operation: { type: super.OPERATIONTYPE_SECURESELECT, operation: this.SELECT_ONE },
+      operation: this.SELECT_ONE,
       orderpk: OrdersJson.PKtoJSON(orderpk)
     }
-    return VieworderJson.fromJSON(await super.post(this.restservice, postdata));
+    return VieworderJson.fromJSON(await super.post(this.restserviceselect, postdata));
   }
 
   static getevetypesell = async (user, evetypepk) => {
     const postdata = {
       auth: user!=null ? user.auth : null,
-      operation: { type: super.OPERATIONTYPE_SECURESELECT, operation: this.SELECT_EVETYPE_SELL },
+      operation: this.SELECT_EVETYPE_SELL,
       evetypepk: EvetypeJson.PKtoJSON(evetypepk)
     }
-    return super.extractDataArray(await super.post(this.restservice, postdata));
+    return super.extractDataArray(await super.post(this.restserviceselect, postdata));
   }
 
   static getevetypebuy = async (user, evetypepk) => {
     const postdata = {
       auth: user!=null ? user.auth : null,
-      operation: { type: super.OPERATIONTYPE_SECURESELECT, operation: this.SELECT_EVETYPE_BUY },
+      operation: this.SELECT_EVETYPE_BUY,
       evetypepk: EvetypeJson.PKtoJSON(evetypepk)
     }
-    return super.extractDataArray(await super.post(this.restservice, postdata));
+    return super.extractDataArray(await super.post(this.restserviceselect, postdata));
   }
 
   static getevetypebuy = async (user, evetypepk) => {
     const postdata = {
       auth: user!=null ? user.auth : null,
-      operation: { type: super.OPERATIONTYPE_SECURESELECT, operation: this.SELECT_EVETYPE_BUY },
+      operation: this.SELECT_EVETYPE_BUY,
       evetypepk: EvetypeJson.PKtoJSON(evetypepk)
     }
-    return super.extractDataArray(await super.post(this.restservice, postdata));
+    return super.extractDataArray(await super.post(this.restserviceselect, postdata));
   }
 
   static getordersselllowprice = async (user, systempk) => {
     const postdata = {
       auth: user!=null ? user.auth : null,
-      operation: { type: super.OPERATIONTYPE_SECURESELECT, operation: this.SELECT_LOWPRICE_SELL },
+      operation: this.SELECT_LOWPRICE_SELL,
       systempk: SystemJson.PKtoJSON(systempk)
     }
-    return this.extractDataArray_startsystem(await super.post(this.restservice, postdata));
+    return this.extractDataArray_startsystem(await super.post(this.restserviceselect, postdata));
   }
 
   static getorders4wishlist = async (user, username) => {
     const postdata = {
       auth: user!=null ? user.auth : null,
-      operation: { type: super.OPERATIONTYPE_SECURESELECT, operation: this.SELECT_Wishlistorders },
+      operation: this.SELECT_Wishlistorders,
       username: username
     }
-    return super.extractDataArray(await super.post(this.restservice, postdata));
+    return super.extractDataArray(await super.post(this.restserviceselect, postdata));
   }
 
   static getevetyperegionsell = async (user, evetypepk, regionpk) => {
     const postdata = {
       auth: user!=null ? user.auth : null,
-      operation: { type: super.OPERATIONTYPE_SECURESELECT, operation: this.SELECT_EVETYPE_REGION_SELL },
+      operation: this.SELECT_EVETYPE_REGION_SELL,
       evetypepk: EvetypeJson.PKtoJSON(evetypepk),
       regionpk: RegionJson.PKtoJSON(regionpk)
     }
-    return super.extractDataArray(await super.post(this.restservice, postdata));
+    return super.extractDataArray(await super.post(this.restserviceselect, postdata));
   }
 
   static extractDataArray_startsystem = (jsonarray): Viewtrade[] => {

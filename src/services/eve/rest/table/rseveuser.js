@@ -17,48 +17,48 @@ class Rseveuser extends Rseveusersuper {
     static SELECT_ISADMIN = 40;
     static DELETE_REGISTRATION = 31;
 
-    static sec_newuser = async (user, eveuser: Eveuser) => {
+    static userisadmin = async (user) => {
         const postdata = {
           auth: user===null ? null : user.auth,
-          operation: { type: super.OPERATIONTYPE_SECUREINSERT, operation: this.INSERT_NEWUSER },
-          eveuser: EveuserJson.toJSON(eveuser)
+          operation: this.SELECT_ISADMIN
         }
-        return await super.post(this.restservice, postdata);
+        return await super.post(this.restserviceselect, postdata);
     }
 
-    static sec_updatepass = async (user, newauth) => {
+    static newuser = async (user, eveuser: Eveuser) => {
         const postdata = {
           auth: user===null ? null : user.auth,
-          operation: { type: super.OPERATIONTYPE_SECUREUPDATE, operation: this.UPDATE_EVEUSERPASS },
+          operation: this.INSERT_NEWUSER,
+          eveuser: EveuserJson.toJSON(eveuser)
+        }
+        return await super.post(this.restserviceinsert, postdata);
+    }
+
+    static updatepass = async (user, newauth) => {
+        const postdata = {
+          auth: user===null ? null : user.auth,
+          operation: this.UPDATE_EVEUSERPASS,
           newauth: newauth
         }
-        return await super.post(this.restservice, postdata);
+        return await super.post(this.restserviceupdate, postdata);
     }
 
-    static sec_userreset = async (user, eveuser: Eveuser) => {
+    static userreset = async (user, eveuser: Eveuser) => {
         const postdata = {
           auth: user===null ? null : user.auth,
-          operation: { type: super.OPERATIONTYPE_SECUREUPDATE, operation: this.UPDATE_EVEUSERRESET },
+          operation: this.UPDATE_EVEUSERRESET,
           eveuser: EveuserJson.toJSON(eveuser)
         }
-        return await super.post(this.restservice, postdata);
+        return await super.post(this.restserviceupdate, postdata);
     }
 
-    static sec_deleteregistration = async (user, eveuser: Eveuser) => {
+    static deleteregistration = async (user, eveuser: Eveuser) => {
         const postdata = {
           auth: user===null ? null : user.auth,
-          operation: { type: super.OPERATIONTYPE_SECUREDELETE, operation: this.DELETE_REGISTRATION },
+          operation: this.DELETE_REGISTRATION,
           eveuser: EveuserJson.toJSON(eveuser)
         }
-        return await super.post(this.restservice, postdata);
-    }
-
-    static sec_userisadmin = async (user) => {
-        const postdata = {
-          auth: user===null ? null : user.auth,
-          operation: { type: super.OPERATIONTYPE_SECURESELECT, operation: this.SELECT_ISADMIN },
-        }
-        return await super.post(this.restservice, postdata);
+        return await super.post(this.restservicedelete, postdata);
     }
 
 }

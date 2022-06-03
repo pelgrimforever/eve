@@ -13,10 +13,10 @@ class Rssiteuser extends Rssiteusersuper {
 
     static authenticate = async (data): Siteuser => {
     const postdata = {
-      operation: { type: super.OPERATIONTYPE_SELECT, operation: this.SELECT_AUTHENTICATE },
+      operation: this.SELECT_AUTHENTICATE,
       "data": data
     }
-    return super.extractDataObject(await super.post(super.restservice, postdata));
+    return super.extractDataObject(await super.post(super.restserviceselect, postdata));
     }
 }
 

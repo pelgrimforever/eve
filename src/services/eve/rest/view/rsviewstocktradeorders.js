@@ -14,11 +14,11 @@ class Rsviewstocktradeorders extends Rsviewstocktradeorderssuper {
 
     static get4stocktrade = async (stocktradesystem) => {
         const postdata = {
-          operation: { type: super.OPERATIONTYPE_SELECT, operation: this.SELECT_4USERNAME_SYSTEM },
+          operation: this.SELECT_4USERNAME_SYSTEM,
           username: stocktradesystem.username,
           system: stocktradesystem.id
         }
-        return super.extractDataArray(await super.post(this.restservice, postdata));
+        return super.extractDataArray(await super.post(this.restserviceselect, postdata));
     }
 
 }

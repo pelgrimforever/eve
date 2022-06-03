@@ -2,7 +2,7 @@
 //don't change things here, it will be overwritten
 /* 
     Created on : Nov 20, 2018, 10:39:01 AM
-    Generated on 24.9.2021 14:50
+    Generated on 1.5.2022 21:58
     Author     : Franky Laseure
 */
 
@@ -16,186 +16,115 @@ import SiteusergroupJson from '../conversion/siteusergroupjson.js';
 
 class Rssiteusersuper extends Sitesecurityservice {	
 
-	static restservice = 'rssiteuser';
+  static restserviceselect = 'rssiteuser_select';
+  static restserviceinsert = 'rssiteuser_insert';
+  static restserviceupdate = 'rssiteuser_update';
+  static restservicedelete = 'rssiteuser_delete';
 
-	//SELECT OPERATIONS
-	static SELECT_SITEUSER = 2;
-	static SELECT_Siteusergroup = 100 + 0;
-	static SELECT_Siteusergroup = 100 + 0;
+  //SELECT OPERATIONS
+  static SELECT_SITEUSER = 2;
+  static SELECT_Siteusergroup = 100 + 0;
+  static SELECT_Siteusergroup = 100 + 0;
 
-	//UPDATE OPERATIONS
-	static UPDATE_SITEUSER = 10;
+  //UPDATE OPERATIONS
+  static UPDATE_SITEUSER = 10;
 
-	//INSERT OPERATIONS
-	static INSERT_SITEUSER = 20;
+  //INSERT OPERATIONS
+  static INSERT_SITEUSER = 20;
 
-	//DELETE OPERATIONS
-	static DELETE_SITEUSER = 30;
+  //DELETE OPERATIONS
+  static DELETE_SITEUSER = 30;
 
-	static extractDataArray = (jsonarray): Siteuser[] => {
-		let siteusers: [] = [];
-		for(let i = 0; i < jsonarray.length; i++) {
-			siteusers.push(SiteuserJson.fromJSON(jsonarray[i]));
-		}
-   	return siteusers;
-	}
+  static extractDataArray = (jsonarray): Siteuser[] => {
+    let siteusers: [] = [];
+    for(let i = 0; i < jsonarray.length; i++) {
+      siteusers.push(SiteuserJson.fromJSON(jsonarray[i]));
+    }
+    return siteusers;
+  }
 
-	static extractDataObject = (jsonobject): Siteuser => {
+  static extractDataObject = (jsonobject): Siteuser => {
     return SiteuserJson.fromJSON(jsonobject);
-	}
-
-	static getcount = async () => {
-    const postdata = {
-      operation: { type: super.OPERATIONTYPE_SELECT, operation: super.SELECT_COUNT }
-    }
-    return this.extractDataCount(await super.post(this.restservice, postdata));
-	}
-
-  static getall = async () => {
-    const postdata = {
-      operation: { type: super.OPERATIONTYPE_SELECT, operation: super.SELECT_ALL }
-    }
-    return this.extractDataArray(await super.post(this.restservice, postdata));
   }
 
-	static getOne = async (siteuserpk: Siteuserpk): Siteuser => {
+  static getcount = async (user) => {
     const postdata = {
-      operation: { type: super.OPERATIONTYPE_SELECT, operation: this.SELECT_SITEUSER },
+      auth: user===null ? null : user.auth,
+      operation: super.SELECT_COUNT
+    }
+    return this.extractDataCount(await super.post(this.restserviceselect, postdata));
+  }
+
+  static getall = async (user) => {
+    const postdata = {
+      auth: user===null ? null : user.auth,
+      operation: super.SELECT_ALL
+    }
+    return this.extractDataArray(await super.post(this.restserviceselect, postdata));
+  }
+
+  static getOne = async (user, siteuserpk: Siteuserpk): Siteuser => {
+    const postdata = {
+      auth: user===null ? null : user.auth,
+      operation: this.SELECT_SITEUSER,
       "siteuserpk": SiteuserJson.PKtoJSON(siteuserpk)
     }
-    return this.extractDataObject(await super.post(this.restservice, postdata));
-	}
-
-	static loadSiteuser4siteusergroup = async (siteusergrouppk: Siteusergrouppk): Siteuser[] => {
-    const postdata = {
-      operation: { type: super.OPERATIONTYPE_SELECT, operation: this.SELECT_Siteusergroup },
-     	"siteusergrouppk": SiteusergroupJson.PKtoJSON(siteusergrouppk)
-    }
-    return this.extractDataArray(await super.post(this.restservice, postdata));
-	}
-
-	static search = async (siteusersearcher) => {
-    const postdata = {
-      operation: { type: super.OPERATIONTYPE_SELECT, operation: this.SELECT_SEARCH },
-     	"search": siteusersearcher.toJSON()
-    }
-    return this.extractDataArray(await super.post(this.restservice, postdata));
+    return this.extractDataObject(await super.post(this.restserviceselect, postdata));
   }
 
-	static searchcount = async (siteusersearcher) => {
+  static loadSiteuser4siteusergroup = async (user, siteusergrouppk: Siteusergrouppk): Siteuser[] => {
     const postdata = {
-      operation: { type: super.OPERATIONTYPE_SELECT, operation: this.SELECT_SEARCHCOUNT },
-     	"search": siteusersearcher.toJSON()
+      auth: user===null ? null : user.auth,
+      operation: this.SELECT_Siteusergroup,
+      "siteusergrouppk": SiteusergroupJson.PKtoJSON(siteusergrouppk)
     }
-    return this.extractDataCount(await super.post(this.restservice, postdata));
-	}
-
-	static insert = async (siteuser: Siteuser) => {
-    const postdata = {
-      operation: { type: super.OPERATIONTYPE_INSERT, operation: this.INSERT_SITEUSER },
-     	"siteuser": SiteuserJson.toJSON(siteuser)
-    }
-    return await super.post(this.restservice, postdata);
-	}
-
-	static save = async (siteuser: Siteuser) => {
-    const postdata = {
-      operation: { type: super.OPERATIONTYPE_UPDATE, operation: this.UPDATE_SITEUSER },
-     	"siteuser": SiteuserJson.toJSON(siteuser)
-    }
-    return await super.post(this.restservice, postdata);
-	}
-
-	static del = async (siteuser: Siteuser) => {
-    const postdata = {
-      operation: { type: super.OPERATIONTYPE_DELETE, operation: this.DELETE_SITEUSER },
-     	"siteuser": SiteuserJson.toJSON(siteuser)
-    }
-    return await super.post(this.restservice, postdata);
-	}
-
-//SECURE SECTION START
-
-	static sec_getcount = async (user) => {
-    const postdata = {
-    	auth: user===null ? null : user.auth,
-      operation: { type: super.OPERATIONTYPE_SECURESELECT, operation: super.SELECT_COUNT }
-    }
-    return this.extractDataCount(await super.post(this.restservice, postdata));
-	}
-
-  static sec_getall = async (user) => {
-    const postdata = {
-    	auth: user===null ? null : user.auth,
-      operation: { type: super.OPERATIONTYPE_SECURESELECT, operation: super.SELECT_ALL }
-    }
-    return this.extractDataArray(await super.post(this.restservice, postdata));
+    return this.extractDataArray(await super.post(this.restserviceselect, postdata));
   }
 
-	static sec_getOne = async (user, siteuserpk: Siteuserpk): Siteuser => {
+  static search = async (user, siteusersearcher) => {
     const postdata = {
-    	auth: user===null ? null : user.auth,
-      operation: { type: super.OPERATIONTYPE_SECURESELECT, operation: this.SELECT_SITEUSER },
-      "siteuserpk": SiteuserJson.PKtoJSON(siteuserpk)
+      auth: user===null ? null : user.auth,
+      operation: this.SELECT_SEARCH,
+      "search": siteusersearcher.toJSON()
     }
-    return this.extractDataObject(await super.post(this.restservice, postdata));
-	}
-
-	static sec_loadSiteuser4siteusergroup = async (user, siteusergrouppk: Siteusergrouppk): Siteuser[] => {
-    const postdata = {
-    	auth: user===null ? null : user.auth,
-      operation: { type: super.OPERATIONTYPE_SECURESELECT, operation: this.SELECT_Siteusergroup },
-     	"siteusergrouppk": SiteusergroupJson.PKtoJSON(siteusergrouppk)
-    }
-    return this.extractDataArray(await super.post(this.restservice, postdata));
-	}
-
-	static sec_search = async (user, siteusersearcher) => {
-    const postdata = {
-    	auth: user===null ? null : user.auth,
-      operation: { type: super.OPERATIONTYPE_SECURESELECT, operation: this.SELECT_SEARCH },
-     	"search": siteusersearcher.toJSON()
-    }
-    return this.extractDataArray(await super.post(this.restservice, postdata));
+    return this.extractDataArray(await super.post(this.restserviceselect, postdata));
   }
 
-	static sec_searchcount = async (user, siteusersearcher) => {
+  static searchcount = async (user, siteusersearcher) => {
     const postdata = {
-    	auth: user===null ? null : user.auth,
-      operation: { type: super.OPERATIONTYPE_SECURESELECT, operation: this.SELECT_SEARCHCOUNT },
-     	"search": siteusersearcher.toJSON()
+      auth: user===null ? null : user.auth,
+      operation: this.SELECT_SEARCHCOUNT,
+      "search": siteusersearcher.toJSON()
     }
-    return this.extractDataCount(await super.post(this.restservice, postdata));
-	}
+    return this.extractDataCount(await super.post(this.restserviceselect, postdata));
+  }
 
-	static sec_insert = async (user, siteuser: Siteuser) => {
+  static insert = async (user, siteuser: Siteuser) => {
     const postdata = {
-    	auth: user===null ? null : user.auth,
-      operation: { type: super.OPERATIONTYPE_SECUREINSERT, operation: this.INSERT_SITEUSER },
-     	"siteuser": SiteuserJson.toJSON(siteuser)
+      auth: user===null ? null : user.auth,
+      operation: this.INSERT_SITEUSER,
+      "siteuser": SiteuserJson.toJSON(siteuser)
     }
-    return await super.post(this.restservice, postdata);
-	}
+    return await super.post(this.restserviceinsert, postdata);
+  }
 
-	static sec_save = async (user, siteuser: Siteuser) => {
+  static save = async (user, siteuser: Siteuser) => {
     const postdata = {
-    	auth: user===null ? null : user.auth,
-      operation: { type: super.OPERATIONTYPE_SECUREUPDATE, operation: this.UPDATE_SITEUSER },
-     	"siteuser": SiteuserJson.toJSON(siteuser)
+      auth: user===null ? null : user.auth,
+      operation: this.UPDATE_SITEUSER,
+      "siteuser": SiteuserJson.toJSON(siteuser)
     }
-    return await super.post(this.restservice, postdata);
-	}
+    return await super.post(this.restserviceupdate, postdata);
+  }
 
-	static sec_del = async (user, siteuser: Siteuser) => {
+  static del = async (user, siteuser: Siteuser) => {
     const postdata = {
-    	auth: user===null ? null : user.auth,
-      operation: { type: super.OPERATIONTYPE_SECUREDELETE, operation: this.DELETE_SITEUSER },
-     	"siteuser": SiteuserJson.toJSON(siteuser)
+      auth: user===null ? null : user.auth,
+      operation: this.DELETE_SITEUSER,
+      "siteuser": SiteuserJson.toJSON(siteuser)
     }
-    return await super.post(this.restservice, postdata);
-	}
-
-//SECURE SECTION END
+    return await super.post(this.restservicedelete, postdata);
+  }
 
 }
 

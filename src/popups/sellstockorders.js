@@ -10,6 +10,8 @@ import Moment from 'moment';
 
 import Store from '../services/store.js';
 
+//components
+import Copytoclipboard from '../components/copytoclipboard/copytoclipboard.js';
 //services
 import Rsviewstocktradeorders from '../services/eve/rest/view/rsviewstocktradeorders.js';
 //data models
@@ -61,7 +63,9 @@ function Sellstockorders(props) {
   const coltype = {width: '12rem' };
   const colamount = {width: '8rem'};
   const colm3 = {width: '5rem'};
+  const colsellamount = {width: '4rem'};
   const colsellprice = {width: '4rem'};
+  const coltotsellprice = {width: '8rem'};
 
   return (
     <Modal show={props.show} size="xl" id="tradelinemodal" centered>
@@ -117,17 +121,24 @@ function Sellstockorders(props) {
                 <th style={coltype}>type</th>
                 <th style={colamount} className='text-center'>#</th>
                 <th style={colm3}><span className='float-right'>m3</span></th>
-                <th style={colsellprice}><span className='float-right'>sell</span></th>
+                <th style={colsellamount}><span className='float-right'>sell #</span></th>
+                <th style={colsellprice}><span className='float-right'>u. price</span></th>
+                <th style={coltotsellprice}><span className='float-right'>tot. price</span></th>
                 <th></th>
                 <th className="dummyscroll"></th>
               </tr>
     {list.map((trade, index) => (
               <tr className="table-info" key={index}>
                 <td style={collocationto}>{trade.stationname}</td>
-                <td style={coltype}>{trade.evetypename}</td>
+                <td style={coltype}>
+                  <Copytoclipboard copytext={trade.evetypename}/>
+                  {trade.evetypename}
+                </td>
                 <td style={colamount} className='text-center'>{trade.sellamount} <b>min: ({trade.min_volume})</b></td>
                 <td style={colm3}><span className='float-right'>{totalvolume(trade)}</span></td>
-                <td style={colsellprice}><span className='float-right'>{format_price(trade.sellamount)}</span></td>
+                <td style={colsellamount}><span className='float-right'>{format_price(trade.sellamount)}</span></td>
+                <td style={colsellprice}><span className='float-right'>{format_price(trade.price)}</span></td>
+                <td style={coltotsellprice}><span className='float-right'>{format_price(trade.totalprice)}</span></td>
                 <td><button type="button" className="btn btn-sm small btn-primary mr-1" onClick={() => sellStocktrade(trade)}>sell</button></td>
               </tr>
     ))}

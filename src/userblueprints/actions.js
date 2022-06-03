@@ -43,12 +43,13 @@ export const addBlueprint = async (store, blueprint, original, amount, bpprice, 
   loadUserblueprints(store);
 }
 
-export const changeUserbp = async (store, amountproduced, efficiency, researchcost) => {
+export const changeUserbp = async (store, totalamount, amountproduced, efficiency, researchcost) => {
   const userbp = new Userbp();
   userbp.PK.init();
   userbp.PK.evetypePK.id = store.state.userblueprint.bp;
   userbp.PK.username = store.state.userblueprint.username;
   userbp.PK.serialnumber = store.state.userblueprint.serialnumber;
+  userbp.totalamount = totalamount;
   userbp.amountproduced = amountproduced;
   userbp.materialefficiency = efficiency;
   userbp.researchcost = researchcost;
@@ -62,7 +63,7 @@ export const removeBlueprint = async (store, blueprint) => {
   userbp.PK.evetypePK.id = blueprint.bp;
   userbp.PK.username = blueprint.username;
   userbp.PK.serialnumber = blueprint.serialnumber;
-  const result = await Rsuserbp.sec_del(Store.user, userbp);
+  const result = await Rsuserbp.del(Store.user, userbp);
   loadUserblueprints(store);
 }
 

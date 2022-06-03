@@ -2,7 +2,7 @@
 //don't change things here, it will be overwritten
 /* 
     Created on : Nov 20, 2018, 10:39:01 AM
-    Generated on 22.1.2022 10:55
+    Generated on 20.4.2022 10:3
     Author     : Franky Laseure
 */
 
@@ -16,187 +16,116 @@ import SecurityislandJson from '../conversion/securityislandjson.js';
 
 class Rsroutetypesuper extends Eveservice {	
 
-	static restservice = 'rsroutetype';
+  static restserviceselect = 'rsroutetype_select';
+  static restserviceinsert = 'rsroutetype_insert';
+  static restserviceupdate = 'rsroutetype_update';
+  static restservicedelete = 'rsroutetype_delete';
 
-	//SELECT OPERATIONS
-	static SELECT_ROUTETYPE = 2;
-	static SELECT_Siteusergroup = 100 + 0;
-	static SELECT_Securityisland = 100 + 0;
+  //SELECT OPERATIONS
+  static SELECT_ROUTETYPE = 2;
+  static SELECT_Siteusergroup = 100 + 0;
+  static SELECT_Securityisland = 100 + 0;
 
-	//UPDATE OPERATIONS
-	static UPDATE_ROUTETYPE = 10;
+  //UPDATE OPERATIONS
+  static UPDATE_ROUTETYPE = 10;
 
-	//INSERT OPERATIONS
-	static INSERT_ROUTETYPE = 20;
+  //INSERT OPERATIONS
+  static INSERT_ROUTETYPE = 20;
 
-	//DELETE OPERATIONS
-	static DELETE_Securityisland = 100 + 1;
-	static DELETE_ROUTETYPE = 30;
+  //DELETE OPERATIONS
+  static DELETE_Securityisland = 100 + 1;
+  static DELETE_ROUTETYPE = 30;
 
-	static extractDataArray = (jsonarray): Routetype[] => {
-		let routetypes: [] = [];
-		for(let i = 0; i < jsonarray.length; i++) {
-			routetypes.push(RoutetypeJson.fromJSON(jsonarray[i]));
-		}
-   	return routetypes;
-	}
+  static extractDataArray = (jsonarray): Routetype[] => {
+    let routetypes: [] = [];
+    for(let i = 0; i < jsonarray.length; i++) {
+      routetypes.push(RoutetypeJson.fromJSON(jsonarray[i]));
+    }
+    return routetypes;
+  }
 
-	static extractDataObject = (jsonobject): Routetype => {
+  static extractDataObject = (jsonobject): Routetype => {
     return RoutetypeJson.fromJSON(jsonobject);
-	}
-
-	static getcount = async () => {
-    const postdata = {
-      operation: { type: super.OPERATIONTYPE_SELECT, operation: super.SELECT_COUNT }
-    }
-    return this.extractDataCount(await super.post(this.restservice, postdata));
-	}
-
-  static getall = async () => {
-    const postdata = {
-      operation: { type: super.OPERATIONTYPE_SELECT, operation: super.SELECT_ALL }
-    }
-    return this.extractDataArray(await super.post(this.restservice, postdata));
   }
 
-	static getOne = async (routetypepk: Routetypepk): Routetype => {
+  static getcount = async (user) => {
     const postdata = {
-      operation: { type: super.OPERATIONTYPE_SELECT, operation: this.SELECT_ROUTETYPE },
+      auth: user===null ? null : user.auth,
+      operation: super.SELECT_COUNT
+    }
+    return this.extractDataCount(await super.post(this.restserviceselect, postdata));
+  }
+
+  static getall = async (user) => {
+    const postdata = {
+      auth: user===null ? null : user.auth,
+      operation: super.SELECT_ALL
+    }
+    return this.extractDataArray(await super.post(this.restserviceselect, postdata));
+  }
+
+  static getOne = async (user, routetypepk: Routetypepk): Routetype => {
+    const postdata = {
+      auth: user===null ? null : user.auth,
+      operation: this.SELECT_ROUTETYPE,
       "routetypepk": RoutetypeJson.PKtoJSON(routetypepk)
     }
-    return this.extractDataObject(await super.post(this.restservice, postdata));
-	}
-
-	static loadRoutetypes4securityisland = async (securityislandpk: Securityislandpk): Routetype[] => {
-    const postdata = {
-      operation: { type: super.OPERATIONTYPE_SELECT, operation: this.SELECT_Securityisland },
-     	"security_islandpk": SecurityislandJson.PKtoJSON(securityislandpk)
-    }
-    return this.extractDataArray(await super.post(this.restservice, postdata));
-	}
-
-	static search = async (routetypesearcher) => {
-    const postdata = {
-      operation: { type: super.OPERATIONTYPE_SELECT, operation: this.SELECT_SEARCH },
-     	"search": routetypesearcher.toJSON()
-    }
-    return this.extractDataArray(await super.post(this.restservice, postdata));
+    return this.extractDataObject(await super.post(this.restserviceselect, postdata));
   }
 
-	static searchcount = async (routetypesearcher) => {
+  static loadRoutetypes4securityisland = async (user, securityislandpk: Routetypepk): Routetype[] => {
     const postdata = {
-      operation: { type: super.OPERATIONTYPE_SELECT, operation: this.SELECT_SEARCHCOUNT },
-     	"search": routetypesearcher.toJSON()
+      auth: user===null ? null : user.auth,
+      operation: this.SELECT_Securityisland,
+      "security_islandpk": SecurityislandJson.PKtoJSON(securityislandpk)
     }
-    return this.extractDataCount(await super.post(this.restservice, postdata));
-	}
-
-	static insert = async (routetype: Routetype) => {
-    const postdata = {
-      operation: { type: super.OPERATIONTYPE_INSERT, operation: this.INSERT_ROUTETYPE },
-     	"routetype": RoutetypeJson.toJSON(routetype)
-    }
-    return await super.post(this.restservice, postdata);
-	}
-
-	static save = async (routetype: Routetype) => {
-    const postdata = {
-      operation: { type: super.OPERATIONTYPE_UPDATE, operation: this.UPDATE_ROUTETYPE },
-     	"routetype": RoutetypeJson.toJSON(routetype)
-    }
-    return await super.post(this.restservice, postdata);
-	}
-
-	static del = async (routetype: Routetype) => {
-    const postdata = {
-      operation: { type: super.OPERATIONTYPE_DELETE, operation: this.DELETE_ROUTETYPE },
-     	"routetype": RoutetypeJson.toJSON(routetype)
-    }
-    return await super.post(this.restservice, postdata);
-	}
-
-//SECURE SECTION START
-
-	static sec_getcount = async (user) => {
-    const postdata = {
-    	auth: user===null ? null : user.auth,
-      operation: { type: super.OPERATIONTYPE_SECURESELECT, operation: super.SELECT_COUNT }
-    }
-    return this.extractDataCount(await super.post(this.restservice, postdata));
-	}
-
-  static sec_getall = async (user) => {
-    const postdata = {
-    	auth: user===null ? null : user.auth,
-      operation: { type: super.OPERATIONTYPE_SECURESELECT, operation: super.SELECT_ALL }
-    }
-    return this.extractDataArray(await super.post(this.restservice, postdata));
+    return this.extractDataArray(await super.post(this.restserviceselect, postdata));
   }
 
-	static sec_getOne = async (user, routetypepk: Routetypepk): Routetype => {
+  static search = async (user, routetypesearcher) => {
     const postdata = {
-    	auth: user===null ? null : user.auth,
-      operation: { type: super.OPERATIONTYPE_SECURESELECT, operation: this.SELECT_ROUTETYPE },
-      "routetypepk": RoutetypeJson.PKtoJSON(routetypepk)
+      auth: user===null ? null : user.auth,
+      operation: this.SELECT_SEARCH,
+      "search": routetypesearcher.toJSON()
     }
-    return this.extractDataObject(await super.post(this.restservice, postdata));
-	}
-
-	static sec_loadRoutetypes4securityisland = async (user, securityislandpk: Routetypepk): Routetype[] => {
-    const postdata = {
-    	auth: user===null ? null : user.auth,
-      operation: { type: super.OPERATIONTYPE_SECURESELECT, operation: this.SELECT_Securityisland },
-     	"security_islandpk": SecurityislandJson.PKtoJSON(securityislandpk)
-    }
-    return this.extractDataArray(await super.post(this.restservice, postdata));
-	}
-
-	static sec_search = async (user, routetypesearcher) => {
-    const postdata = {
-    	auth: user===null ? null : user.auth,
-      operation: { type: super.OPERATIONTYPE_SECURESELECT, operation: this.SELECT_SEARCH },
-     	"search": routetypesearcher.toJSON()
-    }
-    return this.extractDataArray(await super.post(this.restservice, postdata));
+    return this.extractDataArray(await super.post(this.restserviceselect, postdata));
   }
 
-	static sec_searchcount = async (user, routetypesearcher) => {
+  static searchcount = async (user, routetypesearcher) => {
     const postdata = {
-    	auth: user===null ? null : user.auth,
-      operation: { type: super.OPERATIONTYPE_SECURESELECT, operation: this.SELECT_SEARCHCOUNT },
-     	"search": routetypesearcher.toJSON()
+      auth: user===null ? null : user.auth,
+      operation: this.SELECT_SEARCHCOUNT,
+      "search": routetypesearcher.toJSON()
     }
-    return this.extractDataCount(await super.post(this.restservice, postdata));
-	}
+    return this.extractDataCount(await super.post(this.restserviceselect, postdata));
+  }
 
-	static sec_insert = async (user, routetype: Routetype) => {
+  static insert = async (user, routetype: Routetype) => {
     const postdata = {
-    	auth: user===null ? null : user.auth,
-      operation: { type: super.OPERATIONTYPE_SECUREINSERT, operation: this.INSERT_ROUTETYPE },
-     	"routetype": RoutetypeJson.toJSON(routetype)
+      auth: user===null ? null : user.auth,
+      operation: this.INSERT_ROUTETYPE,
+      "routetype": RoutetypeJson.toJSON(routetype)
     }
-    return await super.post(this.restservice, postdata);
-	}
+    return await super.post(this.restserviceinsert, postdata);
+  }
 
-	static sec_save = async (user, routetype: Routetype) => {
+  static save = async (user, routetype: Routetype) => {
     const postdata = {
-    	auth: user===null ? null : user.auth,
-      operation: { type: super.OPERATIONTYPE_SECUREUPDATE, operation: this.UPDATE_ROUTETYPE },
-     	"routetype": RoutetypeJson.toJSON(routetype)
+      auth: user===null ? null : user.auth,
+      operation: this.UPDATE_ROUTETYPE,
+      "routetype": RoutetypeJson.toJSON(routetype)
     }
-    return await super.post(this.restservice, postdata);
-	}
+    return await super.post(this.restserviceupdate, postdata);
+  }
 
-	static sec_del = async (user, routetype: Routetype) => {
+  static del = async (user, routetype: Routetype) => {
     const postdata = {
-    	auth: user===null ? null : user.auth,
-      operation: { type: super.OPERATIONTYPE_SECUREDELETE, operation: this.DELETE_ROUTETYPE },
-     	"routetype": RoutetypeJson.toJSON(routetype)
+      auth: user===null ? null : user.auth,
+      operation: this.DELETE_ROUTETYPE,
+      "routetype": RoutetypeJson.toJSON(routetype)
     }
-    return await super.post(this.restservice, postdata);
-	}
-
-//SECURE SECTION END
+    return await super.post(this.restservicedelete, postdata);
+  }
 
 }
 

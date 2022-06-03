@@ -16,10 +16,10 @@ class Rswishlist extends Rswishlistsuper {
     static addwishlist = async (user, wishlist) => {
         const postdata = {
           auth: user!=null ? user.auth : null,
-          operation: { type: super.OPERATIONTYPE_SECUREUPDATE, operation: this.UPDATE_ADDWISHLIST },
+          operation: this.UPDATE_ADDWISHLIST,
           wishlist: WishlistJson.toJSON(wishlist)
         }
-        return await super.post(this.restservice, postdata);
+        return await super.post(this.restserviceupdate, postdata);
     }
 
 }

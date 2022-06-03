@@ -31,7 +31,7 @@ export const addMaterial = async (store, material, amount, unitprice) => {
   materialinput.PK.addtimestamp = 0;
   materialinput.amount = amount;
   materialinput.unitprice = unitprice;
-  const result = await Rsmaterialinput.sec_insert(Store.user, materialinput);
+  const result = await Rsmaterialinput.insert(Store.user, materialinput);
   loadMaterialinputlist(store);
   loadViewmaterialinputavglist(store);
 }
@@ -44,7 +44,7 @@ export const changeMaterial = async (store, viewmaterialinput, amount, unitprice
   materialinput.PK.addtimestamp = viewmaterialinput.addtimestamp;
   materialinput.amount = amount;
   materialinput.unitprice = unitprice;
-  const result = await Rsmaterialinput.sec_save(Store.user, materialinput);
+  const result = await Rsmaterialinput.save(Store.user, materialinput);
   loadMaterialinputlist(store);
   loadViewmaterialinputavglist(store);
 }

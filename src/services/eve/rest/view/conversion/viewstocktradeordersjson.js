@@ -2,7 +2,7 @@
 //don't change things here, it will be overwritten
 /* 
     Created on : Dec 16, 2018, 18:32:01
-    Generated on 22.1.2022 10:55
+    Generated on 20.4.2022 10:3
     Author     : Franky Laseure
 */
 
@@ -23,6 +23,8 @@ class ViewstocktradeordersJson {
 			"min_volume": viewstocktradeorders.min_volume,
 			"orderid": "" + viewstocktradeorders.orderid,
 			"sellamount": "" + viewstocktradeorders.sellamount,
+			"price": "" + viewstocktradeorders.price,
+			"totalprice": "" + viewstocktradeorders.totalprice,
 		};
 		return jsonobj;
 	}
@@ -40,6 +42,8 @@ class ViewstocktradeordersJson {
 		model.min_volume = jsonobj.min_volume;
 		model.orderid = "" + jsonobj.orderid;
 		model.sellamount = "" + jsonobj.sellamount;
+		model.price = parseFloat(jsonobj.price);
+		model.totalprice = parseFloat(jsonobj.totalprice);
 		return model;
 	}
 }

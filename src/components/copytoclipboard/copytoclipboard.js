@@ -17,6 +17,7 @@ function Copytoclipboard(props) {
       //trigger useEffect in copyToClipboard
       setText(props.copytext);
       setTimeout(() => {
+        setText("");
         setShowcopytext(false);
       }, 1000);
 //    }

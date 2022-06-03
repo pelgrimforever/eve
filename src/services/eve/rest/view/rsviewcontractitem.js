@@ -16,10 +16,10 @@ class Rsviewcontractitem extends Rsviewcontractitemsuper {
     static getcontract = async (user, contractpk) => {
         const postdata = {
             auth: user!=null ? user.auth : null,
-            operation: { type: super.OPERATIONTYPE_SECURESELECT, operation: this.SELECT_CONTRACT },
+            operation: this.SELECT_CONTRACT,
             contractpk: ContractJson.PKtoJSON(contractpk)
         }
-        return this.extractDataArray(await super.post(this.restservice, postdata));
+        return this.extractDataArray(await super.post(this.restserviceselect, postdata));
     }
 }
 

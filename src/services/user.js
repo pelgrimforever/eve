@@ -50,7 +50,7 @@ class User {
     //load page authentications
     const eveuserpk = new Eveuserpk();
     eveuserpk.username = this.username;
-    this.pageauth = await Rsfrontendpageauth.sec_loadFrontendpageauths4eveuser(this, eveuserpk);
+    this.pageauth = await Rsfrontendpageauth.loadFrontendpageauths4eveuser(this, eveuserpk);
     return this.loggedin;
 	};
 

@@ -33,6 +33,6 @@ export const setviewbpprofitperregion = async (store, viewbpprofitperregion) => 
 }
 
 export const calculatebpproductioncost = async (store) => {
-  const result = await Rsevetype.sec_calculateestimatedproductioncost(Store.user);
+  const result = await Rsevetype.calculateestimatedproductioncost(Store.user);
   const dummy = await loadBlueprints(store);
 }

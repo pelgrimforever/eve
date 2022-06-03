@@ -20,38 +20,38 @@ class Rsstock extends Rsstocksuper {
     static addstock = async (user, stock) => {
         const postdata = {
           auth: user!=null ? user.auth : null,
-          operation: { type: super.OPERATIONTYPE_SECUREUPDATE, operation: this.UPDATE_ADDSTOCK },
+          operation: this.UPDATE_ADDSTOCK,
           stock: StockJson.toJSON(stock)
         }
-        return await super.post(this.restservice, postdata);
+        return await super.post(this.restserviceupdate, postdata);
     }
 
     static removestock = async (user, stock) => {
         const postdata = {
           auth: user!=null ? user.auth : null,
-          operation: { type: super.OPERATIONTYPE_SECUREUPDATE, operation: this.UPDATE_REMOVESTOCK },
+          operation: this.UPDATE_REMOVESTOCK,
           stock: StockJson.toJSON(stock)
         }
-        return await super.post(this.restservice, postdata);
+        return await super.post(this.restserviceupdate, postdata);
     }
 
     static remove4system = async (user, username, system) => {
         const postdata = {
           auth: user!=null ? user.auth : null,
-          operation: { type: super.OPERATIONTYPE_SECUREUPDATE, operation: this.UPDATE_SELLALL4SYSTEM },
+          operation: this.UPDATE_SELLALL4SYSTEM,
           username: username,
           system: system
         }
-        return await super.post(this.restservice, postdata);
+        return await super.post(this.restserviceupdate, postdata);
     }
 
     static remove4Stocktrade = async (user, stocktrade) => {
         const postdata = {
           auth: user!=null ? user.auth : null,
-          operation: { type: super.OPERATIONTYPE_SECUREUPDATE, operation: this.UPDATE_SELLSTOCKTRADE },
+          operation: this.UPDATE_SELLSTOCKTRADE,
           stocktrade: StocktradeJson.toJSON(stocktrade)
         }
-        return await super.post(this.restservice, postdata);
+        return await super.post(this.restserviceupdate, postdata);
     }
 }
 

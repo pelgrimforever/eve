@@ -21,7 +21,7 @@ class Codetables {
 	  try {
 	  	let securityislandpk = new Securityislandpk();
 	  	securityislandpk.id = "1";
-	    this.systemlist = await Rssystem.loadSystems4securityisland(securityislandpk);
+	    this.systemlist = await Rssystem.loadSystems4securityisland(null, securityislandpk);
 	  } catch (e) {
 	    console.log("loadSystems4securityisland failed");
 	  }
@@ -29,7 +29,7 @@ class Codetables {
 
   loadAllsystemlist = async () => {
 	  try {
-	    this.allsystemlist = await Rssystem.getall();
+	    this.allsystemlist = await Rssystem.getall(null);
 	  } catch (e) {
 	    console.log("loadAllsystemlist failed");
 	  }
@@ -37,7 +37,7 @@ class Codetables {
 
   loadTypelist = async () => {
 	  try {
-	    this.typelist = await Rsevetype.getall();
+	    this.typelist = await Rsevetype.getall(null);
 	  } catch (e) {
 	    console.log("loadEvetype failed");
 	  }

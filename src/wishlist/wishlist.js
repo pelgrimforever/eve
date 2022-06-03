@@ -80,6 +80,14 @@ export default function Wishlist(props) {
     return n.toFixed(2);
   };
 
+  const format_price = (n) => {
+    return n.toFixed(0);
+  };
+
+  const totalprice = (orderline) => {
+    return format_price(orderline.price*orderline.volume_remain);
+  };
+
   const sec_highsec = 0.45;
 
   const col_jumps = {width: '4rem'};
@@ -87,13 +95,15 @@ export default function Wishlist(props) {
   const col_region = {width: '10rem'};
   const col_price = {width: '10rem'};
 
-  const colorder_typename = {width: '6rem' };
+  const colorder_typename = {width: '12rem' };
   const colorder_regionname = {width: '6rem' };
   const colorder_systemname = {width: '6rem'};
-  const colorder_systemsec = {width: '3rem'};
+  const colorder_systemsec = {width: '2rem'};
   const colorder_volume_remain = {width: '3rem'};
   const colorder_volume_min = {width: '3rem'};
-  const colorder_price = {width: '5rem'};
+  const colorder_price = {width: '4rem'};
+  const colorder_totalprice = {width: '5rem'};
+  const colorder_packaged_volume = {width: '3rem'};
 
   return (
     <div className="root fullheight">
@@ -227,9 +237,11 @@ export default function Wishlist(props) {
                         <th style={colorder_regionname}>region</th>
                         <th style={colorder_systemname}>system</th>
                         <th style={colorder_systemsec}>sec</th>
-                        <th style={colorder_volume_remain}># rem</th>
-                        <th style={colorder_volume_min}># min</th>
-                        <th style={colorder_price}>sell</th>
+                        <th style={colorder_volume_remain}><span className='float-right'># rem</span></th>
+                        <th style={colorder_volume_min}><span className='float-right'># min</span></th>
+                        <th style={colorder_price}><span className='float-right'>sell</span></th>
+                        <th style={colorder_totalprice}><span className='float-right'>tot.sell</span></th>
+                        <th style={colorder_packaged_volume}><span className='float-right'>unit m3</span></th>
                         <th></th>
                         <th className="dummyscroll"></th>
                       </tr>
@@ -248,9 +260,11 @@ export default function Wishlist(props) {
                           {item.systemname}
                         </td>
                         <td className={item.security_status<sec_highsec ? "bg-danger" : ""} style={colorder_systemsec}>{format_2digits(item.security_status)}</td>
-                        <td style={colorder_volume_remain}>{item.volume_remain}</td>
-                        <td className={item.min_volume>1 ? "bg-danger" : ""} style={colorder_volume_min}>{item.min_volume}</td>
+                        <td style={colorder_volume_remain}><span className='float-right'>{item.volume_remain}</span></td>
+                        <td className={item.min_volume>1 ? "bg-danger" : ""} style={colorder_volume_min}><span className='float-right'>{item.min_volume}</span></td>
                         <td style={colorder_price}><span className='float-right'>{item.price}</span></td>
+                        <td style={colorder_totalprice}><span className='float-right'>{totalprice(item)}</span></td>
+                        <td style={colorder_packaged_volume}><span className='float-right'>{item.packaged_volume}</span></td>
                         <td>
                         </td>
                       </tr>  

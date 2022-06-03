@@ -15,7 +15,7 @@ export const setSearchstring = (store, searchstring) => {
 };
 
 export const loadUsers = async (store) => {
-  const result = await Rseveuser.sec_getall(Store.user);
+  const result = await Rseveuser.getall(Store.user);
   store.setState({ eveusers: result });
 };
 
@@ -27,40 +27,40 @@ export const setUser = async (store, eveuser) => {
 export const addUser = async (store, username) => {
   const eveuser = new Eveuser();
   eveuser.PK.username = username;
-  const result = await Rseveuser.sec_newuser(Store.user, eveuser);
+  const result = await Rseveuser.newuser(Store.user, eveuser);
   const result2 = await loadUsers(store);
 }
 
 export const resetUser = async (store, eveuser) => {
-  const result = await Rseveuser.sec_userreset(Store.user, eveuser);
+  const result = await Rseveuser.userreset(Store.user, eveuser);
   return result.status;
 }
 
 export const removeUser = async (store, eveuser) => {
-  const result = await Rseveuser.sec_deleteregistration(Store.user, eveuser);
+  const result = await Rseveuser.deleteregistration(Store.user, eveuser);
   const result2 = await loadUsers(store);
   return result.status;
 }
 
 export const loadFrontendpages = async (store) => {
-  const result = await Rsfrontendpage.sec_getall(Store.user);
+  const result = await Rsfrontendpage.getall(Store.user);
   store.setState({ frontendpages: result });
 };
 
 export const addFrontendpage = async (store, pagename) => {
   const frontendpage = new Frontendpage();
   frontendpage.PK.name = pagename;
-  const result = await Rsfrontendpage.sec_insert(Store.user, frontendpage);
+  const result = await Rsfrontendpage.insert(Store.user, frontendpage);
   const result2 = await loadFrontendpages(store);
 }
 
 export const removeFrontendpage = async (store, frontendpage) => {
-  const result = await Rsfrontendpage.sec_del(Store.user, frontendpage);
+  const result = await Rsfrontendpage.del(Store.user, frontendpage);
   const result2 = await loadFrontendpages(store);
 }
 
 export const loadFrontendpagesauth = async (store, eveuser) => {
-  const result = await Rsfrontendpageauth.sec_loadFrontendpageauths4eveuser(Store.user, eveuser.PK);
+  const result = await Rsfrontendpageauth.loadFrontendpageauths4eveuser(Store.user, eveuser.PK);
   store.setState({ frontendpageauth: result });
 };
 
@@ -69,12 +69,12 @@ export const addFrontendpagesauth = async (store, frontendpage) => {
   frontendpageauth.PK.init();
   frontendpageauth.PK.eveuserPK.username = store.state.eveuser.PK.username;
   frontendpageauth.PK.frontendpagePK.name = frontendpage.PK.name;
-  const result = await Rsfrontendpageauth.sec_insert(Store.user, frontendpageauth);
+  const result = await Rsfrontendpageauth.insert(Store.user, frontendpageauth);
   const result2 = await loadFrontendpagesauth(store, store.state.eveuser);
 };
 
 export const removeFrontendpagesauth = async (store, frontendpageauth) => {
-  const result = await Rsfrontendpageauth.sec_del(Store.user, frontendpageauth);
+  const result = await Rsfrontendpageauth.del(Store.user, frontendpageauth);
   const result2 = await loadFrontendpagesauth(store, store.state.eveuser);
 };
 

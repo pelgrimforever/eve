@@ -47,7 +47,7 @@ export const addShipfit = async (store, activeship, shipname ) => {
   shipfit.PK.shipname = shipname;
   shipfit.evetypePK = new Evetypepk();
   shipfit.evetypePK.id = activeship.id;
-  const result = await Rsshipfit.sec_insert(Store.user, shipfit);
+  const result = await Rsshipfit.insert(Store.user, shipfit);
   loadShipfits(store);
 }
 
@@ -57,7 +57,7 @@ export const removeShipfit = async (store, viewshipfit ) => {
   shipfit.PK.shipname = viewshipfit.shipname;
   shipfit.evetypePK = new Evetypepk();
   shipfit.evetypePK.id = viewshipfit.evetype;
-  const result = await Rsshipfit.sec_del(Store.user, shipfit);
+  const result = await Rsshipfit.del(Store.user, shipfit);
   loadShipfits(store);
 }
 
@@ -76,7 +76,7 @@ export const addShipmodule = async (store, activemodule, amount ) => {
   shipmodule.PK.shipfitPK.shipname = store.state.viewshipfit.shipname;
   shipmodule.PK.evetypePK.id = activemodule.id;
   shipmodule.amount = amount;
-  const result = await Rsshipfitmodule.sec_insert(Store.user, shipmodule);
+  const result = await Rsshipfitmodule.insert(Store.user, shipmodule);
   loadShipfitmodules(store, store.state.viewshipfit);
 }
 
@@ -86,7 +86,7 @@ export const removeShipmodule = async (store, viewshipfitmodule ) => {
   shipmodule.PK.shipfitPK.username = viewshipfitmodule.username;
   shipmodule.PK.shipfitPK.shipname = viewshipfitmodule.shipname;
   shipmodule.PK.evetypePK.id = viewshipfitmodule.moduletype;
-  const result = await Rsshipfitmodule.sec_del(Store.user, shipmodule);
+  const result = await Rsshipfitmodule.del(Store.user, shipmodule);
   loadShipfitmodules(store, store.state.viewshipfit);
 }
 

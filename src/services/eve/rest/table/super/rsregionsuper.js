@@ -2,7 +2,7 @@
 //don't change things here, it will be overwritten
 /* 
     Created on : Nov 20, 2018, 10:39:01 AM
-    Generated on 22.1.2022 10:55
+    Generated on 20.4.2022 10:3
     Author     : Franky Laseure
 */
 
@@ -20,240 +20,145 @@ import RegionneighbourJson from '../conversion/regionneighbourjson.js';
 
 class Rsregionsuper extends Eveservice {	
 
-	static restservice = 'rsregion';
+  static restserviceselect = 'rsregion_select';
+  static restserviceinsert = 'rsregion_insert';
+  static restserviceupdate = 'rsregion_update';
+  static restservicedelete = 'rsregion_delete';
 
-	//SELECT OPERATIONS
-	static SELECT_REGION = 2;
-	static SELECT_Siteusergroup = 100 + 0;
-	static SELECT_Orderhistorymonth = 100 + 0;
-	static SELECT_Orderhistory = 100 + 1;
-	static SELECT_Regionneighbourregion = 100 + 2;
-	static SELECT_Regionneighbourneighbour = 100 + 3;
+  //SELECT OPERATIONS
+  static SELECT_REGION = 2;
+  static SELECT_Siteusergroup = 100 + 0;
+  static SELECT_Orderhistorymonth = 100 + 0;
+  static SELECT_Orderhistory = 100 + 1;
+  static SELECT_Regionneighbourregion = 100 + 2;
+  static SELECT_Regionneighbourneighbour = 100 + 3;
 
-	//UPDATE OPERATIONS
-	static UPDATE_REGION = 10;
+  //UPDATE OPERATIONS
+  static UPDATE_REGION = 10;
 
-	//INSERT OPERATIONS
-	static INSERT_REGION = 20;
+  //INSERT OPERATIONS
+  static INSERT_REGION = 20;
 
-	//DELETE OPERATIONS
-	static DELETE_REGION = 30;
+  //DELETE OPERATIONS
+  static DELETE_REGION = 30;
 
-	static extractDataArray = (jsonarray): Region[] => {
-		let regions: [] = [];
-		for(let i = 0; i < jsonarray.length; i++) {
-			regions.push(RegionJson.fromJSON(jsonarray[i]));
-		}
-   	return regions;
-	}
+  static extractDataArray = (jsonarray): Region[] => {
+    let regions: [] = [];
+    for(let i = 0; i < jsonarray.length; i++) {
+      regions.push(RegionJson.fromJSON(jsonarray[i]));
+    }
+    return regions;
+  }
 
-	static extractDataObject = (jsonobject): Region => {
+  static extractDataObject = (jsonobject): Region => {
     return RegionJson.fromJSON(jsonobject);
-	}
-
-	static getcount = async () => {
-    const postdata = {
-      operation: { type: super.OPERATIONTYPE_SELECT, operation: super.SELECT_COUNT }
-    }
-    return this.extractDataCount(await super.post(this.restservice, postdata));
-	}
-
-  static getall = async () => {
-    const postdata = {
-      operation: { type: super.OPERATIONTYPE_SELECT, operation: super.SELECT_ALL }
-    }
-    return this.extractDataArray(await super.post(this.restservice, postdata));
   }
 
-	static getOne = async (regionpk: Regionpk): Region => {
+  static getcount = async (user) => {
     const postdata = {
-      operation: { type: super.OPERATIONTYPE_SELECT, operation: this.SELECT_REGION },
+      auth: user===null ? null : user.auth,
+      operation: super.SELECT_COUNT
+    }
+    return this.extractDataCount(await super.post(this.restserviceselect, postdata));
+  }
+
+  static getall = async (user) => {
+    const postdata = {
+      auth: user===null ? null : user.auth,
+      operation: super.SELECT_ALL
+    }
+    return this.extractDataArray(await super.post(this.restserviceselect, postdata));
+  }
+
+  static getOne = async (user, regionpk: Regionpk): Region => {
+    const postdata = {
+      auth: user===null ? null : user.auth,
+      operation: this.SELECT_REGION,
       "regionpk": RegionJson.PKtoJSON(regionpk)
     }
-    return this.extractDataObject(await super.post(this.restservice, postdata));
-	}
-
-	static loadRegion4orderhistorymonth = async (orderhistorymonthpk: Orderhistorymonthpk): Region[] => {
-    const postdata = {
-      operation: { type: super.OPERATIONTYPE_SELECT, operation: this.SELECT_Orderhistorymonth },
-     	"order_history_monthpk": OrderhistorymonthJson.PKtoJSON(orderhistorymonthpk)
-    }
-    return this.extractDataArray(await super.post(this.restservice, postdata));
-	}
-
-	static loadRegion4orderhistory = async (orderhistorypk: Orderhistorypk): Region[] => {
-    const postdata = {
-      operation: { type: super.OPERATIONTYPE_SELECT, operation: this.SELECT_Orderhistory },
-     	"order_historypk": OrderhistoryJson.PKtoJSON(orderhistorypk)
-    }
-    return this.extractDataArray(await super.post(this.restservice, postdata));
-	}
-
-	static loadRegion4regionneighbourRegion = async (regionneighbourRegionpk: Regionneighbourpk): Region[] => {
-    const postdata = {
-      operation: { type: super.OPERATIONTYPE_SELECT, operation: this.SELECT_Regionneighbourregion },
-     	"region_neighbourpk": RegionneighbourJson.PKtoJSON(regionneighbourRegionpk)
-    }
-    return this.extractDataArray(await super.post(this.restservice, postdata));
-	}
-
-	static loadRegion4regionneighbourNeighbour = async (regionneighbourNeighbourpk: Regionneighbourpk): Region[] => {
-    const postdata = {
-      operation: { type: super.OPERATIONTYPE_SELECT, operation: this.SELECT_Regionneighbourneighbour },
-     	"region_neighbourpk": RegionneighbourJson.PKtoJSON(regionneighbourNeighbourpk)
-    }
-    return this.extractDataArray(await super.post(this.restservice, postdata));
-	}
-
-	static search = async (regionsearcher) => {
-    const postdata = {
-      operation: { type: super.OPERATIONTYPE_SELECT, operation: this.SELECT_SEARCH },
-     	"search": regionsearcher.toJSON()
-    }
-    return this.extractDataArray(await super.post(this.restservice, postdata));
+    return this.extractDataObject(await super.post(this.restserviceselect, postdata));
   }
 
-	static searchcount = async (regionsearcher) => {
+  static loadRegion4orderhistorymonth = async (user, orderhistorymonthpk: Orderhistorymonthpk): Region[] => {
     const postdata = {
-      operation: { type: super.OPERATIONTYPE_SELECT, operation: this.SELECT_SEARCHCOUNT },
-     	"search": regionsearcher.toJSON()
+      auth: user===null ? null : user.auth,
+      operation: this.SELECT_Orderhistorymonth,
+      "order_history_monthpk": OrderhistorymonthJson.PKtoJSON(orderhistorymonthpk)
     }
-    return this.extractDataCount(await super.post(this.restservice, postdata));
-	}
-
-	static insert = async (region: Region) => {
-    const postdata = {
-      operation: { type: super.OPERATIONTYPE_INSERT, operation: this.INSERT_REGION },
-     	"region": RegionJson.toJSON(region)
-    }
-    return await super.post(this.restservice, postdata);
-	}
-
-	static save = async (region: Region) => {
-    const postdata = {
-      operation: { type: super.OPERATIONTYPE_UPDATE, operation: this.UPDATE_REGION },
-     	"region": RegionJson.toJSON(region)
-    }
-    return await super.post(this.restservice, postdata);
-	}
-
-	static del = async (region: Region) => {
-    const postdata = {
-      operation: { type: super.OPERATIONTYPE_DELETE, operation: this.DELETE_REGION },
-     	"region": RegionJson.toJSON(region)
-    }
-    return await super.post(this.restservice, postdata);
-	}
-
-//SECURE SECTION START
-
-	static sec_getcount = async (user) => {
-    const postdata = {
-    	auth: user===null ? null : user.auth,
-      operation: { type: super.OPERATIONTYPE_SECURESELECT, operation: super.SELECT_COUNT }
-    }
-    return this.extractDataCount(await super.post(this.restservice, postdata));
-	}
-
-  static sec_getall = async (user) => {
-    const postdata = {
-    	auth: user===null ? null : user.auth,
-      operation: { type: super.OPERATIONTYPE_SECURESELECT, operation: super.SELECT_ALL }
-    }
-    return this.extractDataArray(await super.post(this.restservice, postdata));
+    return this.extractDataArray(await super.post(this.restserviceselect, postdata));
   }
 
-	static sec_getOne = async (user, regionpk: Regionpk): Region => {
+  static loadRegion4orderhistory = async (user, orderhistorypk: Orderhistorypk): Region[] => {
     const postdata = {
-    	auth: user===null ? null : user.auth,
-      operation: { type: super.OPERATIONTYPE_SECURESELECT, operation: this.SELECT_REGION },
-      "regionpk": RegionJson.PKtoJSON(regionpk)
+      auth: user===null ? null : user.auth,
+      operation: this.SELECT_Orderhistory,
+      "order_historypk": OrderhistoryJson.PKtoJSON(orderhistorypk)
     }
-    return this.extractDataObject(await super.post(this.restservice, postdata));
-	}
-
-	static sec_loadRegion4orderhistorymonth = async (user, orderhistorymonthpk: Orderhistorymonthpk): Region[] => {
-    const postdata = {
-    	auth: user===null ? null : user.auth,
-      operation: { type: super.OPERATIONTYPE_SECURESELECT, operation: this.SELECT_Orderhistorymonth },
-     	"order_history_monthpk": OrderhistorymonthJson.PKtoJSON(orderhistorymonthpk)
-    }
-    return this.extractDataArray(await super.post(this.restservice, postdata));
-	}
-
-	static sec_loadRegion4orderhistory = async (user, orderhistorypk: Orderhistorypk): Region[] => {
-    const postdata = {
-    	auth: user===null ? null : user.auth,
-      operation: { type: super.OPERATIONTYPE_SECURESELECT, operation: this.SELECT_Orderhistory },
-     	"order_historypk": OrderhistoryJson.PKtoJSON(orderhistorypk)
-    }
-    return this.extractDataArray(await super.post(this.restservice, postdata));
-	}
-
-	static sec_loadRegion4regionneighbourRegion = async (user, regionneighbourRegionpk: Regionneighbourpk): Region[] => {
-    const postdata = {
-    	auth: user===null ? null : user.auth,
-      operation: { type: super.OPERATIONTYPE_SECURESELECT, operation: this.SELECT_Regionneighbourregion },
-     	"region_neighbourpk": RegionneighbourJson.PKtoJSON(regionneighbourRegionpk)
-    }
-    return this.extractDataArray(await super.post(this.restservice, postdata));
-	}
-
-	static sec_loadRegion4regionneighbourNeighbour = async (user, regionneighbourNeighbourpk: Regionneighbourpk): Region[] => {
-    const postdata = {
-    	auth: user===null ? null : user.auth,
-      operation: { type: super.OPERATIONTYPE_SECURESELECT, operation: this.SELECT_Regionneighbourneighbour },
-     	"region_neighbourpk": RegionneighbourJson.PKtoJSON(regionneighbourNeighbourpk)
-    }
-    return this.extractDataArray(await super.post(this.restservice, postdata));
-	}
-
-	static sec_search = async (user, regionsearcher) => {
-    const postdata = {
-    	auth: user===null ? null : user.auth,
-      operation: { type: super.OPERATIONTYPE_SECURESELECT, operation: this.SELECT_SEARCH },
-     	"search": regionsearcher.toJSON()
-    }
-    return this.extractDataArray(await super.post(this.restservice, postdata));
+    return this.extractDataArray(await super.post(this.restserviceselect, postdata));
   }
 
-	static sec_searchcount = async (user, regionsearcher) => {
+  static loadRegion4regionneighbourRegion = async (user, regionneighbourRegionpk: Regionneighbourpk): Region[] => {
     const postdata = {
-    	auth: user===null ? null : user.auth,
-      operation: { type: super.OPERATIONTYPE_SECURESELECT, operation: this.SELECT_SEARCHCOUNT },
-     	"search": regionsearcher.toJSON()
+      auth: user===null ? null : user.auth,
+      operation: this.SELECT_Regionneighbourregion,
+      "region_neighbourpk": RegionneighbourJson.PKtoJSON(regionneighbourRegionpk)
     }
-    return this.extractDataCount(await super.post(this.restservice, postdata));
-	}
+    return this.extractDataArray(await super.post(this.restserviceselect, postdata));
+  }
 
-	static sec_insert = async (user, region: Region) => {
+  static loadRegion4regionneighbourNeighbour = async (user, regionneighbourNeighbourpk: Regionneighbourpk): Region[] => {
     const postdata = {
-    	auth: user===null ? null : user.auth,
-      operation: { type: super.OPERATIONTYPE_SECUREINSERT, operation: this.INSERT_REGION },
-     	"region": RegionJson.toJSON(region)
+      auth: user===null ? null : user.auth,
+      operation: this.SELECT_Regionneighbourneighbour,
+      "region_neighbourpk": RegionneighbourJson.PKtoJSON(regionneighbourNeighbourpk)
     }
-    return await super.post(this.restservice, postdata);
-	}
+    return this.extractDataArray(await super.post(this.restserviceselect, postdata));
+  }
 
-	static sec_save = async (user, region: Region) => {
+  static search = async (user, regionsearcher) => {
     const postdata = {
-    	auth: user===null ? null : user.auth,
-      operation: { type: super.OPERATIONTYPE_SECUREUPDATE, operation: this.UPDATE_REGION },
-     	"region": RegionJson.toJSON(region)
+      auth: user===null ? null : user.auth,
+      operation: this.SELECT_SEARCH,
+      "search": regionsearcher.toJSON()
     }
-    return await super.post(this.restservice, postdata);
-	}
+    return this.extractDataArray(await super.post(this.restserviceselect, postdata));
+  }
 
-	static sec_del = async (user, region: Region) => {
+  static searchcount = async (user, regionsearcher) => {
     const postdata = {
-    	auth: user===null ? null : user.auth,
-      operation: { type: super.OPERATIONTYPE_SECUREDELETE, operation: this.DELETE_REGION },
-     	"region": RegionJson.toJSON(region)
+      auth: user===null ? null : user.auth,
+      operation: this.SELECT_SEARCHCOUNT,
+      "search": regionsearcher.toJSON()
     }
-    return await super.post(this.restservice, postdata);
-	}
+    return this.extractDataCount(await super.post(this.restserviceselect, postdata));
+  }
 
-//SECURE SECTION END
+  static insert = async (user, region: Region) => {
+    const postdata = {
+      auth: user===null ? null : user.auth,
+      operation: this.INSERT_REGION,
+      "region": RegionJson.toJSON(region)
+    }
+    return await super.post(this.restserviceinsert, postdata);
+  }
+
+  static save = async (user, region: Region) => {
+    const postdata = {
+      auth: user===null ? null : user.auth,
+      operation: this.UPDATE_REGION,
+      "region": RegionJson.toJSON(region)
+    }
+    return await super.post(this.restserviceupdate, postdata);
+  }
+
+  static del = async (user, region: Region) => {
+    const postdata = {
+      auth: user===null ? null : user.auth,
+      operation: this.DELETE_REGION,
+      "region": RegionJson.toJSON(region)
+    }
+    return await super.post(this.restservicedelete, postdata);
+  }
 
 }
 

@@ -47,7 +47,7 @@ export default function Login() {
 
   const onUserupdatepass = async (newpass) => {
     const newauth = Store.user.createAuth(Store.user.username, newpass);
-    const result = await Rseveuser.sec_updatepass(Store.user, newauth);
+    const result = await Rseveuser.updatepass(Store.user, newauth);
     setShowuserupdatepass(false);
     if(result.status=="OK") {
       Store.user.reset();

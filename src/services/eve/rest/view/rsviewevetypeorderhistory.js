@@ -15,10 +15,10 @@ class Rsviewevetypeorderhistory extends Rsviewevetypeorderhistorysuper {
 
     static get4evetype = async (evetypepk) => {
       const postdata = {
-        operation: { type: super.OPERATIONTYPE_SELECT, operation: this.SELECT_EVETYPE },
+        operation: this.SELECT_EVETYPE,
         evetypepk: EvetypeJson.PKtoJSON(evetypepk)
       }
-      return super.extractDataArray(await super.post(super.restservice, postdata));
+      return super.extractDataArray(await super.post(super.restserviceselect, postdata));
     }
 }
 

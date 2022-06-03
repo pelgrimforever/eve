@@ -15,9 +15,9 @@ class Rsviewbpprofitperregion extends Rsviewbpprofitperregionsuper {
     static getlastmonth = async (user) => {
         const postdata = {
             auth: user!=null ? user.auth : null,
-            operation: { type: super.OPERATIONTYPE_SECURESELECT, operation: this.SELECT_LASTMONTH }
+            operation: this.SELECT_LASTMONTH
         }
-        return this.extractDataArray(await super.post(this.restservice, postdata));
+        return this.extractDataArray(await super.post(this.restserviceselect, postdata));
     }
 
 }

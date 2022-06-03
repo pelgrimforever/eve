@@ -64,7 +64,7 @@ export const deleteShipfitorderlist = async (store, viewshipfitorderselected) =>
   shipfitorderselectedpk.ordersPK.id = viewshipfitorderselected.id;
   const shipfitorderselected = new Shipfitorderselected();
   shipfitorderselected.PK = shipfitorderselectedpk;
-  const result = await Rsshipfitorderselected.sec_del(Store.user, shipfitorderselected);
+  const result = await Rsshipfitorderselected.del(Store.user, shipfitorderselected);
   loadOrders(store, store.state.viewsystem.id);
 }
 

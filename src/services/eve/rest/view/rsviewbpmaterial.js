@@ -15,10 +15,10 @@ class Rsviewbpmaterial extends Rsviewbpmaterialsuper {
   static get4blueprint = async (user, bp) => {
     const postdata = {
       auth: user!=null ? user.auth : null,
-      operation: { type: super.OPERATIONTYPE_SECURESELECT, operation: this.SELECT_4BLUEPRINT },
+      operation: this.SELECT_4BLUEPRINT,
       bp: bp
     }
-    return this.extractDataArray(await super.post(this.restservice, postdata));
+    return this.extractDataArray(await super.post(this.restserviceselect, postdata));
   }
 
 }

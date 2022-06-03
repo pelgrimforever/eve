@@ -2,7 +2,7 @@
 //don't change things here, it will be overwritten
 /* 
     Created on : Nov 20, 2018, 10:39:01 AM
-    Generated on 22.1.2022 10:55
+    Generated on 20.4.2022 10:3
     Author     : Franky Laseure
 */
 
@@ -14,168 +14,105 @@ import AllnodesstargateJson from '../conversion/allnodesstargatejson.js';
 
 class Rsallnodesstargatesuper extends Eveservice {	
 
-	static restservice = 'rsallnodes_stargate';
+  static restserviceselect = 'rsallnodes_stargate_select';
+  static restserviceinsert = 'rsallnodes_stargate_insert';
+  static restserviceupdate = 'rsallnodes_stargate_update';
+  static restservicedelete = 'rsallnodes_stargate_delete';
 
-	//SELECT OPERATIONS
-	static SELECT_ALLNODESSTARGATE = 2;
-	static SELECT_Siteusergroup = 100 + 0;
+  //SELECT OPERATIONS
+  static SELECT_ALLNODESSTARGATE = 2;
+  static SELECT_Siteusergroup = 100 + 0;
 
-	//UPDATE OPERATIONS
-	static UPDATE_ALLNODESSTARGATE = 10;
+  //UPDATE OPERATIONS
+  static UPDATE_ALLNODESSTARGATE = 10;
 
-	//INSERT OPERATIONS
-	static INSERT_ALLNODESSTARGATE = 20;
+  //INSERT OPERATIONS
+  static INSERT_ALLNODESSTARGATE = 20;
 
-	//DELETE OPERATIONS
-	static DELETE_ALLNODESSTARGATE = 30;
+  //DELETE OPERATIONS
+  static DELETE_ALLNODESSTARGATE = 30;
 
-	static extractDataArray = (jsonarray): Allnodesstargate[] => {
-		let allnodesstargates: [] = [];
-		for(let i = 0; i < jsonarray.length; i++) {
-			allnodesstargates.push(AllnodesstargateJson.fromJSON(jsonarray[i]));
-		}
-   	return allnodesstargates;
-	}
+  static extractDataArray = (jsonarray): Allnodesstargate[] => {
+    let allnodesstargates: [] = [];
+    for(let i = 0; i < jsonarray.length; i++) {
+      allnodesstargates.push(AllnodesstargateJson.fromJSON(jsonarray[i]));
+    }
+    return allnodesstargates;
+  }
 
-	static extractDataObject = (jsonobject): Allnodesstargate => {
+  static extractDataObject = (jsonobject): Allnodesstargate => {
     return AllnodesstargateJson.fromJSON(jsonobject);
-	}
-
-	static getcount = async () => {
-    const postdata = {
-      operation: { type: super.OPERATIONTYPE_SELECT, operation: super.SELECT_COUNT }
-    }
-    return this.extractDataCount(await super.post(this.restservice, postdata));
-	}
-
-  static getall = async () => {
-    const postdata = {
-      operation: { type: super.OPERATIONTYPE_SELECT, operation: super.SELECT_ALL }
-    }
-    return this.extractDataArray(await super.post(this.restservice, postdata));
   }
 
-	static getOne = async (allnodesstargatepk: Allnodesstargatepk): Allnodesstargate => {
+  static getcount = async (user) => {
     const postdata = {
-      operation: { type: super.OPERATIONTYPE_SELECT, operation: this.SELECT_ALLNODESSTARGATE },
+      auth: user===null ? null : user.auth,
+      operation: super.SELECT_COUNT
+    }
+    return this.extractDataCount(await super.post(this.restserviceselect, postdata));
+  }
+
+  static getall = async (user) => {
+    const postdata = {
+      auth: user===null ? null : user.auth,
+      operation: super.SELECT_ALL
+    }
+    return this.extractDataArray(await super.post(this.restserviceselect, postdata));
+  }
+
+  static getOne = async (user, allnodesstargatepk: Allnodesstargatepk): Allnodesstargate => {
+    const postdata = {
+      auth: user===null ? null : user.auth,
+      operation: this.SELECT_ALLNODESSTARGATE,
       "allnodes_stargatepk": AllnodesstargateJson.PKtoJSON(allnodesstargatepk)
     }
-    return this.extractDataObject(await super.post(this.restservice, postdata));
-	}
-
-	static search = async (allnodesstargatesearcher) => {
-    const postdata = {
-      operation: { type: super.OPERATIONTYPE_SELECT, operation: this.SELECT_SEARCH },
-     	"search": allnodesstargatesearcher.toJSON()
-    }
-    return this.extractDataArray(await super.post(this.restservice, postdata));
+    return this.extractDataObject(await super.post(this.restserviceselect, postdata));
   }
 
-	static searchcount = async (allnodesstargatesearcher) => {
+  static search = async (user, allnodesstargatesearcher) => {
     const postdata = {
-      operation: { type: super.OPERATIONTYPE_SELECT, operation: this.SELECT_SEARCHCOUNT },
-     	"search": allnodesstargatesearcher.toJSON()
+      auth: user===null ? null : user.auth,
+      operation: this.SELECT_SEARCH,
+      "search": allnodesstargatesearcher.toJSON()
     }
-    return this.extractDataCount(await super.post(this.restservice, postdata));
-	}
-
-	static insert = async (allnodesstargate: Allnodesstargate) => {
-    const postdata = {
-      operation: { type: super.OPERATIONTYPE_INSERT, operation: this.INSERT_ALLNODESSTARGATE },
-     	"allnodesstargate": AllnodesstargateJson.toJSON(allnodesstargate)
-    }
-    return await super.post(this.restservice, postdata);
-	}
-
-	static save = async (allnodesstargate: Allnodesstargate) => {
-    const postdata = {
-      operation: { type: super.OPERATIONTYPE_UPDATE, operation: this.UPDATE_ALLNODESSTARGATE },
-     	"allnodes_stargate": AllnodesstargateJson.toJSON(allnodesstargate)
-    }
-    return await super.post(this.restservice, postdata);
-	}
-
-	static del = async (allnodesstargate: Allnodesstargate) => {
-    const postdata = {
-      operation: { type: super.OPERATIONTYPE_DELETE, operation: this.DELETE_ALLNODESSTARGATE },
-     	"allnodes_stargate": AllnodesstargateJson.toJSON(allnodesstargate)
-    }
-    return await super.post(this.restservice, postdata);
-	}
-
-//SECURE SECTION START
-
-	static sec_getcount = async (user) => {
-    const postdata = {
-    	auth: user===null ? null : user.auth,
-      operation: { type: super.OPERATIONTYPE_SECURESELECT, operation: super.SELECT_COUNT }
-    }
-    return this.extractDataCount(await super.post(this.restservice, postdata));
-	}
-
-  static sec_getall = async (user) => {
-    const postdata = {
-    	auth: user===null ? null : user.auth,
-      operation: { type: super.OPERATIONTYPE_SECURESELECT, operation: super.SELECT_ALL }
-    }
-    return this.extractDataArray(await super.post(this.restservice, postdata));
+    return this.extractDataArray(await super.post(this.restserviceselect, postdata));
   }
 
-	static sec_getOne = async (user, allnodesstargatepk: Allnodesstargatepk): Allnodesstargate => {
+  static searchcount = async (user, allnodesstargatesearcher) => {
     const postdata = {
-    	auth: user===null ? null : user.auth,
-      operation: { type: super.OPERATIONTYPE_SECURESELECT, operation: this.SELECT_ALLNODESSTARGATE },
-      "allnodes_stargatepk": AllnodesstargateJson.PKtoJSON(allnodesstargatepk)
+      auth: user===null ? null : user.auth,
+      operation: this.SELECT_SEARCHCOUNT,
+      "search": allnodesstargatesearcher.toJSON()
     }
-    return this.extractDataObject(await super.post(this.restservice, postdata));
-	}
-
-	static sec_search = async (user, allnodesstargatesearcher) => {
-    const postdata = {
-    	auth: user===null ? null : user.auth,
-      operation: { type: super.OPERATIONTYPE_SECURESELECT, operation: this.SELECT_SEARCH },
-     	"search": allnodesstargatesearcher.toJSON()
-    }
-    return this.extractDataArray(await super.post(this.restservice, postdata));
+    return this.extractDataCount(await super.post(this.restserviceselect, postdata));
   }
 
-	static sec_searchcount = async (user, allnodesstargatesearcher) => {
+  static insert = async (user, allnodesstargate: Allnodesstargate) => {
     const postdata = {
-    	auth: user===null ? null : user.auth,
-      operation: { type: super.OPERATIONTYPE_SECURESELECT, operation: this.SELECT_SEARCHCOUNT },
-     	"search": allnodesstargatesearcher.toJSON()
+      auth: user===null ? null : user.auth,
+      operation: this.INSERT_ALLNODESSTARGATE,
+      "allnodes_stargate": AllnodesstargateJson.toJSON(allnodesstargate)
     }
-    return this.extractDataCount(await super.post(this.restservice, postdata));
-	}
+    return await super.post(this.restserviceinsert, postdata);
+  }
 
-	static sec_insert = async (user, allnodesstargate: Allnodesstargate) => {
+  static save = async (user, allnodesstargate: Allnodesstargate) => {
     const postdata = {
-    	auth: user===null ? null : user.auth,
-      operation: { type: super.OPERATIONTYPE_SECUREINSERT, operation: this.INSERT_ALLNODESSTARGATE },
-     	"allnodes_stargate": AllnodesstargateJson.toJSON(allnodesstargate)
+      auth: user===null ? null : user.auth,
+      operation: this.UPDATE_ALLNODESSTARGATE,
+      "allnodes_stargate": AllnodesstargateJson.toJSON(allnodesstargate)
     }
-    return await super.post(this.restservice, postdata);
-	}
+    return await super.post(this.restserviceupdate, postdata);
+  }
 
-	static sec_save = async (user, allnodesstargate: Allnodesstargate) => {
+  static del = async (user, allnodesstargate: Allnodesstargate) => {
     const postdata = {
-    	auth: user===null ? null : user.auth,
-      operation: { type: super.OPERATIONTYPE_SECUREUPDATE, operation: this.UPDATE_ALLNODESSTARGATE },
-     	"allnodes_stargate": AllnodesstargateJson.toJSON(allnodesstargate)
+      auth: user===null ? null : user.auth,
+      operation: this.DELETE_ALLNODESSTARGATE,
+      "allnodes_stargate": AllnodesstargateJson.toJSON(allnodesstargate)
     }
-    return await super.post(this.restservice, postdata);
-	}
-
-	static sec_del = async (user, allnodesstargate: Allnodesstargate) => {
-    const postdata = {
-    	auth: user===null ? null : user.auth,
-      operation: { type: super.OPERATIONTYPE_SECUREDELETE, operation: this.DELETE_ALLNODESSTARGATE },
-     	"allnodes_stargate": AllnodesstargateJson.toJSON(allnodesstargate)
-    }
-    return await super.post(this.restservice, postdata);
-	}
-
-//SECURE SECTION END
+    return await super.post(this.restservicedelete, postdata);
+  }
 
 }
 

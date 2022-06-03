@@ -17,19 +17,19 @@ class Rsviewevetypeorderhistorymonth extends Rsviewevetypeorderhistorymonthsuper
     static get4evetype = async (user, evetypepk) => {
       const postdata = {
         auth: user!=null ? user.auth : null,
-        operation: { type: super.OPERATIONTYPE_SECURESELECT, operation: this.SELECT_EVETYPE },
+        operation: this.SELECT_EVETYPE,
         evetypepk: EvetypeJson.PKtoJSON(evetypepk)
       }
-      return super.extractDataArray(await super.post(super.restservice, postdata));
+      return super.extractDataArray(await super.post(super.restserviceselect, postdata));
     }
 
     static get4evetype4lastmonth = async (user, evetypepk) => {
       const postdata = {
         auth: user!=null ? user.auth : null,
-        operation: { type: super.OPERATIONTYPE_SECURESELECT, operation: this.SELECT_EVETYPEYM },
+        operation: this.SELECT_EVETYPEYM,
         evetypepk: EvetypeJson.PKtoJSON(evetypepk)
       }
-      return super.extractDataArray(await super.post(super.restservice, postdata));
+      return super.extractDataArray(await super.post(super.restserviceselect, postdata));
     }
 
 }

@@ -19,7 +19,7 @@ export const loadTypes = async (store, searchstring) => {
     let searcher = new Evetypesearcher();
     searcher.addnames([searchstring + ':*:']);
     searcher.name.compareoperator = searcher.name.STRING_LIKE;
-    const result = await Rsevetype.sec_search(Store.user, searcher);
+    const result = await Rsevetype.search(Store.user, searcher);
     result.sort((a, b) => (a.name<b.name) ? -1 : 1);
     store.setState({ typelist: result });
   }
@@ -52,7 +52,7 @@ export const updateWishlist = async (store, viewwishlist ) => {
   wishlist.PK.evetypePK.id = viewwishlist.id;
   wishlist.PK.username = Store.user.username;
   wishlist.maxprice = viewwishlist.maxprice;
-  const result = await Rswishlist.sec_save(Store.user, wishlist);
+  const result = await Rswishlist.save(Store.user, wishlist);
   loadWishlist(store);
   loadSellorderlist(store);
 }
@@ -62,7 +62,7 @@ export const removeWishlist = async (store, viewwishlist ) => {
   wishlist.PK.init();
   wishlist.PK.evetypePK.id = viewwishlist.id;
   wishlist.PK.username = Store.user.username;
-  const result = await Rswishlist.sec_del(Store.user, wishlist);
+  const result = await Rswishlist.del(Store.user, wishlist);
   loadWishlist(store);
   loadSellorderlist(store);
 }

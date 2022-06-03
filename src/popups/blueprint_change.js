@@ -34,10 +34,11 @@ function Blueprint_change(props) {
   const changeuserblueprint = async (event) => {
     event.preventDefault();
     const formdata = new FormData(event.target);
+    const totalamount = formdata.get('totalamount');
     const amountproduced = formdata.get('amountproduced');
     const efficiency = formdata.get('efficiency');
     const researchcost = formdata.get('researchcost');
-    const result = await props.onUserbpchange(amountproduced, efficiency, researchcost);
+    const result = await props.onUserbpchange(totalamount, amountproduced, efficiency, researchcost);
   }
 
   /*const changeEfficiency = (selection) => { 
@@ -91,7 +92,7 @@ function Blueprint_change(props) {
                       <div className="col col-sm-12 d-flex">
                         <span className="mx-2" style={{width:'150px'}}>total amount</span>
                         <div className="mx-2" style={{width:'200px'}}>
-                          {props.viewuserbp.totalamount}
+                          <Form.Control type="number" id="totalamount" name="totalamount" defaultValue={props.viewuserbp.totalamount} style={{width:'150px'}} />  
                         </div>
                       </div>
                     </div>

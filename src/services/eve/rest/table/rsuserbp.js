@@ -19,29 +19,29 @@ class Rsuserbp extends Rsuserbpsuper {
     static addbp = async (user, userbp) => {
         const postdata = {
             auth: user!=null ? user.auth : null,
-            operation: { type: super.OPERATIONTYPE_SECUREINSERT, operation: this.INSERT_ADDBP },
+            operation: this.INSERT_ADDBP,
             userbp: UserbpJson.toJSON(userbp)
         }
-        return await super.post(this.restservice, postdata);
+        return await super.post(this.restserviceinsert, postdata);
     }
 
     static updateproperties = async (user, userbp) => {
         const postdata = {
           auth: user!=null ? user.auth : null,
-          operation: { type: super.OPERATIONTYPE_SECUREUPDATE, operation: this.UPDATE_PROPERTIES },
+          operation: this.UPDATE_PROPERTIES,
           userbp: UserbpJson.toJSON(userbp)
         }
-        return await super.post(this.restservice, postdata);
+        return await super.post(this.restserviceupdate, postdata);
     }
 
     static runbp = async (user, userbppk, amount) => {
         const postdata = {
           auth: user!=null ? user.auth : null,
-          operation: { type: super.OPERATIONTYPE_SECUREUPDATE, operation: this.UPDATE_RUNBP },
+          operation: this.UPDATE_RUNBP,
           userbppk: UserbpJson.PKtoJSON(userbppk),
           amount: amount
         }
-        return await super.post(this.restservice, postdata);
+        return await super.post(this.restserviceupdate, postdata);
     }
 
 }
